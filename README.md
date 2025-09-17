@@ -1,4 +1,4 @@
-🗂️ Fáze 1 – Základní návrh
+🗂️ Fáze 1 – Základní návrh 
 
 🎯 Cíl:
 
