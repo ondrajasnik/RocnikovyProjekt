@@ -1,114 +1,100 @@
-🗂️ Fáze 1 – Základní návrh 
+🗂️ Fáze 1 – Základní návrh
 
 🎯 Cíl:
-
-Vytvořit webovou aplikaci pro přehrávání výukových videí s účty, historií, vyhledáváním a přehrávačem.
+Vytvořit mobilní idle RPG hru, kde hráč bojuje s nepřáteli, získává zlato/exp a vylepšuje svého hrdinu.
 
 📌 Funkce:
 
-Registrace a přihlášení uživatelů
+Klikání → útok na nepřítele
 
-Upload videí (pouze administrátor)
+Idle útoky → hrdina útočí i bez klikání
 
-Kategorizace (např. Matematika, Programování, Fyzika)
+Zlato a expy → odměna za poraženého nepřítele
 
-Vyhledávání (podle názvu, popisu, kategorie)
+Upgrady → zvýšení dmg, auto-útoků, HP
 
-Přehrávač videí
-
-Historie sledování
-
-Omezení: 2 videa denně zdarma
-
-Prémiový účet: neomezený přístup
-
-Ochrana videí (vodoznak, zabránění stahování)
+Uložení postupu → pokračování po vypnutí
 
 
-⚙️ Fáze 2 – Technický stack
 
-🧠 Backend:
+---
 
-Node.js + Express – API pro autentizaci, metadata, streamování
+🗂️ Fáze 2 – Technický stack
 
-MongoDB – ukládání uživatelů, videí, historie sledování, plateb
+🧠 Engine / Framework:
 
-Mongoose – ORM pro MongoDB
+Flutter – UI, multiplatformní vývoj
 
-JWT (JSON Web Token) – přihlašování a správa sessions
-
-Multer / Cloudinary / S3 – nahrávání a ukládání videí
-
-ffmpeg – konverze videí, přidávání vodoznaku
-
-Stripe nebo ČSOB API – platby
+Flame – game engine pro Flutter (sprite animace, game loop, kolize)
 
 
-💻 Frontend:
+💾 Data:
 
-React.js (nebo čistý HTML + JS) – přehrávač, formuláře, přehled videí
+SharedPreferences – ukládání postupu hry
 
-HLS.js – bezpečné streamování přes HLS
-
-Tailwind CSS – stylování
-
-Video.js – přehrávání + vodoznak (např. jméno uživatele přes overlay) 
-
-📅 Fáze 3 – Postup vývoje
-
-1:
-
-Navrhnout schéma databáze (Users, Videos, History, Payments)
-
-Založit Node.js projekt, propojit MongoDB
-
-Přidat registraci a přihlášení (JWT)
+(volitelně SQLite, pokud budeš chtít složitější ukládání)
 
 
-2:
+🎨 Grafika a zvuk:
 
-Přidat upload videí + metadata (kategorie, popis)
+Sprity hrdiny, nepřátel a ikon upgradů (volně dostupné, nebo vlastní)
 
-Nahrávání přes Multer, ukládání na disk nebo cloud
-
-Zobrazit seznam videí
+Jednoduché zvukové efekty (útok, level up, porážka nepřítele)
 
 
-3:
 
-Přidat přehrávání videí (Video.js nebo vlastní player)
+---
 
-Uložit historii sledování do DB
+🗂️ Fáze 3 – Postup vývoje
 
-Omezit přístup na 2 videa denně zdarma
+1️⃣ Základní mechanika
 
+Vytvořit hrdinu + nepřítele
 
-4:
+Kliknutí → nepřítel ztrácí HP
 
-Přidat platební bránu (Stripe, ČSOB API)
-
-Uživatel si může koupit jedno video (20 Kč) nebo měsíční předplatné
-
-Přidat správu uživatelů (administrace)
+Když HP = 0 → nový nepřítel + odměna
 
 
-🔐 Fáze 4
+2️⃣ Idle mechanika
 
-Přidání dynamického vodoznaku: jméno uživatele overlay na video (ffmpeg + transparentní vrstvy nebo Video.js plugin)
-
-Streaming přes HLS (přes .m3u8 soubory) – ztíží stažení
-
-Blokování pravého kliknutí, F12, konzole (částečně, frontendové)
-
-Možnost DRM (Widevine) v budoucnu – složité, nepovinné
+Přidat automatické útoky (časovač → dmg každou sekundu)
 
 
-💡 Extra funkce pro body navíc
+3️⃣ Upgrady
 
-Komentáře pod videi
+Panel upgradů (damage, auto-útok, HP)
 
-Hvězdičkové hodnocení
+Cena upgradů roste exponenciálně
 
-Oblíbená videa
 
-Filtr podle úrovně (začátečník/pokročilý)
+4️⃣ Uložení hry
+
+SharedPreferences – zlato, level, upgrady se uloží při zavření aplikace
+
+
+
+---
+
+🗂️ Fáze 4 – Rozšíření
+
+🔐 Pokročilé funkce:
+
+Bossové (silnější nepřítel po X levelech)
+
+Více lokací (les, jeskyně, hrad) → mění se grafika nepřátel
+
+Inventář (meče, brnění) → přidávají bonusy
+
+Animace útoků (Flame sprity nebo jednoduché efekty)
+
+Zvukové efekty a hudba
+
+
+💡 Extra body navíc:
+
+Statistiky (kolik nepřátel bylo poraženo, nejvyšší level)
+
+Achievementy (např. „zabil 100 nepřátel“)
+
+Online žebříček (Firebase / REST API) – nepovinné
