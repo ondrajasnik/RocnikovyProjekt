@@ -1,0 +1,166 @@
+[gd_scene load_steps=5 format=3 uid="uid://c8ws8ee2be27"]
+
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="1_3k5ll"]
+[ext_resource type="PackedScene" path="res://scenes/Enemy.tscn" id="2_6m1qf"]
+[ext_resource type="Script" uid="uid://c3gty38h62h3t" path="res://scripts/enemy_spawner.gd" id="3_4a2vz"]
+[ext_resource type="Script" uid="uid://bpatqdr2woqpw" path="res://scripts/main.gd" id="4_9yb0s"]
+
+[node name="Main" type="Node2D"]
+position = Vector2(171, 29)
+script = ExtResource("4_9yb0s")
+
+[node name="Player" parent="." instance=ExtResource("1_3k5ll")]
+position = Vector2(0, 301)
+
+[node name="Spawner" type="Node2D" parent="."]
+script = ExtResource("3_4a2vz")
+enemy_scene = ExtResource("2_6m1qf")
+player_path = NodePath("../Player")
+
+[node name="Enemies" type="Node2D" parent="Spawner"]
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Buttons" type="HBoxContainer" parent="UI"]
+layout_mode = 0
+offset_left = 630.0
+offset_top = 519.0
+offset_right = 850.0
+offset_bottom = 559.0
+
+[node name="InventoryButton" type="Button" parent="UI/Buttons"]
+layout_mode = 2
+text = "Inventory"
+
+[node name="ShopButton" type="Button" parent="UI/Buttons"]
+layout_mode = 2
+text = "Shop"
+
+[node name="UpgradesButton" type="Button" parent="UI/Buttons"]
+layout_mode = 2
+text = "Upgrades"
+
+[node name="InventoryPanel" type="Panel" parent="UI"]
+visible = false
+layout_mode = 0
+offset_left = 16.0
+offset_top = 72.0
+offset_right = 336.0
+offset_bottom = 272.0
+
+[node name="VBox" type="VBoxContainer" parent="UI/InventoryPanel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 312.0
+offset_bottom = 192.0
+
+[node name="InventoryList" type="ItemList" parent="UI/InventoryPanel/VBox"]
+layout_mode = 2
+select_mode = 1
+
+[node name="EquipButton" type="Button" parent="UI/InventoryPanel/VBox"]
+layout_mode = 2
+text = "Equip selected"
+
+[node name="ShopPanel" type="Panel" parent="UI"]
+visible = false
+layout_mode = 0
+offset_left = 360.0
+offset_top = 72.0
+offset_right = 680.0
+offset_bottom = 272.0
+
+[node name="VBox" type="VBoxContainer" parent="UI/ShopPanel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 312.0
+offset_bottom = 192.0
+
+[node name="ShopList" type="ItemList" parent="UI/ShopPanel/VBox"]
+layout_mode = 2
+select_mode = 1
+
+[node name="BuyButton" type="Button" parent="UI/ShopPanel/VBox"]
+layout_mode = 2
+text = "Buy selected"
+
+[node name="GoldLabel" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -159.0
+offset_top = -17.0
+offset_right = -15.0
+offset_bottom = 15.0
+grow_horizontal = 0
+text = "Gold: 0"
+
+[node name="WaveLabel" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -66.0
+offset_top = -17.0
+offset_right = 94.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Wave: 1"
+
+[node name="PlayerHPLabel" type="Label" parent="UI"]
+layout_mode = 0
+offset_left = 75.0
+offset_top = -19.0
+offset_right = 185.0
+offset_bottom = 22.0
+
+[node name="BossHealthBar" type="TextureProgressBar" parent="UI"]
+visible = false
+layout_mode = 0
+offset_left = -150.0
+offset_top = 59.0
+offset_right = 34.0
+offset_bottom = 83.0
+
+[node name="UpgradesPanel" type="Panel" parent="UI"]
+visible = false
+layout_mode = 0
+offset_left = 16.0
+offset_top = 288.0
+offset_right = 336.0
+offset_bottom = 488.0
+
+[node name="VBox" type="VBoxContainer" parent="UI/UpgradesPanel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 312.0
+offset_bottom = 192.0
+
+[node name="StatsLabel" type="Label" parent="UI/UpgradesPanel/VBox"]
+layout_mode = 2
+text = "ATK: 0  HP: 0  AS: 0.0/s"
+
+[node name="UpgradeAttack" type="Button" parent="UI/UpgradesPanel/VBox"]
+layout_mode = 2
+text = "Upgrade Attack"
+
+[node name="UpgradeAttackSpeed" type="Button" parent="UI/UpgradesPanel/VBox"]
+layout_mode = 2
+text = "Upgrade Attack Speed"
+
+[node name="UpgradeHealth" type="Button" parent="UI/UpgradesPanel/VBox"]
+layout_mode = 2
+text = "Upgrade Health"
