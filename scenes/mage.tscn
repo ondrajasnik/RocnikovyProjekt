@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://d4km7udpob73a"]
+
+[ext_resource type="Script" path="res://scripts/mage.gd" id="1_mage_script"]
+[ext_resource type="Texture2D" uid="uid://70ro0adv50ss" path="res://assets/PlayerMageTexture/PlayerMageIdle.png" id="1_j2dsb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j2dsb"]
+radius = 31.06445
+
+[node name="PlayerMage" type="RigidBody2D"]
+script = ExtResource("1_mage_script")
+gravity_scale = 0.0
+lock_rotation = true
+freeze = false
+freeze_mode = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_j2dsb")
+hframes = 9
+vframes = 4
+frame = 11
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_j2dsb")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2(0.7, 0.7)
