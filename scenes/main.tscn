@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dr1t2bjwq5fi5"]
+[gd_scene load_steps=4 format=3 uid="uid://dr1t2bjwq5fi5"]
 
 [ext_resource type="PackedScene" uid="uid://d4km7udpob73a" path="res://scenes/mage.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/ui.tscn" id="3"]
 
 [node name="main" type="Node2D"]
 
@@ -40,3 +41,5 @@ scale = Vector2(1, 1)
 use_input_actions = false
 joystick_mode = 0
 visibility_mode = 0
+
+[node name="UI" parent="." instance=ExtResource("3")]
