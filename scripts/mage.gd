@@ -11,6 +11,7 @@ var attack_speed: float = 1.0 # útoky za sekundu
 var move_speed: float = 250.0
 var defense: float = 0.2 # 20% snížení damage
 var lifesteal: float = 0.1 # 10% poškození vráceno jako HP
+var attack_range: float = 300.0  # Dosah útoku
 
 var attack_timer := 0.0
 
@@ -97,15 +98,48 @@ func _handle_attack(delta):
 		_shoot_projectiles()
 
 func _shoot_projectiles():
+	# Najdi nejbližšího nepřítele v dosahu
+	var nearest_enemy = _find_nearest_enemy()
+	
+	if not nearest_enemy:
+		return  # Žádný nepřítel v dosahu
+	
+	# Směr k nepříteli
+	var direction_to_enemy = (nearest_enemy.global_position - global_position).normalized()
+	
+	# Vystřel projectile_count projektilů
 	for i in range(projectile_count):
 		var projectile = projectile_scene.instantiate()
 		projectile.position = global_position
-		projectile.direction = Vector2.RIGHT.rotated(deg_to_rad(i * (360.0 / projectile_count)))
+		
+		# Pokud je víc projektilů, rozestři je do vějíře
+		var angle_offset = 0.0
+		if projectile_count > 1:
+			var spread_angle = 30.0  # Úhel rozestupu ve stupních
+			angle_offset = (i - (projectile_count - 1) / 2.0) * spread_angle
+		
+		projectile.direction = direction_to_enemy.rotated(deg_to_rad(angle_offset))
 		projectile.damage = damage
 		projectile.lifesteal_percent = lifesteal
 		projectile.owner_mage = self
 		projectile.scale = Vector2(projectile_size, projectile_size)
 		get_parent().add_child(projectile)
+
+func _find_nearest_enemy():
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	var nearest_enemy = null
+	var nearest_distance = attack_range
+	
+	for enemy in enemies:
+		if not is_instance_valid(enemy):
+			continue
+		
+		var distance = global_position.distance_to(enemy.global_position)
+		if distance < nearest_distance:
+			nearest_distance = distance
+			nearest_enemy = enemy
+	
+	return nearest_enemy
 
 func _regenerate_hp(delta):
 	current_hp = min(current_hp + hp_regen * delta, max_hp)
@@ -113,8 +147,13 @@ func _regenerate_hp(delta):
 func take_damage(amount):
 	var reduced = amount * (1.0 - defense)
 	current_hp -= reduced
+	print("Player took ", reduced, " damage! HP: ", current_hp, "/", max_hp)
 	if current_hp <= 0:
-		queue_free() # smrt hráče
+		die()
 
 func heal(amount):
 	current_hp = min(current_hp + amount, max_hp)
+
+func die():
+	print("Player died!")
+	queue_free()

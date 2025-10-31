@@ -1,10 +1,54 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" path="res://scripts/projectile.gd" id="1_projectile_script"]
+[ext_resource type="Script" path="res://scripts/projectile.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/PlayerMageTexture/fireball.png" id="2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_projectile"]
+radius = 6.0
+
+[sub_resource type="Animation" id="Animation_fireball"]
+resource_name = "fireball"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 1, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary"]
+_data = {
+"fireball": SubResource("Animation_fireball")
+}
 
 [node name="Projectile" type="Area2D"]
-script = ExtResource("1_projectile_script")
+script = ExtResource("1")
+collision_layer = 4
+collision_mask = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2")
+vframes = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_projectile")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "fireball"
+libraries = {
+"": SubResource("AnimationLibrary")
+}
+
+[node name="Lifetime" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+autostart = true
