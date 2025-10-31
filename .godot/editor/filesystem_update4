@@ -4,3 +4,5 @@ res://scripts/mage.gd
 res://scripts/projectile.gd
 res://scenes/orb.tscn
 res://scripts/orb.gd
+res://scripts/ui.gd
+res://scenes/ui.tscn
