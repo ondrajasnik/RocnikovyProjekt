@@ -17,6 +17,7 @@ var attack_speed: float = 1.0
 var attack_range: float = 80.0
 var detection_range: float = 200.0
 var difficulty_multiplier: float = 1.0  # Zvyšuje se s časem/vlnami
+var min_distance_to_player: float = 20.0  # Minimální vzdálenost od hráče
 
 var player = null
 var attack_timer: float = 0.0
@@ -36,6 +37,10 @@ func _ready():
 	detection_area.body_exited.connect(_on_detection_area_body_exited)
 	_apply_difficulty()
 	_update_health_bar()
+	
+	# Nastavení kolizí - nepřátelé se budou navzájem odpuzovat
+	collision_layer = 2  # Nepřátelé jsou na layer 2
+	collision_mask = 3   # Kolidují s hráčem (layer 1) a jinými nepřáteli (layer 2)
 
 func _apply_difficulty():
 	# Aplikuje difficulty multiplier na statistiky
@@ -60,14 +65,16 @@ func _follow_player(delta):
 	var direction = (player.global_position - global_position).normalized()
 	var distance = global_position.distance_to(player.global_position)
 	
-	# Pohyb k hráči, ale zastaví se v attack_range
-	if distance > attack_range:
+	# Pohyb k hráči - UPRAVENO: tlačí se co nejblíž (ne zastavení v attack_range)
+	if distance > min_distance_to_player:
 		linear_velocity = direction * move_speed
 		_play_walk_animation(direction)
-		is_attacking = false
 	else:
-		linear_velocity = Vector2.ZERO
-		is_attacking = true
+		# Pokud je moc blízko, trochu zpomal ale nepřestaň se tlačit
+		linear_velocity = direction * move_speed * 0.3
+	
+	# Je v dosahu útoku?
+	is_attacking = distance <= attack_range
 
 func _update_attack(delta):
 	# Aktualizuje attack timer a útočí podle attack_speed
@@ -109,7 +116,6 @@ func _attack_player():
 	if distance <= attack_range:
 		if player.has_method("take_damage"):
 			player.take_damage(damage)
-			print("Enemy dealt ", damage, " damage! Player HP: ", player.current_hp)
 
 func _on_detection_area_body_entered(body):
 	if body.name == "PlayerMage":
