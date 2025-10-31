@@ -13,6 +13,15 @@ var defense: float = 0.2 # 20% snížení damage
 var lifesteal: float = 0.1 # 10% poškození vráceno jako HP
 var attack_range: float = 300.0  # Dosah útoku
 
+# --- Level systém ---
+var level: int = 1
+var current_exp: int = 0
+var exp_to_next_level: int = 100
+var exp_multiplier: float = 1.5  # Kolik více EXP potřebuješ na další level
+
+# --- Gold systém ---
+var gold: int = 0
+
 var attack_timer := 0.0
 
 # Přidej načtení scény projektilu na začátek
@@ -43,7 +52,7 @@ func _physics_process(delta):
 	# Vypis pozice každých 60 framů (cca 1x za sekundu)
 	debug_counter += 1
 	if debug_counter % 60 == 0:
-		print("Pozice hráče: ", global_position)
+		print("Level: ", level, " | EXP: ", current_exp, "/", exp_to_next_level, " | Gold: ", gold)
 
 func _handle_movement():
 	var input_vector = Vector2.ZERO
@@ -143,6 +152,32 @@ func _find_nearest_enemy():
 
 func _regenerate_hp(delta):
 	current_hp = min(current_hp + hp_regen * delta, max_hp)
+
+func add_exp(amount: int):
+	current_exp += amount
+	print("Gained ", amount, " EXP! Total: ", current_exp, "/", exp_to_next_level)
+	
+	# Zkontroluj level up
+	if current_exp >= exp_to_next_level:
+		level_up()
+
+func level_up():
+	level += 1
+	current_exp -= exp_to_next_level
+	exp_to_next_level = int(exp_to_next_level * exp_multiplier)
+	
+	# Bonusy za level up
+	max_hp += 10
+	current_hp = max_hp  # Heal na plné HP
+	damage += 2
+	
+	print("LEVEL UP! Level ", level)
+	print("HP: ", max_hp, " | Damage: ", damage)
+	print("Next level: ", exp_to_next_level, " EXP")
+
+func add_gold(amount: int):
+	gold += amount
+	print("Gained ", amount, " gold! Total: ", gold)
 
 func take_damage(amount):
 	var reduced = amount * (1.0 - defense)

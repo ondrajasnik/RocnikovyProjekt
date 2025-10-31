@@ -2,3 +2,5 @@ res://scripts/enemy.gd
 res://scenes/projectile.tscn
 res://scripts/mage.gd
 res://scripts/projectile.gd
+res://scenes/orb.tscn
+res://scripts/orb.gd

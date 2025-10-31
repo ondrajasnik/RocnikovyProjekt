@@ -14,13 +14,16 @@ var move_speed: float = 150.0
 var attack_speed: float = 1.0
 
 # --- Ostatní nastavení ---
-var attack_range: float = 80.0  # Zvětšeno z 50.0 na 80.0
+var attack_range: float = 80.0
 var detection_range: float = 200.0
 var difficulty_multiplier: float = 1.0  # Zvyšuje se s časem/vlnami
 
 var player = null
 var attack_timer: float = 0.0
 var is_attacking: bool = false
+
+# Načti scénu orbu
+var orb_scene = preload("res://scenes/orb.tscn")
 
 @onready var sprite = $Sprite2D
 @onready var health_bar = $HealthBar
@@ -140,4 +143,18 @@ func increase_difficulty(multiplier: float):
 
 func die():
 	print("Enemy died!")
+	_drop_orbs()
 	queue_free()
+
+func _drop_orbs():
+	# EXP orb
+	var exp_orb = orb_scene.instantiate()
+	exp_orb.position = global_position
+	exp_orb.set_orb_type(exp_orb.OrbType.EXP, int(10 * difficulty_multiplier))
+	get_parent().add_child(exp_orb)
+	
+	# Gold orb
+	var gold_orb = orb_scene.instantiate()
+	gold_orb.position = global_position + Vector2(randf_range(-20, 20), randf_range(-20, 20))
+	gold_orb.set_orb_type(gold_orb.OrbType.GOLD, int(5 * difficulty_multiplier))
+	get_parent().add_child(gold_orb)
