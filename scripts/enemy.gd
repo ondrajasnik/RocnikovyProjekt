@@ -149,6 +149,11 @@ func increase_difficulty(multiplier: float):
 
 func die():
 	print("Enemy died!")
+	
+	# Přičti kill hráči
+	if player and is_instance_valid(player) and player.has_method("add_kill"):
+		player.add_kill()
+	
 	_drop_orbs()
 	queue_free()
 

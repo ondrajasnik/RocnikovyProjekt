@@ -19,8 +19,9 @@ var current_exp: int = 0
 var exp_to_next_level: int = 100
 var exp_multiplier: float = 1.5  # Kolik více EXP potřebuješ na další level
 
-# --- Gold systém ---
+# --- Gold a Kills systém ---
 var gold: int = 0
+var kills: int = 0
 
 var attack_timer := 0.0
 
@@ -52,7 +53,7 @@ func _physics_process(delta):
 	# Vypis pozice každých 60 framů (cca 1x za sekundu)
 	debug_counter += 1
 	if debug_counter % 60 == 0:
-		print("Level: ", level, " | EXP: ", current_exp, "/", exp_to_next_level, " | Gold: ", gold)
+		print("Level: ", level, " | EXP: ", current_exp, "/", exp_to_next_level, " | Gold: ", gold, " | Kills: ", kills)
 
 func _handle_movement():
 	var input_vector = Vector2.ZERO
@@ -178,6 +179,10 @@ func level_up():
 func add_gold(amount: int):
 	gold += amount
 	print("Gained ", amount, " gold! Total: ", gold)
+
+func add_kill():
+	kills += 1
+	print("Kill! Total kills: ", kills)
 
 func take_damage(amount):
 	var reduced = amount * (1.0 - defense)
