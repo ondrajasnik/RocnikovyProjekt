@@ -15,19 +15,24 @@ var attack_range: float = 300.0  # Dosah útoku
 
 # --- Level systém ---
 var level: int = 1
-var current_exp: int = 0
+var current_exp: int = 95
 var exp_to_next_level: int = 100
-var exp_multiplier: float = 1.5  # Kolik více EXP potřebuješ na další level
+var exp_multiplier: float = 1.5
 
 # --- Gold a Kills systém ---
 var gold: int = 0
 var kills: int = 0
 
+# --- Luck systém ---
+var luck: float = 1.0  # 1.0 = normální, 2.0 = 2x lepší šance na rare
+
 var attack_timer := 0.0
 
 # Přidej načtení scény projektilu na začátek
 var projectile_scene = preload("res://scenes/projectile.tscn")
+var level_up_menu_scene = preload("res://scenes/level_up_menu.tscn")
 var joystick: Node = null
+var level_up_menu = null
 
 @onready var sprite = $Sprite2D
 @onready var anim_player = $AnimationPlayer
@@ -39,6 +44,14 @@ func _ready():
 	joystick = get_node_or_null("/root/main/UILayer/VirtualJoystick")
 	if not joystick:
 		joystick = get_tree().root.find_child("VirtualJoystick", true, false)
+	
+	# Najdi level up menu (musí být přidané v main.tscn)
+	level_up_menu = get_tree().root.find_child("LevelUpMenu", true, false)
+	
+	if level_up_menu:
+		print("Level up menu found!")
+	else:
+		print("ERROR: Level up menu not found!")
 	
 	# Zajisti, že tělo není zmrazené a rotace je zamčená
 	lock_rotation = true
@@ -167,14 +180,11 @@ func level_up():
 	current_exp -= exp_to_next_level
 	exp_to_next_level = int(exp_to_next_level * exp_multiplier)
 	
-	# Bonusy za level up
-	max_hp += 10
-	current_hp = max_hp  # Heal na plné HP
-	damage += 2
-	
 	print("LEVEL UP! Level ", level)
-	print("HP: ", max_hp, " | Damage: ", damage)
-	print("Next level: ", exp_to_next_level, " EXP")
+	
+	# Zobraz level up menu
+	if level_up_menu:
+		level_up_menu.show_level_up(self, luck)
 
 func add_gold(amount: int):
 	gold += amount
