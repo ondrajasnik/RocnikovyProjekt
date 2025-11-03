@@ -43,6 +43,17 @@ var upgrade_names = {
 	UpgradeType.DEFENSE: "Defense"
 }
 
+var upgrade_icons = {
+	UpgradeType.DAMAGE: "res://assets/upgrades/damage.png",
+	UpgradeType.PROJECTILE_COUNT: "res://assets/upgrades/damage.png",  # TODO
+	UpgradeType.MAX_HP: "res://assets/upgrades/damage.png",  # TODO
+	UpgradeType.HP_REGEN: "res://assets/upgrades/damage.png",  # TODO
+	UpgradeType.ATTACK_SPEED: "res://assets/upgrades/damage.png",  # TODO
+	UpgradeType.MOVE_SPEED: "res://assets/upgrades/damage.png",  # TODO
+	UpgradeType.LIFESTEAL: "res://assets/upgrades/damage.png",  # TODO
+	UpgradeType.DEFENSE: "res://assets/upgrades/defence.png"
+}
+
 func _ready():
 	visible = false
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -161,37 +172,90 @@ func create_upgrade_button(option: Dictionary, index: int):
 	print("Creating button ", index, " for ", option.name)
 	
 	var button = Button.new()
-	button.custom_minimum_size = Vector2(250, 300)
-	button.text = option.name + "\n" + get_rarity_name(option.rarity) + "\n" + option.description
+	button.custom_minimum_size = Vector2(220, 280)
 	
-	# Jednoduchý styl - TESTOVACÍ
+	# VBox pro obsah
+	var vbox = VBoxContainer.new()
+	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
+	vbox.add_theme_constant_override("separation", 10)
+	
+	# Ikona upgradu
+	var icon = TextureRect.new()
+	icon.custom_minimum_size = Vector2(100, 100)
+	icon.texture = load(upgrade_icons[option.type])
+	icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	
+	var icon_center = CenterContainer.new()
+	icon_center.add_child(icon)
+	
+	# Kvalita (rarity)
+	var rarity_label = Label.new()
+	rarity_label.text = get_rarity_name(option.rarity)
+	rarity_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	rarity_label.add_theme_color_override("font_color", option.color)
+	rarity_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	rarity_label.add_theme_constant_override("outline_size", 2)
+	rarity_label.add_theme_font_size_override("font_size", 18)
+	
+	# Název upgradu
+	var name_label = Label.new()
+	name_label.text = option.name
+	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	name_label.add_theme_color_override("font_color", Color.WHITE)
+	name_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	name_label.add_theme_constant_override("outline_size", 2)
+	name_label.add_theme_font_size_override("font_size", 16)
+	
+	# Popis
+	var desc_label = Label.new()
+	desc_label.text = option.description
+	desc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	desc_label.add_theme_color_override("font_color", Color(0.9, 0.9, 0.9, 1))
+	desc_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	desc_label.add_theme_constant_override("outline_size", 1)
+	desc_label.add_theme_font_size_override("font_size", 14)
+	
+	vbox.add_child(icon_center)
+	vbox.add_child(rarity_label)
+	vbox.add_child(name_label)
+	vbox.add_child(desc_label)
+	
+	button.add_child(vbox)
+	
+	# ČISTĚ PRŮHLEDNÉ pozadí s barevným okrajem
 	var style_normal = StyleBoxFlat.new()
-	style_normal.bg_color = Color(0.3, 0.3, 0.3, 1.0)
+	style_normal.bg_color = Color(0, 0, 0, 0)  # PRŮHLEDNÉ
 	style_normal.border_color = option.color
-	style_normal.border_width_left = 5
-	style_normal.border_width_right = 5
-	style_normal.border_width_top = 5
-	style_normal.border_width_bottom = 5
+	style_normal.border_width_left = 4
+	style_normal.border_width_right = 4
+	style_normal.border_width_top = 4
+	style_normal.border_width_bottom = 4
+	style_normal.corner_radius_top_left = 12
+	style_normal.corner_radius_top_right = 12
+	style_normal.corner_radius_bottom_left = 12
+	style_normal.corner_radius_bottom_right = 12
 	
+	# Hover efekt - stále průhledné, jen širší okraj
 	var style_hover = StyleBoxFlat.new()
-	style_hover.bg_color = Color(0.4, 0.4, 0.4, 1.0)
+	style_hover.bg_color = Color(0, 0, 0, 0)  # PRŮHLEDNÉ
 	style_hover.border_color = option.color
-	style_hover.border_width_left = 5
-	style_hover.border_width_right = 5
-	style_hover.border_width_top = 5
-	style_hover.border_width_bottom = 5
+	style_hover.border_width_left = 6
+	style_hover.border_width_right = 6
+	style_hover.border_width_top = 6
+	style_hover.border_width_bottom = 6
+	style_hover.corner_radius_top_left = 12
+	style_hover.corner_radius_top_right = 12
+	style_hover.corner_radius_bottom_left = 12
+	style_hover.corner_radius_bottom_right = 12
 	
 	button.add_theme_stylebox_override("normal", style_normal)
 	button.add_theme_stylebox_override("hover", style_hover)
 	button.add_theme_stylebox_override("pressed", style_hover)
 	
-	button.add_theme_font_size_override("font_size", 18)
-	button.add_theme_color_override("font_color", Color.WHITE)
-	
 	button.pressed.connect(_on_upgrade_selected.bind(index))
-	
 	upgrades_container.add_child(button)
-	print("Button added to container, total children: ", upgrades_container.get_child_count())
+	print("Button added with icon: ", upgrade_icons[option.type])
 
 func _on_upgrade_selected(index: int):
 	print("=== UPGRADE SELECTED: ", index, " ===")
