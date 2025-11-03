@@ -1,6 +1,9 @@
 extends Node2D
 
+# Načti scénu nepřítele
 var enemy_scene = preload("res://scenes/enemy.tscn")
+
+# Reference na hráče
 var player = null
 
 # Nastavení spawnování
@@ -15,6 +18,9 @@ var difficulty_increase_interval: float = 30.0  # Zvýší obtížnost každých
 func _ready():
 	# Najdi hráče
 	player = get_tree().root.find_child("PlayerMage", true, false)
+	
+	# Počkej jeden frame než začneš spawnovat
+	await get_tree().process_frame
 	
 	# Spawn počátečních nepřátel
 	for i in range(max_enemies):
@@ -57,7 +63,8 @@ func spawn_enemy():
 	enemy.position = spawn_pos
 	enemy.increase_difficulty(difficulty_multiplier)
 	
-	get_parent().add_child(enemy)
+	# OPRAVENO - použij call_deferred
+	get_parent().call_deferred("add_child", enemy)
 
 func increase_difficulty():
 	# Zvyš obtížnost (nepřátelé budou silnější)
