@@ -121,48 +121,60 @@ func _handle_attack(delta):
 		_shoot_projectiles()
 
 func _shoot_projectiles():
-	# Najdi nejbližšího nepřítele v dosahu
-	var nearest_enemy = _find_nearest_enemy()
+	# Najdi nejbližší nepřátele (tolik kolik máme projektilů)
+	var nearest_enemies = _find_nearest_enemies(projectile_count)
 	
-	if not nearest_enemy:
+	if nearest_enemies.size() == 0:
 		return  # Žádný nepřítel v dosahu
 	
-	# Směr k nepříteli
-	var direction_to_enemy = (nearest_enemy.global_position - global_position).normalized()
-	
-	# Vystřel projectile_count projektilů
+	# Vystřel projektil na každého nepřítele
 	for i in range(projectile_count):
 		var projectile = projectile_scene.instantiate()
 		projectile.position = global_position
 		
-		# Pokud je víc projektilů, rozestři je do vějíře
-		var angle_offset = 0.0
-		if projectile_count > 1:
-			var spread_angle = 30.0  # Úhel rozestupu ve stupních
-			angle_offset = (i - (projectile_count - 1) / 2.0) * spread_angle
+		# Pokud máme dost nepřátel, každý projektil jde na jiného
+		var target_enemy = nearest_enemies[i % nearest_enemies.size()]
+		var direction_to_enemy = (target_enemy.global_position - global_position).normalized()
 		
-		projectile.direction = direction_to_enemy.rotated(deg_to_rad(angle_offset))
+		projectile.direction = direction_to_enemy
+		projectile.target_enemy = target_enemy  # NOVÉ - přiřaď cíl
 		projectile.damage = damage
 		projectile.lifesteal_percent = lifesteal
 		projectile.owner_mage = self
 		projectile.scale = Vector2(projectile_size, projectile_size)
 		get_parent().add_child(projectile)
 
-func _find_nearest_enemy():
+func _find_nearest_enemies(count: int) -> Array:
 	var enemies = get_tree().get_nodes_in_group("enemies")
-	var nearest_enemy = null
-	var nearest_distance = attack_range
+	var valid_enemies = []
 	
+	# Filtruj platné nepřátele v dosahu
 	for enemy in enemies:
 		if not is_instance_valid(enemy):
 			continue
 		
 		var distance = global_position.distance_to(enemy.global_position)
-		if distance < nearest_distance:
-			nearest_distance = distance
-			nearest_enemy = enemy
+		if distance <= attack_range:
+			valid_enemies.append({
+				"enemy": enemy,
+				"distance": distance
+			})
 	
-	return nearest_enemy
+	# Seřaď podle vzdálenosti (nejbližší první)
+	valid_enemies.sort_custom(func(a, b): return a.distance < b.distance)
+	
+	# Vrať jen enemy objekty (max 'count' nepřátel)
+	var result = []
+	for i in range(min(count, valid_enemies.size())):
+		result.append(valid_enemies[i].enemy)
+	
+	return result
+
+func _find_nearest_enemy():
+	var enemies = _find_nearest_enemies(1)
+	if enemies.size() > 0:
+		return enemies[0]
+	return null
 
 func _regenerate_hp(delta):
 	current_hp = min(current_hp + hp_regen * delta, max_hp)

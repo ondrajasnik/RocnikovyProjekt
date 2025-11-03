@@ -22,6 +22,7 @@ var min_distance_to_player: float = 20.0  # Minimální vzdálenost od hráče
 var player = null
 var attack_timer: float = 0.0
 var is_attacking: bool = false
+var is_dead: bool = false  # PŘIDÁNO - zabráni duplikátům kills
 
 # Načti scénu orbu
 var orb_scene = preload("res://scenes/orb.tscn")
@@ -51,6 +52,9 @@ func _apply_difficulty():
 	attack_speed = base_attack_speed * difficulty_multiplier
 
 func _physics_process(delta):
+	if is_dead:  # PŘIDÁNO - pokud je mrtvý, nedělej nic
+		return
+	
 	# Pokus najít hráče, pokud není nastaven
 	if not player:
 		player = get_tree().root.find_child("PlayerMage", true, false)
@@ -127,6 +131,9 @@ func _on_detection_area_body_exited(body):
 		is_attacking = false
 
 func take_damage(amount):
+	if is_dead:  # PŘIDÁNO - pokud už je mrtvý, ignoruj další damage
+		return
+	
 	current_hp -= amount
 	_update_health_bar()
 	
@@ -148,9 +155,14 @@ func increase_difficulty(multiplier: float):
 	_apply_difficulty()
 
 func die():
+	if is_dead:  # PŘIDÁNO - pokud už zemřel, nevolej znovu
+		return
+	
+	is_dead = true  # PŘIDÁNO - označ jako mrtvý
+	
 	print("Enemy died!")
 	
-	# Přičti kill hráči
+	# Přičti kill hráči - POUZE JEDNOU
 	if player and is_instance_valid(player) and player.has_method("add_kill"):
 		player.add_kill()
 	
@@ -162,10 +174,10 @@ func _drop_orbs():
 	var exp_orb = orb_scene.instantiate()
 	exp_orb.position = global_position
 	exp_orb.set_orb_type(exp_orb.OrbType.EXP, int(10 * difficulty_multiplier))
-	get_parent().add_child(exp_orb)
+	get_parent().call_deferred("add_child", exp_orb)  # PŘIDÁNO call_deferred
 	
 	# Gold orb
 	var gold_orb = orb_scene.instantiate()
 	gold_orb.position = global_position + Vector2(randf_range(-20, 20), randf_range(-20, 20))
 	gold_orb.set_orb_type(gold_orb.OrbType.GOLD, int(5 * difficulty_multiplier))
-	get_parent().add_child(gold_orb)
+	get_parent().call_deferred("add_child", gold_orb)  # PŘIDÁNO call_deferred

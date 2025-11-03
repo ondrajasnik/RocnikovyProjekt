@@ -1,36 +1,38 @@
 extends Area2D
 
-var speed: float = 400.0
-var direction: Vector2 = Vector2.RIGHT
-var damage: int = 10
-var lifesteal_percent: float = 0.0
+var direction = Vector2.RIGHT
+var speed = 350.0
+var damage = 10
+var lifetime = 3.0
+var lifesteal_percent = 0.0
 var owner_mage = null
 
-@onready var sprite = $Sprite2D
-@onready var lifetime_timer = $Lifetime
+# NOVÉ - tracking systém
+var target_enemy = null
+var homing_strength = 5.0  # Síla navádění (vyšší = ostřejší zatáčky)
 
 func _ready():
     body_entered.connect(_on_body_entered)
-    lifetime_timer.timeout.connect(_on_lifetime_timeout)
-    
-    # Rotace fireballu podle směru letu
-    rotation = direction.angle()
 
-func _physics_process(delta):
+func _process(delta):
+    # Pokud máme cíl a je stále platný, sleduj ho
+    if target_enemy and is_instance_valid(target_enemy):
+        var desired_direction = (target_enemy.global_position - global_position).normalized()
+        direction = direction.lerp(desired_direction, homing_strength * delta).normalized()
+    
     position += direction * speed * delta
+    
+    lifetime -= delta
+    if lifetime <= 0:
+        queue_free()
 
 func _on_body_entered(body):
-    # Kontrola, zda zasáhl nepřítele
     if body.is_in_group("enemies"):
-        if body.has_method("take_damage"):
-            body.take_damage(damage)
-            
-            # Lifesteal - vrať HP vlastníkovi
-            if owner_mage and owner_mage.has_method("heal"):
-                var heal_amount = damage * lifesteal_percent
-                owner_mage.heal(heal_amount)
-            
-            queue_free()  # Zničí projektil po zásahu
-
-func _on_lifetime_timeout():
-    queue_free()  # Zničí projektil po 3 sekundách
+        body.take_damage(damage)
+        
+        # Lifesteal - vrať HP hráči
+        if owner_mage and lifesteal_percent > 0:
+            var heal_amount = damage * lifesteal_percent
+            owner_mage.heal(heal_amount)
+        
+        queue_free()

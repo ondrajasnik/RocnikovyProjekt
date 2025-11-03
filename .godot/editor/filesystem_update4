@@ -7,3 +7,4 @@ res://scripts/upgrade_system.gd
 res://scripts/orb.gd
 res://scenes/level_up_menu.tscn
 res://scripts/enemy_spawner.gd
+res://scripts/projectile.gd
