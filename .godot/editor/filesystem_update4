@@ -1,10 +1,1 @@
-res://scripts/enemy.gd
-res://scripts/mage.gd
-res://scripts/ui.gd
-res://scenes/ui.tscn
 res://scripts/level_up_menu.gd
-res://scripts/upgrade_system.gd
-res://scripts/orb.gd
-res://scenes/level_up_menu.tscn
-res://scripts/enemy_spawner.gd
-res://scripts/projectile.gd

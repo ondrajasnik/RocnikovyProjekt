@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bs818brmj2l8w"
-path="res://.godot/imported/defence.png-d5be79ff8fc12f9d5dc33af424608e18.ctex"
+uid="uid://g65vonq6f7rp"
+path="res://.godot/imported/projectile_multiplayer_book.png-4272b6256077e535e354eba5086d4eb3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/upgrades/defence.png"
-dest_files=["res://.godot/imported/defence.png-d5be79ff8fc12f9d5dc33af424608e18.ctex"]
+source_file="res://assets/upgrades/projectile_multiplayer_book.png"
+dest_files=["res://.godot/imported/projectile_multiplayer_book.png-4272b6256077e535e354eba5086d4eb3.ctex"]
 
 [params]
 

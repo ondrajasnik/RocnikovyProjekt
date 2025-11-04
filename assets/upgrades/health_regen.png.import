@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dvuigrqs53a13"
-path="res://.godot/imported/booksBetter.png-d01ea3b5e352fcafbe8a79593311db17.ctex"
+uid="uid://ca4opfagx7upy"
+path="res://.godot/imported/health_regen.png-ecad8d22d81c4ec5eb588da30510f469.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/upgrades/booksBetter.png"
-dest_files=["res://.godot/imported/booksBetter.png-d01ea3b5e352fcafbe8a79593311db17.ctex"]
+source_file="res://assets/upgrades/health_regen.png"
+dest_files=["res://.godot/imported/health_regen.png-ecad8d22d81c4ec5eb588da30510f469.ctex"]
 
 [params]
 

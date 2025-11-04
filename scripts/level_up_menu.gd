@@ -44,13 +44,13 @@ var upgrade_names = {
 }
 
 var upgrade_icons = {
-	UpgradeType.DAMAGE: "res://assets/upgrades/damage.png",
-	UpgradeType.PROJECTILE_COUNT: "res://assets/upgrades/damage.png",  # TODO
-	UpgradeType.MAX_HP: "res://assets/upgrades/damage.png",  # TODO
-	UpgradeType.HP_REGEN: "res://assets/upgrades/damage.png",  # TODO
-	UpgradeType.ATTACK_SPEED: "res://assets/upgrades/damage.png",  # TODO
-	UpgradeType.MOVE_SPEED: "res://assets/upgrades/damage.png",  # TODO
-	UpgradeType.LIFESTEAL: "res://assets/upgrades/damage.png",  # TODO
+	UpgradeType.DAMAGE: "res://assets/upgrades/damage_book.png",
+	UpgradeType.PROJECTILE_COUNT: "res://assets/upgrades/projectile_multiplayer_book.png",
+	UpgradeType.MAX_HP: "res://assets/upgrades/health.png",
+	UpgradeType.HP_REGEN: "res://assets/upgrades/health_regen.png",
+	UpgradeType.ATTACK_SPEED: "res://assets/upgrades/attack_speed_book.png",
+	UpgradeType.MOVE_SPEED: "res://assets/upgrades/movement_speed.png",
+	UpgradeType.LIFESTEAL: "res://assets/upgrades/lifesteal.png",
 	UpgradeType.DEFENSE: "res://assets/upgrades/defence.png"
 }
 
@@ -179,11 +179,11 @@ func create_upgrade_button(option: Dictionary, index: int):
 	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
 	vbox.add_theme_constant_override("separation", 10)
 	
-	# Ikona upgradu
+	# Ikona upgradu - UPRAVENO pro jednotnou velikost
 	var icon = TextureRect.new()
-	icon.custom_minimum_size = Vector2(100, 100)
+	icon.custom_minimum_size = Vector2(120, 120)  # Fixní velikost
 	icon.texture = load(upgrade_icons[option.type])
-	icon.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	
 	var icon_center = CenterContainer.new()
@@ -225,7 +225,7 @@ func create_upgrade_button(option: Dictionary, index: int):
 	
 	# ČISTĚ PRŮHLEDNÉ pozadí s barevným okrajem
 	var style_normal = StyleBoxFlat.new()
-	style_normal.bg_color = Color(0, 0, 0, 0)  # PRŮHLEDNÉ
+	style_normal.bg_color = Color(0, 0, 0, 0)
 	style_normal.border_color = option.color
 	style_normal.border_width_left = 4
 	style_normal.border_width_right = 4
@@ -238,7 +238,7 @@ func create_upgrade_button(option: Dictionary, index: int):
 	
 	# Hover efekt - stále průhledné, jen širší okraj
 	var style_hover = StyleBoxFlat.new()
-	style_hover.bg_color = Color(0, 0, 0, 0)  # PRŮHLEDNÉ
+	style_hover.bg_color = Color(0, 0, 0, 0)
 	style_hover.border_color = option.color
 	style_hover.border_width_left = 6
 	style_hover.border_width_right = 6

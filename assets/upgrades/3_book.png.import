@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqt5f8seaoce6"
-path="res://.godot/imported/nwm.png-b9c5a624ff22a4ceb6cadf2506846150.ctex"
+uid="uid://tlkkbu5owyhj"
+path="res://.godot/imported/3_book.png-5d6e9c9b4295f38f7999394ea0ce4e3d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/upgrades/nwm.png"
-dest_files=["res://.godot/imported/nwm.png-b9c5a624ff22a4ceb6cadf2506846150.ctex"]
+source_file="res://assets/upgrades/3_book.png"
+dest_files=["res://.godot/imported/3_book.png-5d6e9c9b4295f38f7999394ea0ce4e3d.ctex"]
 
 [params]
 
