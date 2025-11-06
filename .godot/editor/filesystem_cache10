@@ -1,5 +1,5 @@
 63f7b34db8d8cdea90c76aacccf841ec
-::res://::1762275043
+::res://::1762345171
 README.md::TextFile::-1::1761056123::0::1::::<><><>0<>0<><>::
 ::res://addons/::1760529246
 ::res://addons/virtual_joystick/::1760529247
@@ -37,7 +37,7 @@ fireball.png::CompressedTexture2D::2329693839832038095::1761907130::1761907363::
 orb_exp.png::CompressedTexture2D::1995313358360063554::1761910181::1761910277::1::::<><><>0<>0<>7a517bc987946d27aa10e0d7b04680dc<>res://.godot/imported/orb_exp.png-6ef026880901543498c7bb3d87b4f1f4.ctex::
 orb_gold.png::CompressedTexture2D::4980690153592189581::1761910124::1761910277::1::::<><><>0<>0<>1d4754a60c17c46cb5383ff193bb5bb2<>res://.godot/imported/orb_gold.png-1aa9a43035e329a76ebfcf7800c94946.ctex::
 PlayerMageIdle.png::CompressedTexture2D::2298710943509560698::1760527549::1760528343::1::::<><><>0<>0<>3390227ce6862e83b57369374e142d2f<>res://.godot/imported/PlayerMageIdle.png-5fa49a8d53598cfd5e56465920802e13.ctex::
-::res://assets/upgrades/::1762276275
+::res://assets/upgrades/::1762276277
 2_book.png::CompressedTexture2D::4057573338765718382::1762272633::1762275045::1::::<><><>0<>0<>df2660c1b387398336cdd9a67407d79d<>res://.godot/imported/2_book.png-560f99ddbdca68ca76d3e14be03886b8.ctex::
 3_book.png::CompressedTexture2D::1356921297086088999::1762272665::1762275045::1::::<><><>0<>0<>37fd87282fe9c0040cef6a002a9332c7<>res://.godot/imported/3_book.png-5d6e9c9b4295f38f7999394ea0ce4e3d.ctex::
 4_book.png::CompressedTexture2D::6940941997056405797::1762272683::1762275045::1::::<><><>0<>0<>f9368e8237ca577c82fbf9f36e03347c<>res://.godot/imported/4_book.png-db8e5549ebc6917341d03964daa7162a.ctex::
