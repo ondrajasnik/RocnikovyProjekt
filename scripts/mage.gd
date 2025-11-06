@@ -39,6 +39,9 @@ var level_up_menu = null
 
 var debug_counter = 0
 
+# Přidej proměnnou na začátek souboru (kolem řádku 25)
+var is_dead: bool = false
+
 func _ready():
 	# Najdi virtuální joystick ve scéně
 	joystick = get_node_or_null("/root/main/UILayer/VirtualJoystick")
@@ -207,6 +210,9 @@ func add_kill():
 	print("Kill! Total kills: ", kills)
 
 func take_damage(amount):
+	if is_dead:  # PŘIDÁNO - ignoruj damage pokud už je mrtvý
+		return
+	
 	var reduced = amount * (1.0 - defense)
 	current_hp -= reduced
 	print("Player took ", reduced, " damage! HP: ", current_hp, "/", max_hp)
@@ -217,5 +223,15 @@ func heal(amount):
 	current_hp = min(current_hp + amount, max_hp)
 
 func die():
+	if is_dead:
+		return
+	
+	is_dead = true
+	current_hp = 0  # Nastav HP na 0
 	print("Player died!")
+	
+	# Počkej jeden frame aby UI stihlo aktualizovat
+	await get_tree().process_frame
+	
+	# Zatím nic, hráč jen umře (později přidáme Game Over screen)
 	queue_free()
