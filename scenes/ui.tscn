@@ -111,13 +111,34 @@ offset_bottom = 140.0
 
 [node name="KillsLabel" type="Label" parent="KillsContainer"]
 layout_mode = 0
-offset_left = -14.0
-offset_top = -98.0
-offset_right = 116.0
-offset_bottom = -58.0
+offset_left = -15.0
+offset_top = -72.0
+offset_right = 115.0
+offset_bottom = -32.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 20
 text = "KILLS: 0"
 vertical_alignment = 1
+
+[node name="TimeLabel" type="Label" parent="."]
+offset_left = 6.0
+offset_top = 4.0
+offset_right = 136.0
+offset_bottom = 44.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 20
+text = "TIME: 00:00"
+vertical_alignment = 1
+
+[node name="PauseButton" type="Button" parent="."]
+offset_left = 1100.0
+offset_top = 600.0
+offset_right = 1150.0
+offset_bottom = 650.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "||"

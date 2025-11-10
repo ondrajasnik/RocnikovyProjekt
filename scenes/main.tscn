@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dr1t2bjwq5fi5"]
+[gd_scene load_steps=8 format=3 uid="uid://dr1t2bjwq5fi5"]
 
 [ext_resource type="PackedScene" uid="uid://d4km7udpob73a" path="res://scenes/mage.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b6evw76bhlbbf" path="res://scripts/enemy_spawner.gd" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/level_up_menu.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://scenes/game_over_menu.tscn" id="6_tefeu"]
+[ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="7_o6xl0"]
 
 [node name="main" type="Node2D"]
 
@@ -43,5 +44,8 @@ use_input_actions = false
 [node name="UI" parent="." instance=ExtResource("3")]
 
 [node name="LevelUpMenu" parent="." instance=ExtResource("5")]
+visible = false
 
 [node name="GameOverMenu" parent="." instance=ExtResource("6_tefeu")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("7_o6xl0")]
