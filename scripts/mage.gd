@@ -41,6 +41,8 @@ var debug_counter = 0
 
 # Přidej proměnnou na začátek souboru (kolem řádku 25)
 var is_dead: bool = false
+var survival_time: float = 0.0
+var game_over_menu = null
 
 func _ready():
 	# Najdi virtuální joystick ve scéně
@@ -56,6 +58,12 @@ func _ready():
 	else:
 		print("ERROR: Level up menu not found!")
 	
+	# Najdi Game Over menu - OPRAVENO
+	await get_tree().process_frame  # Počkej až se všechno načte
+	game_over_menu = get_parent().get_node_or_null("GameOverMenu")
+	if not game_over_menu:
+		print("WARNING: GameOverMenu not found in scene tree!")
+
 	# Zajisti, že tělo není zmrazené a rotace je zamčená
 	lock_rotation = true
 	freeze = false
@@ -65,6 +73,10 @@ func _physics_process(delta):
 	_handle_movement()
 	_handle_attack(delta)
 	_regenerate_hp(delta)
+	
+	# Počítej čas přežití
+	if not is_dead:
+		survival_time += delta
 	
 	# Vypis pozice každých 60 framů (cca 1x za sekundu)
 	debug_counter += 1
@@ -227,11 +239,16 @@ func die():
 		return
 	
 	is_dead = true
-	current_hp = 0  # Nastav HP na 0
+	current_hp = 0
 	print("Player died!")
 	
 	# Počkej jeden frame aby UI stihlo aktualizovat
 	await get_tree().process_frame
 	
-	# Zatím nic, hráč jen umře (později přidáme Game Over screen)
-	queue_free()
+	# Zobraz Game Over menu
+	if game_over_menu and is_instance_valid(game_over_menu):
+		game_over_menu.show_game_over(self, survival_time)
+	else:
+		print("ERROR: Game Over menu not found!")
+		# Fallback - zastav hru
+		get_tree().paused = true

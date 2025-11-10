@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dr1t2bjwq5fi5"]
+[gd_scene load_steps=7 format=3 uid="uid://dr1t2bjwq5fi5"]
 
 [ext_resource type="PackedScene" uid="uid://d4km7udpob73a" path="res://scenes/mage.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://c65tg7whw1770" path="res://scenes/ui.tscn" id="3"]
-[ext_resource type="Script" path="res://scripts/enemy_spawner.gd" id="4"]
+[ext_resource type="Script" uid="uid://b6evw76bhlbbf" path="res://scripts/enemy_spawner.gd" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/level_up_menu.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/game_over_menu.tscn" id="6_tefeu"]
 
 [node name="main" type="Node2D"]
 
@@ -30,17 +31,17 @@ script = ExtResource("4")
 
 [node name="VirtualJoystick" parent="UILayer" instance=ExtResource("2")]
 anchors_preset = 0
-anchor_right = 0.0
+anchor_top = 0.0
 anchor_bottom = 0.0
 offset_left = 50.0
 offset_top = 350.0
 offset_right = 250.0
 offset_bottom = 550.0
-scale = Vector2(1, 1)
+grow_vertical = 1
 use_input_actions = false
-joystick_mode = 0
-visibility_mode = 0
 
 [node name="UI" parent="." instance=ExtResource("3")]
 
 [node name="LevelUpMenu" parent="." instance=ExtResource("5")]
+
+[node name="GameOverMenu" parent="." instance=ExtResource("6_tefeu")]

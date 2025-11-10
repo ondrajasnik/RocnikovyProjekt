@@ -1,3 +1,2 @@
-res://scripts/main_menu.gd
-res://scripts/ui.gd
 res://scripts/mage.gd
+res://scenes/main.tscn
