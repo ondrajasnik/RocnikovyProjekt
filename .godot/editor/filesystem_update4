@@ -1,3 +1,4 @@
 res://scripts/mage.gd
 res://scenes/main.tscn
 res://scripts/level_up_menu.gd
+res://scripts/enemy_spawner.gd

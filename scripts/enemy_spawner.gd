@@ -16,6 +16,9 @@ var difficulty_timer: float = 0.0
 var difficulty_increase_interval: float = 30.0  # Zvýší obtížnost každých 30 sekund
 
 func _ready():
+	# PŘIDÁNO - zajisti aby spawner fungoval i při pauze
+	process_mode = Node.PROCESS_MODE_PAUSABLE
+	
 	# Najdi hráče
 	player = get_tree().root.find_child("PlayerMage", true, false)
 	
@@ -27,6 +30,10 @@ func _ready():
 		spawn_enemy()
 
 func _process(delta):
+	# PŘIDÁNO - zastav spawning když je hra pauznutá
+	if Engine.time_scale == 0.0:
+		return
+	
 	# Každou sekundu kontroluj počet nepřátel
 	check_timer += delta
 	if check_timer >= 1.0:
