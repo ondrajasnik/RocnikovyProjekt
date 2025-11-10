@@ -1,142 +1,169 @@
-<<<<<<< HEAD
-# Mage Game
-
-## Overview
-Mage Game is a 2D side-view game where players control a Mage character with unique abilities and statistics. The game features various environments, visual effects, and a user-friendly interface.
-
-## Project Structure
-The project is organized into the following directories and files:
-
-- **assets/**
-  - **characters/**: Contains sprite sheets and animations for the Mage character and other characters in the game.
-  - **effects/**: Includes visual effects assets such as particle systems and spell effects.
-  - **tilesets/**: Holds tilemaps and tileset images used for the game environment.
-
-- **scenes/**
-  - **main.tscn**: The main scene of the game, serving as the entry point and containing the game world and UI elements.
-  - **mage.tscn**: Defines the Mage character, including its animations and properties.
-  - **ui.tscn**: Contains the user interface elements such as health bars, mana bars, and ability buttons.
-
-- **scripts/**
-  - **mage.gd**: Defines the `Mage` class, including properties like health, mana, and methods for movement, casting spells, and taking damage.
-  - **abilities.gd**: Manages the abilities of the Mage, defining different spells and their effects, including methods for casting and cooldown management.
-  - **main.gd**: The main game controller, handling game initialization, scene transitions, and overall game logic.
-
-- **project.godot**: The project configuration file for Godot, containing settings and metadata for the game project.
-
-## Setup Instructions
-1. Clone the repository or download the project files.
-2. Open the project in Godot 4.
-3. Ensure all assets are correctly linked in the scenes.
-4. Run the `main.tscn` scene to start the game.
-
-## Gameplay Mechanics
-- Players control the Mage character using keyboard inputs.
-- The Mage can cast spells, move around the environment, and interact with objects.
-- Health and mana are displayed on the user interface, and players must manage these resources to succeed.
-
-## Credits
-- Developed by [Your Name]
-- Special thanks to the Godot community for their support and resources.
-=======
-🗂️ Fáze 1 – Základní návrh
-
-🎯 Cíl:
-Vytvořit mobilní idle RPG hru, kde hráč bojuje s nepřáteli, získává zlato/exp a vylepšuje svého hrdinu.
-
-📌 Funkce:
-
-Klikání → útok na nepřítele
-
-Idle útoky → hrdina útočí i bez klikání
-
-Zlato a expy → odměna za poraženého nepřítele
-
-Upgrady → zvýšení dmg, auto-útoků, HP
-
-Uložení postupu → pokračování po vypnutí
-
-
-
----
-
-🗂️ Fáze 2 – Technický stack
-
-🧠 Engine / Framework:
-
-Flutter – UI, multiplatformní vývoj
-
-Flame – game engine pro Flutter (sprite animace, game loop, kolize)
-
-
-💾 Data:
-
-SharedPreferences – ukládání postupu hry
-
-(volitelně SQLite, pokud budeš chtít složitější ukládání)
-
-
-🎨 Grafika a zvuk:
-
-Sprity hrdiny, nepřátel a ikon upgradů (volně dostupné, nebo vlastní)
-
-Jednoduché zvukové efekty (útok, level up, porážka nepřítele)
-
-
-
----
-
-🗂️ Fáze 3 – Postup vývoje
-
-1️⃣ Základní mechanika
-
-Vytvořit hrdinu + nepřítele
-
-Kliknutí → nepřítel ztrácí HP
-
-Když HP = 0 → nový nepřítel + odměna
-
-
-2️⃣ Idle mechanika
-
-Přidat automatické útoky (časovač → dmg každou sekundu)
-
-
-3️⃣ Upgrady
-
-Panel upgradů (damage, auto-útok, HP)
-
-Cena upgradů roste exponenciálně
-
-
-4️⃣ Uložení hry
-
-SharedPreferences – zlato, level, upgrady se uloží při zavření aplikace
-
-
-
----
-
-🗂️ Fáze 4 – Rozšíření
-
-🔐 Pokročilé funkce:
-
-Bossové (silnější nepřítel po X levelech)
-
-Více lokací (les, jeskyně, hrad) → mění se grafika nepřátel
-
-Inventář (meče, brnění) → přidávají bonusy
-
-Animace útoků (Flame sprity nebo jednoduché efekty)
-
-Zvukové efekty a hudba
-
-
-💡 Extra body navíc:
-
-Statistiky (kolik nepřátel bylo poraženo, nejvyšší level)
-
-Achievementy (např. „zabil 100 nepřátel“)
-
-Online žebříček (Firebase / REST API) – nepovinné
->>>>>>> 0e7eaeb6d6fdc1b6babb299d9c07ef378c55c04c
+# 🧙‍♂️ Mage Survivor Game
+
+**Survivor-like hra** vytvořená v **Godot 4** s top-down pohledem, kde hráč ovládá mága bojujícího proti vlnám nepřátel.
+
+## 🎮 Gameplay
+
+### Cíl hry
+- **Přežij co nejdéle** proti nekonečným vlnám nepřátel
+- **Leveluj** a vylepšuj své schopnosti
+- **Dosáhni co nejvyššího skóre** (čas přežití + zabití nepřátel)
+
+### Ovládání
+- **WASD / Šipky** - Pohyb
+- **Virtuální joystick** - Mobilní ovládání (touch)
+- **Automatický útok** - Mág automaticky útočí na nejbližší nepřátele
+
+### Herní mechaniky
+- ✅ **Automatické střílení** projektilů na nejbližší nepřátele
+- ✅ **Level-up systém** - získávej EXP zabíjením nepřátel
+- ✅ **Upgrade menu** - 3 náhodné upgrady při každém level upu
+- ✅ **Rarity systém** - Common, Rare, Epic, Legendary upgrady
+- ✅ **Luck stat** - ovlivňuje šanci na lepší upgrady
+- ✅ **Rostoucí obtížnost** - nepřátelé jsou silnější a početnější každých 30s
+- ✅ **HP regenerace** - pasivní léčení každou sekundu
+- ✅ **Lifesteal** - získávej HP z poškození
+- ✅ **Defense** - snižuj přijímané poškození
+
+## 📊 Statistiky hráče
+
+| Stat | Popis | Základní hodnota |
+|------|-------|------------------|
+| **Max HP** | Maximální zdraví | 100 |
+| **HP Regen** | Regenerace HP/s | 2.0 |
+| **Damage** | Poškození na projektil | 10 |
+| **Projectile Count** | Počet projektilů na salvu | 1 |
+| **Attack Speed** | Útoky za sekundu | 1.0 |
+| **Move Speed** | Rychlost pohybu | 250 |
+| **Defense** | Snížení damage (%) | 20% |
+| **Lifesteal** | HP z damage (%) | 10% |
+| **Luck** | Šance na lepší upgrady | 1.0 |
+
+## 🎯 Upgrady
+
+### Typy upgradů
+1. **Damage** - Zvýší poškození projektilů
+2. **Projectiles** - Přidá další projektily
+3. **Max Health** - Zvýší maximální HP (+ okamžité léčení)
+4. **Health Regen** - Zvýší regeneraci HP/s
+5. **Attack Speed** - Zvýší rychlost útoků
+6. **Move Speed** - Zvýší rychlost pohybu
+7. **Lifesteal** - Zvýší % HP z poškození
+8. **Defense** - Zvýší % snížení damage
+
+### Rarity hodnoty
+
+| Upgrade | Common | Rare | Epic | Legendary |
+|---------|--------|------|------|-----------|
+| **Damage** | +2 | +5 | +10 | +20 |
+| **Projectiles** | +1 | +1 | +2 | +3 |
+| **Max HP** | +10 | +25 | +50 | +100 |
+| **HP Regen** | +2.0/s | +5.0/s | +10.0/s | +20.0/s |
+| **Attack Speed** | +0.1/s | +0.25/s | +0.5/s | +1.0/s |
+| **Move Speed** | +10 | +25 | +50 | +100 |
+| **Lifesteal** | +5% | +10% | +20% | +40% |
+| **Defense** | +5% | +10% | +15% | +30% |
+
+## 🐛 Známé bugy
+- ~~❌ HP regenerace nefunguje (OPRAVENO v/1.2)~~
+- ⚠️ Vzácně mizí nepřátelé při level up (vyšetřuje se)
+
+## 🚀 Plánované features
+
+### Priorita 1 (Základ hry)
+- [ ] **Více typů nepřátel** - létající, rychlí, tanky
+- [ ] **Boss fights** - každých X minut
+- [ ] **Dash ability** - úhybný manévr s cooldownem
+- [ ] **Zkušenostní kameny** - posbíratelné EXP po smrti nepřátel
+- [ ] **Pause menu** - ESC pro pauzu
+
+### Priorita 2 (Polishing)
+- [ ] **Zvukové efekty** - střílení, hit, smrt, level up
+- [ ] **Hudba** - atmospheric background music
+- [ ] **Particle efekty** - exploze, level up animace
+- [ ] **Screen shake** - při zásahu/smrti
+- [ ] **Damage numbers** - létající čísla damage
+- [ ] **Minimap** - zobrazení hráče a nepřátel
+
+### Priorita 3 (Meta-progressi)
+- [ ] **Permanent upgrady** - meta-progressi mezi runy
+- [ ] **Unlockable charaktery** - různé mágové s bonusy
+- [ ] **Achievementy** - "Zabij 1000 nepřátel", "Přežij 20 minut"
+- [ ] **Leaderboard** - ukládání high scores
+- [ ] **Daily challenges** - denní výzvy s odměnami
+
+### Priorita 4 (Gameplay rozšíření)
+- [ ] **Více zbraní** - meč, luk, hůl s různými vzory střelby
+- [ ] **Pasivní itemy** - např. "magnet" (větší pickup radius)
+- [ ] **Active abilities** - ultimate schopnosti s dlouhým cooldownem
+- [ ] **Evoluční upgrady** - kombinace 2+ upgradů = speciální upgrade
+- [ ] **Arény/mapy** - různé biomy s překážkami
+
+### Priorita 5 (Polish & Optimization)
+- [ ] **Tutorial** - základní vysvětlení mechanik
+- [ ] **Settings menu** - ovládání, audio, grafika
+- [ ] **Save/Load systém** - pokračování ve hře
+- [ ] **Optimalizace** - object pooling pro projektily/nepřátele
+- [ ] **Mobile build** - APK export pro Android
+
+## 🛠️ Technické info
+
+### Struktura projektu
+```
+mage-game/
+├── assets/
+│   ├── player/          # Sprite sheets hráče
+│   ├── enemies/         # Sprite sheets nepřátel
+│   └── upgrades/        # Ikony upgradů
+├── scenes/
+│   ├── main.tscn        # Hlavní scéna
+│   ├── mage.tscn        # Hráč
+│   ├── enemy.tscn       # Nepřítel
+│   ├── projectile.tscn  # Projektil
+│   ├── level_up_menu.tscn
+│   └── game_over_menu.tscn
+└── scripts/
+    ├── mage.gd
+    ├── enemy.gd
+    ├── projectile.gd
+    ├── enemy_spawner.gd
+    ├── level_up_menu.gd
+    ├── game_over_menu.gd
+    └── virtual_joystick.gd
+```
+
+### Engine
+- **Godot 4.3+**
+- **GDScript**
+
+### Klíčové systémy
+1. **Physics-based movement** - RigidBody2D pro hladký pohyb
+2. **Auto-targeting** - projektily sledují nejbližší nepřátele
+3. **Procedural spawning** - nepřátelé se spawnují kolem hráče
+4. **Dynamic difficulty** - škálování každých 30s
+5. **Upgrade system** - weighted random s luck modifikátorem
+
+## 📝 Changelog
+
+### v1.2 (Current)
+- ✅ Opravena HP regenerace (sekundové ticky místo frame-based)
+- ✅ Zvýšené hodnoty HP_REGEN upgradů
+- ✅ Přidán check pro zastavení spawneru při level up
+
+### v1.1
+- ✅ Přidán level up menu systém
+- ✅ Přidán rarity systém (Common → Legendary)
+- ✅ Přidána luck mechanika
+- ✅ Game over menu s statistikami
+
+### v1.0
+- ✅ Základní gameplay loop
+- ✅ Auto-targeting projektily
+- ✅ Enemy spawner s rostoucí obtížností
+- ✅ Virtuální joystick pro mobily
+
+## 👨‍💻 Autor
+Vytvořeno s pomocí GitHub Copilot 🤖
+
+## 📜 Licence
+MIT License - use freely!
