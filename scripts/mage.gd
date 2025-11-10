@@ -2,7 +2,7 @@ extends RigidBody2D
 
 # --- Statistiky ---
 var max_hp: int = 100
-var current_hp: int = 100
+var current_hp: int = 100  # ZMĚNĚNO zpátky na int
 var hp_regen: float = 2.0
 var damage: int = 10
 var projectile_count: int = 1
@@ -43,6 +43,7 @@ var debug_counter = 0
 var is_dead: bool = false
 var survival_time: float = 0.0
 var game_over_menu = null
+var regen_timer: float = 0.0  # NOVÉ - časovač pro regeneraci
 
 func _ready():
 	# Najdi virtuální joystick ve scéně
@@ -78,10 +79,11 @@ func _physics_process(delta):
 	if not is_dead:
 		survival_time += delta
 	
-	# Vypis pozice každých 60 framů (cca 1x za sekundu)
+	# Debug output každých 60 framů
 	debug_counter += 1
 	if debug_counter % 60 == 0:
 		print("Level: ", level, " | EXP: ", current_exp, "/", exp_to_next_level, " | Gold: ", gold, " | Kills: ", kills)
+		print("HP_REGEN: ", hp_regen, " | Current HP: ", current_hp, "/", max_hp)  # PŘIDÁNO
 
 func _handle_movement():
 	var input_vector = Vector2.ZERO
@@ -192,7 +194,12 @@ func _find_nearest_enemy():
 	return null
 
 func _regenerate_hp(delta):
-	current_hp = min(current_hp + hp_regen * delta, max_hp)
+	if current_hp < max_hp:
+		regen_timer += delta
+		if regen_timer >= 1.0:  # Každou sekundu
+			current_hp = min(current_hp + int(hp_regen), max_hp)
+			print("Regenerated +", int(hp_regen), " HP | Current: ", current_hp, "/", max_hp)
+			regen_timer = 0.0
 
 func add_exp(amount: int):
 	current_exp += amount

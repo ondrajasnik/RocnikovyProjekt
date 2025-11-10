@@ -1,2 +1,3 @@
 res://scripts/mage.gd
 res://scenes/main.tscn
+res://scripts/level_up_menu.gd

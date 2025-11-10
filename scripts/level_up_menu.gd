@@ -25,7 +25,7 @@ var upgrade_values = {
 	UpgradeType.DAMAGE: { UpgradeRarity.COMMON: 2, UpgradeRarity.RARE: 5, UpgradeRarity.EPIC: 10, UpgradeRarity.LEGENDARY: 20 },
 	UpgradeType.PROJECTILE_COUNT: { UpgradeRarity.COMMON: 1, UpgradeRarity.RARE: 1, UpgradeRarity.EPIC: 2, UpgradeRarity.LEGENDARY: 3 },
 	UpgradeType.MAX_HP: { UpgradeRarity.COMMON: 10, UpgradeRarity.RARE: 25, UpgradeRarity.EPIC: 50, UpgradeRarity.LEGENDARY: 100 },
-	UpgradeType.HP_REGEN: { UpgradeRarity.COMMON: 1.0, UpgradeRarity.RARE: 2.5, UpgradeRarity.EPIC: 5.0, UpgradeRarity.LEGENDARY: 10.0 },
+	UpgradeType.HP_REGEN: { UpgradeRarity.COMMON: 2.0, UpgradeRarity.RARE: 5.0, UpgradeRarity.EPIC: 10.0, UpgradeRarity.LEGENDARY: 20.0 }, # ZVÝŠENO
 	UpgradeType.ATTACK_SPEED: { UpgradeRarity.COMMON: 0.1, UpgradeRarity.RARE: 0.25, UpgradeRarity.EPIC: 0.5, UpgradeRarity.LEGENDARY: 1.0 },
 	UpgradeType.MOVE_SPEED: { UpgradeRarity.COMMON: 10, UpgradeRarity.RARE: 25, UpgradeRarity.EPIC: 50, UpgradeRarity.LEGENDARY: 100 },
 	UpgradeType.LIFESTEAL: { UpgradeRarity.COMMON: 0.05, UpgradeRarity.RARE: 0.1, UpgradeRarity.EPIC: 0.2, UpgradeRarity.LEGENDARY: 0.4 },
@@ -269,16 +269,31 @@ func _on_upgrade_selected(index: int):
 	var option = upgrade_options[index]
 	
 	match option.type:
-		UpgradeType.DAMAGE: player.damage += option.value
-		UpgradeType.PROJECTILE_COUNT: player.projectile_count += option.value
+		UpgradeType.DAMAGE: 
+			player.damage += option.value
+			print("Damage: ", player.damage)
+		UpgradeType.PROJECTILE_COUNT: 
+			player.projectile_count += option.value
+			print("Projectile count: ", player.projectile_count)
 		UpgradeType.MAX_HP: 
 			player.max_hp += option.value
 			player.current_hp += option.value
-		UpgradeType.HP_REGEN: player.hp_regen += option.value
-		UpgradeType.ATTACK_SPEED: player.attack_speed += option.value
-		UpgradeType.MOVE_SPEED: player.move_speed += option.value
-		UpgradeType.LIFESTEAL: player.lifesteal += option.value
-		UpgradeType.DEFENSE: player.defense += option.value
+			print("Max HP: ", player.max_hp)
+		UpgradeType.HP_REGEN: 
+			player.hp_regen += option.value
+			print("HP REGEN: ", player.hp_regen, " HP/s")
+		UpgradeType.ATTACK_SPEED: 
+			player.attack_speed += option.value
+			print("Attack speed: ", player.attack_speed)
+		UpgradeType.MOVE_SPEED: 
+			player.move_speed += option.value
+			print("Move speed: ", player.move_speed)
+		UpgradeType.LIFESTEAL: 
+			player.lifesteal += option.value
+			print("Lifesteal: ", player.lifesteal)
+		UpgradeType.DEFENSE: 
+			player.defense += option.value
+			print("Defense: ", player.defense)
 	
 	print("Applied: ", option.name, " +", option.value)
 	
