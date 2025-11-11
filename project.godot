@@ -55,5 +55,6 @@ project/scene_directory="res://scenes/"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 vulkan/enable_vulkan=true
 vulkan/enable_vulkan_debug=false
