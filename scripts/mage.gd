@@ -77,7 +77,7 @@ func _ready():
 		# Slightly taller and offset downward so legs extend below sprite center
 		cs.shape.extents = Vector2(12, 20)  # width, half-height — uprav podle potřeby
 		cs.position = Vector2(0, 8)        # posun dolů, aby nohy "přesahovaly"
-	
+
 func _physics_process(delta):
 	_handle_movement()
 	_handle_attack(delta)

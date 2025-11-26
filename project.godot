@@ -18,6 +18,11 @@ config/features=PackedStringArray("4.5")
 config/author="Your Name"
 config/main_scene="res://scenes/main.tscn"
 
+[autoload]
+
+SupabaseManager="*res://scripts/supabase_manager.gd"
+PlayerProfile="*res://scripts/player_profile.gd"
+
 [editor]
 
 editor/auto_save=true

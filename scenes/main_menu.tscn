@@ -64,3 +64,33 @@ custom_minimum_size = Vector2(300, 60)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "EXIT"
+
+[node name="ProfileContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -350.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 70.0
+grow_horizontal = 0
+theme_override_constants/separation = 10
+
+[node name="ProfileIcon" type="ColorRect" parent="ProfileContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+color = Color(0.2, 0.6, 0.8, 1)
+
+[node name="PlayerNameLabel" type="Label" parent="ProfileContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 20
+text = "Guest"
+vertical_alignment = 1
+
+[node name="LogOffButton" type="Button" parent="ProfileContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Log Off"
