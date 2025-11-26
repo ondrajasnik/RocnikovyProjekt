@@ -70,6 +70,14 @@ func _ready():
 	freeze = false
 	linear_damp = 5.0
 
+	# Ensure collision uses a RectangleShape2D (adjust extents to fit sprite)
+	var cs = get_node_or_null("CollisionShape2D")
+	if cs and cs is CollisionShape2D:
+		cs.shape = RectangleShape2D.new()
+		# Slightly taller and offset downward so legs extend below sprite center
+		cs.shape.extents = Vector2(12, 20)  # width, half-height — uprav podle potřeby
+		cs.position = Vector2(0, 8)        # posun dolů, aby nohy "přesahovaly"
+	
 func _physics_process(delta):
 	_handle_movement()
 	_handle_attack(delta)
