@@ -8,6 +8,7 @@ extends Control
 @onready var log_off_button = $ProfileContainer/LogOffButton
 
 var name_popup_scene = preload("res://scenes/name_input_popup.tscn")
+var leaderboard_popup_scene = preload("res://scenes/leaderboard_popup.tscn")
 
 func _ready():
 	play_button.pressed.connect(_on_play_pressed)
@@ -44,7 +45,6 @@ func _on_name_confirmed(player_name: String):
 	_start_game()
 
 func _on_log_off_pressed():
-	# Použij ConfirmationDialog místo AcceptDialog
 	var confirm_dialog = ConfirmationDialog.new()
 	confirm_dialog.dialog_text = "Are you sure you want to log off?"
 	confirm_dialog.title = "Log Off"
@@ -68,6 +68,8 @@ func _on_settings_pressed():
 
 func _on_leaderboard_pressed():
 	print("Leaderboard button pressed")
+	var popup = leaderboard_popup_scene.instantiate()
+	add_child(popup)
 
 func _on_exit_pressed():
 	get_tree().quit()
