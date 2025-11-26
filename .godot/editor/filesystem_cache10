@@ -32,13 +32,14 @@ UIbuttons.png::CompressedTexture2D::821650352663832645::1764160132::1764160322::
 ui_table_Level.png::CompressedTexture2D::8442958215725442381::1764160132::1764160322::1::::<><><>0<>0<>16e9f4bc08e95a151a9d65e05aedf446<>res://.godot/imported/ui_table_Level.png-7110e787d555c27dcb6552035cca5b4b.ctex::
 ::res://assets/enemy/::1764161897
 skeleton_sprites.png::CompressedTexture2D::1371838877928246882::1764160132::1764160322::1::::<><><>0<>0<>5b5090082d75016f868477def976fce3<>res://.godot/imported/skeleton_sprites.png-aa546b71fa93302a7a2a121b3141ab81.ctex::
-::res://assets/map/::1764161897
+::res://assets/map/::1764186343
 TX Plant.png::CompressedTexture2D::4441992369082252927::1764160132::1764160323::1::::<><><>0<>0<>2d8a04986592b0ca6ed672de30fb8064<>res://.godot/imported/TX Plant.png-54cbd5078a897c9f6997a6a86f2225b9.ctex::
 TX Player.png::CompressedTexture2D::5486152748433307326::1764160132::1764160322::1::::<><><>0<>0<>2c8f55f029a70ebf106e9a6da728f196<>res://.godot/imported/TX Player.png-91c069ac2d5351f82b617a547e50033a.ctex::
 TX Props.png::CompressedTexture2D::2417760144240019915::1764160132::1764160323::1::::<><><>0<>0<>b64759f047b86afe0bfff1ab27cfafc9<>res://.godot/imported/TX Props.png-88ff6de911e27e3d89c7c66a1623fef3.ctex::
 TX Shadow Plant.png::CompressedTexture2D::565029540886523721::1764160132::1764160323::1::::<><><>0<>0<>b408b28b8284f13d405e7ff49005d6e3<>res://.godot/imported/TX Shadow Plant.png-0778e33b8688e0c5594a899df0ea77f3.ctex::
 TX Shadow.png::CompressedTexture2D::2551052426442707392::1764160132::1764160323::1::::<><><>0<>0<>929903032207755ea1fe3e7faeed2c4d<>res://.godot/imported/TX Shadow.png-8b30fce36860deb51585f36ba035d926.ctex::
 TX Struct.png::CompressedTexture2D::6585223455097167927::1764160132::1764160319::1::::<><><>0<>0<>9ae365b02481a6b190cf08a1d82b0ac6<>res://.godot/imported/TX Struct.png-e5ce0475db47a58df58d67f214f16e8c.ctex::
+TX Tileset Grass(nav).png::CompressedTexture2D::5511286782817671240::1764186343::1764186343::1::::<><><>0<>0<>8ce019dc6b5989fb77a6dfc54b48cee6<>res://.godot/imported/TX Tileset Grass(nav).png-28f8c64dba233afa4245f4d11cadd7ce.ctex::
 TX Tileset Grass.png::CompressedTexture2D::2140078024364806583::1764160132::1764160319::1::::<><><>0<>0<>38ee3842804b4464ac8b664146c84210<>res://.godot/imported/TX Tileset Grass.png-1f69b95137334aa1501832d0ce22125a.ctex::
 TX Tileset Stone Ground.png::CompressedTexture2D::5708766178248246910::1764160132::1764160319::1::::<><><>0<>0<>c3f4f91b3d2c226913f4753ab73c96af<>res://.godot/imported/TX Tileset Stone Ground.png-78590a66b663d297f647dcee4d6b4855.ctex::
 TX Tileset Wall.png::CompressedTexture2D::7518480457202098255::1764160132::1764160319::1::::<><><>0<>0<>9a85b6658643ee681981395cfc6818d8<>res://.godot/imported/TX Tileset Wall.png-74dd83fccf6e6832551cc4df1a96506b.ctex::
@@ -66,20 +67,20 @@ lifesteal.png::CompressedTexture2D::6522608751385984864::1764160132::1764160321:
 luck.png::CompressedTexture2D::769945161043506228::1764160132::1764160321::1::::<><><>0<>0<>f40b8244e6a651ce6d163a46647ceac0<>res://.godot/imported/luck.png-c601a9e7895d50056fcdf30b35f3677d.ctex::
 movement_speed.png::CompressedTexture2D::5226812710509649700::1764160132::1764160321::1::::<><><>0<>0<>27c1bc84ed11cca8ce43c893a53c188a<>res://.godot/imported/movement_speed.png-6509534ce648ce04a74282022f90b2ce.ctex::
 projectile_multiplayer_book.png::CompressedTexture2D::486988539837030825::1764160132::1764160321::1::::<><><>0<>0<>553eba4cbfe6d6d81042da991fb9de36<>res://.godot/imported/projectile_multiplayer_book.png-4272b6256077e535e354eba5086d4eb3.ctex::
-::res://scenes/::1764161897
-enemy.tscn::PackedScene::-1::1764160132::0::1::::<><><>0<>0<><>::res://scripts/enemy.gd<>res://assets/enemy/skeleton_sprites.png
+::res://scenes/::1764185250
+enemy.tscn::PackedScene::8781385243563323585::1764185250::0::1::::<><><>0<>0<><>::uid://cces30u64hoev::::res://scripts/enemy.gd<>uid://tsr8rxqbxcvi::::res://assets/enemy/skeleton_sprites.png
 game_over_menu.tscn::PackedScene::-1::1764160132::0::1::::<><><>0<>0<><>::res://scripts/game_over_menu.gd
 level_up_menu.tscn::PackedScene::-1::1764160132::0::1::::<><><>0<>0<><>::res://scripts/level_up_menu.gd<>res://assets/buttons/ui_table_Level.png
 mage.tscn::PackedScene::9216169099242727744::1764160132::0::1::::<><><>0<>0<><>::res://scripts/mage.gd<>uid://70ro0adv50ss::::res://assets/PlayerMageTexture/PlayerMageIdle.png
-main.tscn::PackedScene::8407348121278138674::1764160132::0::1::::<><><>0<>0<><>::uid://d4km7udpob73a::::res://scenes/mage.tscn<>uid://dmr0fcamx7t56::::res://addons/virtual_joystick/virtual_joystick_scene.tscn<>uid://c026wyovm1gdj::::res://assets/map/TX Struct.png<>uid://c65tg7whw1770::::res://scenes/ui.tscn<>uid://dfeajlrqtjk04::::res://assets/map/TX Tileset Wall.png<>uid://b6evw76bhlbbf::::res://scripts/enemy_spawner.gd<>uid://cnlmsr5sh5vh3::::res://assets/map/TX Tileset Stone Ground.png<>res://scenes/level_up_menu.tscn<>uid://bapgfkywbeqet::::res://assets/map/TX Props.png<>uid://b4jy726sxjem6::::res://assets/map/TX Plant.png<>res://scenes/game_over_menu.tscn<>uid://ibx7o2qtqkuj::::res://assets/map/TX Shadow Plant.png<>uid://dpausmenu123::::res://scenes/pause_menu.tscn<>uid://bcl0pwvk6twgu::::res://assets/map/TX Shadow.png<>uid://5qw1i5dg6lcp::::res://assets/map/TX Tileset Grass.png
+main.tscn::PackedScene::8407348121278138674::1764185250::0::1::::<><><>0<>0<><>::uid://d4km7udpob73a::::res://scenes/mage.tscn<>uid://dmr0fcamx7t56::::res://addons/virtual_joystick/virtual_joystick_scene.tscn<>uid://c026wyovm1gdj::::res://assets/map/TX Struct.png<>uid://c65tg7whw1770::::res://scenes/ui.tscn<>uid://dfeajlrqtjk04::::res://assets/map/TX Tileset Wall.png<>uid://b6evw76bhlbbf::::res://scripts/enemy_spawner.gd<>uid://cnlmsr5sh5vh3::::res://assets/map/TX Tileset Stone Ground.png<>res://scenes/level_up_menu.tscn<>uid://bapgfkywbeqet::::res://assets/map/TX Props.png<>uid://b4jy726sxjem6::::res://assets/map/TX Plant.png<>res://scenes/game_over_menu.tscn<>uid://ibx7o2qtqkuj::::res://assets/map/TX Shadow Plant.png<>uid://dpausmenu123::::res://scenes/pause_menu.tscn<>uid://bcl0pwvk6twgu::::res://assets/map/TX Shadow.png<>uid://5qw1i5dg6lcp::::res://assets/map/TX Tileset Grass.png
 main_menu.tscn::PackedScene::-1::1764160132::0::1::::<><><>0<>0<><>::res://scripts/main_menu.gd
 orb.tscn::PackedScene::-1::1764160132::0::1::::<><><>0<>0<><>::res://scripts/orb.gd
 pause_menu.tscn::PackedScene::241568877260978442::1764160132::0::1::::<><><>0<>0<><>::res://scripts/pause_menu.gd
 projectile.tscn::PackedScene::-1::1764160132::0::1::::<><><>0<>0<><>::res://scripts/projectile.gd<>res://assets/PlayerMageTexture/fireball.png
 ui.tscn::PackedScene::7011792905494400617::1764160132::0::1::::<><><>0<>0<><>::uid://df75iob8nvrc::::res://assets/buttons/health.png<>uid://ca3duh8ybajup::::res://assets/buttons/bar.png<>uid://bii23haldsxeq::::res://scripts/ui.gd<>uid://cc7xiephxwxhd::::res://assets/PlayerMageTexture/orb_gold.png
-::res://scripts/::1764161897
+::res://scripts/::1764162556
 abilities.gd::GDScript::1165147521935858436::1764160132::0::1::::<>Node<><>0<>0<><>::
-enemy.gd::GDScript::4922620819205024701::1764160132::0::1::::<>RigidBody2D<><>0<>0<><>::
+enemy.gd::GDScript::4922620819205024701::1764186030::0::1::::<>CharacterBody2D<><>0<>0<><>::
 enemy_spawner.gd::GDScript::4571848420493712339::1764160132::0::1::::<>Node2D<><>0<>0<><>::
 game_over_menu.gd::GDScript::5476290578732328118::1764160132::0::1::::<>CanvasLayer<><>0<>0<><>::
 level_up_menu.gd::GDScript::206695653397001603::1764160132::0::1::::<>CanvasLayer<><>0<>0<><>::
