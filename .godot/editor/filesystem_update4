@@ -1,3 +1,4 @@
 res://scripts/mage.gd
 res://scripts/main_menu.gd
 res://scripts/player_profile.gd
+res://default_bus_layout.tres

@@ -11,6 +11,8 @@ var name_popup_scene = preload("res://scenes/name_input_popup.tscn")
 var leaderboard_popup_scene = preload("res://scenes/leaderboard_popup.tscn")
 var settings_popup_scene = preload("res://scenes/settings_popup.tscn")
 
+var background_music: AudioStreamPlayer
+
 func _ready():
 	play_button.pressed.connect(_on_play_pressed)
 	settings_button.pressed.connect(_on_settings_pressed)
@@ -19,6 +21,26 @@ func _ready():
 	log_off_button.pressed.connect(_on_log_off_pressed)
 	
 	_update_profile_display()
+	_setup_background_music()
+
+func _setup_background_music():
+	background_music = AudioStreamPlayer.new()
+	background_music.name = "BackgroundMusic"
+	add_child(background_music)
+	
+	# Načti MP3 a nastav loop
+	var audio_stream = load("res://audio/music/main_menu_music.mp3")
+	
+	# Pro MP3 musíš nastavit loop přes AudioStreamMP3
+	if audio_stream is AudioStreamMP3:
+		audio_stream.loop = true  # ← TADY!
+	
+	background_music.stream = audio_stream
+	background_music.bus = "Music"
+	background_music.volume_db = 0
+	background_music.play()
+	
+	print("Background music playing on loop!")
 
 func _update_profile_display():
 	if PlayerProfile.is_player_registered():
@@ -65,12 +87,10 @@ func _start_game():
 	get_tree().change_scene_to_file("res://scenes/main.tscn")
 
 func _on_settings_pressed():
-	print("Settings button pressed")
 	var popup = settings_popup_scene.instantiate()
 	add_child(popup)
 
 func _on_leaderboard_pressed():
-	print("Leaderboard button pressed")
 	var popup = leaderboard_popup_scene.instantiate()
 	add_child(popup)
 
