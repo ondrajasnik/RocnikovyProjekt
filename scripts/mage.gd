@@ -45,6 +45,23 @@ var survival_time: float = 0.0
 var game_over_menu = null
 var regen_timer: float = 0.0  # NOVÉ - časovač pro regeneraci
 
+# --- Nové proměnné pro pohyb a zdraví ---
+@export var speed: float = 200.0
+@export var max_health: int = 100
+
+var current_health: int
+
+# Footstep audio
+var footstep_sounds = [
+	preload("res://audio/walk/step_cloth1.ogg"),
+	preload("res://audio/walk/step_cloth2.ogg"),
+	preload("res://audio/walk/step_cloth3.ogg"),
+	preload("res://audio/walk/step_cloth4.ogg")
+]
+var footstep_player: AudioStreamPlayer2D
+var footstep_timer: float = 0.0
+var footstep_interval: float = 0.25
+
 func _ready():
 	# Najdi virtuální joystick ve scéně
 	joystick = get_node_or_null("/root/main/UILayer/VirtualJoystick")
@@ -77,9 +94,22 @@ func _ready():
 		# Slightly taller and offset downward so legs extend below sprite center
 		cs.shape.extents = Vector2(12, 20)  # width, half-height — uprav podle potřeby
 		cs.position = Vector2(0, 8)        # posun dolů, aby nohy "přesahovaly"
+	
+	current_health = max_health
+	
+	# Vytvoř footstep audio player
+	footstep_player = AudioStreamPlayer2D.new()
+	footstep_player.name = "FootstepPlayer"
+	footstep_player.bus = "SFX"
+	footstep_player.volume_db = 2
+	footstep_player.max_polyphony = 4  # ← NOVÉ: Povolit až 4 zvuky současně
+	add_child(footstep_player)
 
 func _physics_process(delta):
-	_handle_movement()
+	if is_dead:
+		return
+	
+	_handle_movement(delta)  # ← ZMĚNA: přidej delta!
 	_handle_attack(delta)
 	_regenerate_hp(delta)
 	
@@ -93,7 +123,7 @@ func _physics_process(delta):
 		print("Level: ", level, " | EXP: ", current_exp, "/", exp_to_next_level, " | Gold: ", gold, " | Kills: ", kills)
 		print("HP_REGEN: ", hp_regen, " | Current HP: ", current_hp, "/", max_hp)  # PŘIDÁNO
 
-func _handle_movement():
+func _handle_movement(delta):  # ← ZMĚNA: přidej delta parametr!
 	var input_vector = Vector2.ZERO
 	
 	# Pohyb pomocí šipek
@@ -114,6 +144,9 @@ func _handle_movement():
 		input_vector = input_vector.normalized()
 		linear_velocity = input_vector * move_speed
 		
+		# VOLEJ footsteps! ← PŘIDEJ TENHLE ŘÁDEK!
+		_handle_footsteps(delta)
+		
 		# Určení směru a přehrání správné animace
 		if abs(input_vector.x) > abs(input_vector.y):
 			# Pohyb vlevo/vpravo
@@ -133,6 +166,7 @@ func _handle_movement():
 					anim_player.play("walk_up")
 	else:
 		linear_velocity = Vector2.ZERO
+		footstep_timer = 0.0  # ← PŘIDEJ RESET!
 		
 		# Přehrávání animace idle
 		if anim_player and anim_player.has_animation("idle"):
@@ -236,7 +270,7 @@ func add_kill():
 	kills += 1
 	print("Kill! Total kills: ", kills)
 
-func take_damage(amount):
+func take_damage(amount: int):
 	if is_dead:  # PŘIDÁNO - ignoruj damage pokud už je mrtvý
 		return
 	
@@ -246,7 +280,7 @@ func take_damage(amount):
 	if current_hp <= 0:
 		die()
 
-func heal(amount):
+func heal(amount: int):
 	current_hp = min(current_hp + amount, max_hp)
 
 func die():
@@ -267,3 +301,16 @@ func die():
 		print("ERROR: Game Over menu not found!")
 		# Fallback - zastav hru
 		get_tree().paused = true
+
+func _handle_footsteps(delta):
+	footstep_timer += delta
+	
+	if footstep_timer >= footstep_interval:
+		footstep_timer = 0.0
+		_play_random_footstep()
+
+func _play_random_footstep():
+	# ← ODSTRAŇ podmínku "if not footstep_player.playing"
+	var random_sound = footstep_sounds[randi() % footstep_sounds.size()]
+	footstep_player.stream = random_sound
+	footstep_player.play()
