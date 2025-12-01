@@ -291,6 +291,11 @@ func die():
 	current_hp = 0
 	print("Player died!")
 	
+	# ULOŽ DO SUPABASE! ← PŘIDEJ JEN TOTO!
+	var player_name = PlayerProfile.get_player_name()
+	var score = kills * 100 + level * 50 + gold
+	SupabaseManager.submit_score(player_name, score, kills, survival_time)
+	
 	# Počkej jeden frame aby UI stihlo aktualizovat
 	await get_tree().process_frame
 	
