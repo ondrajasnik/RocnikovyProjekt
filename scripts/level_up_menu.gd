@@ -25,7 +25,7 @@ var upgrade_values = {
 	UpgradeType.DAMAGE: { UpgradeRarity.COMMON: 2, UpgradeRarity.RARE: 5, UpgradeRarity.EPIC: 10, UpgradeRarity.LEGENDARY: 20 },
 	UpgradeType.PROJECTILE_COUNT: { UpgradeRarity.COMMON: 1, UpgradeRarity.RARE: 1, UpgradeRarity.EPIC: 2, UpgradeRarity.LEGENDARY: 3 },
 	UpgradeType.MAX_HP: { UpgradeRarity.COMMON: 10, UpgradeRarity.RARE: 25, UpgradeRarity.EPIC: 50, UpgradeRarity.LEGENDARY: 100 },
-	UpgradeType.HP_REGEN: { UpgradeRarity.COMMON: 2.0, UpgradeRarity.RARE: 5.0, UpgradeRarity.EPIC: 10.0, UpgradeRarity.LEGENDARY: 20.0 }, # ZVÝŠENO
+	UpgradeType.HP_REGEN: { UpgradeRarity.COMMON: 2.0, UpgradeRarity.RARE: 5.0, UpgradeRarity.EPIC: 10.0, UpgradeRarity.LEGENDARY: 20.0 },
 	UpgradeType.ATTACK_SPEED: { UpgradeRarity.COMMON: 0.1, UpgradeRarity.RARE: 0.25, UpgradeRarity.EPIC: 0.5, UpgradeRarity.LEGENDARY: 1.0 },
 	UpgradeType.MOVE_SPEED: { UpgradeRarity.COMMON: 10, UpgradeRarity.RARE: 25, UpgradeRarity.EPIC: 50, UpgradeRarity.LEGENDARY: 100 },
 	UpgradeType.LIFESTEAL: { UpgradeRarity.COMMON: 0.05, UpgradeRarity.RARE: 0.1, UpgradeRarity.EPIC: 0.2, UpgradeRarity.LEGENDARY: 0.4 },
@@ -56,12 +56,10 @@ var upgrade_icons = {
 
 func _ready():
 	visible = false
-	process_mode = Node.PROCESS_MODE_ALWAYS
+	process_mode = Node.PROCESS_MODE_ALWAYS  # ← Důležité pro pausu!
 	
-	# Nastav layer aby bylo menu nahoře
 	layer = 100
 	
-	# Najdi container - OPRAVENO s novou cestou
 	upgrades_container = get_node_or_null("CenterContainer/PanelContainer/VBoxContainer/MarginContainer/Content/UpgradesContainer")
 	
 	if not upgrades_container:
@@ -81,24 +79,21 @@ func show_level_up(player_ref, luck: float = 1.0):
 	
 	player = player_ref
 	
-	# Vygeneruj 3 náhodné upgrady
 	upgrade_options = generate_upgrade_options(3, luck)
 	print("Generated ", upgrade_options.size(), " upgrades")
 	
-	# Vyčisti předchozí upgrady
 	var children = upgrades_container.get_children()
 	for child in children:
 		child.queue_free()
 	
-	# Vytvoř UI pro každý upgrade
 	for i in range(upgrade_options.size()):
 		var option = upgrade_options[i]
 		create_upgrade_button(option, i)
 	
-	# Zobraz menu a pauza
+	# ZMĚNA: Použij get_tree().paused místo Engine.time_scale
 	visible = true
-	Engine.time_scale = 0.0
-	print("Menu shown, game paused")
+	get_tree().paused = true
+	print("Menu shown, game PAUSED")
 
 func generate_upgrade_options(count: int, luck: float = 1.0) -> Array:
 	var options = []
@@ -174,14 +169,12 @@ func create_upgrade_button(option: Dictionary, index: int):
 	var button = Button.new()
 	button.custom_minimum_size = Vector2(220, 280)
 	
-	# VBox pro obsah
 	var vbox = VBoxContainer.new()
 	vbox.set_anchors_preset(Control.PRESET_FULL_RECT)
 	vbox.add_theme_constant_override("separation", 10)
 	
-	# Ikona upgradu - UPRAVENO pro jednotnou velikost
 	var icon = TextureRect.new()
-	icon.custom_minimum_size = Vector2(120, 120)  # Fixní velikost
+	icon.custom_minimum_size = Vector2(120, 120)
 	icon.texture = load(upgrade_icons[option.type])
 	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -189,7 +182,6 @@ func create_upgrade_button(option: Dictionary, index: int):
 	var icon_center = CenterContainer.new()
 	icon_center.add_child(icon)
 	
-	# Kvalita (rarity)
 	var rarity_label = Label.new()
 	rarity_label.text = get_rarity_name(option.rarity)
 	rarity_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -198,7 +190,6 @@ func create_upgrade_button(option: Dictionary, index: int):
 	rarity_label.add_theme_constant_override("outline_size", 2)
 	rarity_label.add_theme_font_size_override("font_size", 18)
 	
-	# Název upgradu
 	var name_label = Label.new()
 	name_label.text = option.name
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -207,7 +198,6 @@ func create_upgrade_button(option: Dictionary, index: int):
 	name_label.add_theme_constant_override("outline_size", 2)
 	name_label.add_theme_font_size_override("font_size", 16)
 	
-	# Popis
 	var desc_label = Label.new()
 	desc_label.text = option.description
 	desc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -223,7 +213,6 @@ func create_upgrade_button(option: Dictionary, index: int):
 	
 	button.add_child(vbox)
 	
-	# ČISTĚ PRŮHLEDNÉ pozadí s barevným okrajem
 	var style_normal = StyleBoxFlat.new()
 	style_normal.bg_color = Color(0, 0, 0, 0)
 	style_normal.border_color = option.color
@@ -236,7 +225,6 @@ func create_upgrade_button(option: Dictionary, index: int):
 	style_normal.corner_radius_bottom_left = 12
 	style_normal.corner_radius_bottom_right = 12
 	
-	# Hover efekt - stále průhledné, jen širší okraj
 	var style_hover = StyleBoxFlat.new()
 	style_hover.bg_color = Color(0, 0, 0, 0)
 	style_hover.border_color = option.color
@@ -262,7 +250,8 @@ func _on_upgrade_selected(index: int):
 	
 	if index >= upgrade_options.size() or not player or not is_instance_valid(player):
 		print("ERROR: Invalid selection")
-		Engine.time_scale = 1.0
+		# ZMĚNA: Použij get_tree().paused
+		get_tree().paused = false
 		visible = false
 		return
 	
@@ -297,7 +286,8 @@ func _on_upgrade_selected(index: int):
 	
 	print("Applied: ", option.name, " +", option.value)
 	
-	# Unpauza hry a zavři menu
-	Engine.time_scale = 1.0
+	# ZMĚNA: Použij get_tree().paused a NEJDŘÍV odpausni!
+	get_tree().paused = false
+	print("Game UNPAUSED")
 	visible = false
-	print("Game resumed")
+	print("Menu hidden")
