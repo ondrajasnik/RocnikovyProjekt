@@ -1,0 +1,88 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/privacy_popup.gd" id="1"]
+
+[node name="PrivacyPopup" type="CanvasLayer"]
+script = ExtResource("1")
+
+[node name="Overlay" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.8)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Panel" type="Panel" parent="CenterContainer"]
+custom_minimum_size = Vector2(600, 500)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+theme_override_constants/separation = 15
+
+[node name="HeaderContainer" type="HBoxContainer" parent="CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/Panel/VBoxContainer/HeaderContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 28
+text = "📄 Privacy Policy"
+horizontal_alignment = 1
+
+[node name="CloseButton" type="Button" parent="CenterContainer/Panel/VBoxContainer/HeaderContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "✕"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PrivacyText" type="RichTextLabel" parent="CenterContainer/Panel/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "[b]Privacy Policy[/b]
+
+Last updated: December 1, 2025
+
+[b]1. Information We Collect[/b]
+This game stores your player name and high scores locally on your device and in our online leaderboard database.
+
+[b]2. How We Use Your Information[/b]
+• Player names are used to display on the leaderboard
+• Scores are used for ranking purposes
+• No personal information is collected
+
+[b]3. Data Storage[/b]
+• Local data is stored on your device
+• Online leaderboard data is stored on Supabase servers
+• We do not sell or share your data with third parties
+
+[b]4. Your Rights[/b]
+You can log off at any time to remove your local data. To remove your leaderboard entry, contact us.
+
+[b]5. Contact[/b]
+For questions about this policy, contact: your-email@example.com"
+fit_content = true
+
+[node name="OKButton" type="Button" parent="CenterContainer/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "OK"

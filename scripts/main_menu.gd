@@ -9,6 +9,7 @@ extends Control
 
 var name_popup_scene = preload("res://scenes/name_input_popup.tscn")
 var leaderboard_popup_scene = preload("res://scenes/leaderboard_popup.tscn")
+var settings_popup_scene = preload("res://scenes/settings_popup.tscn")
 
 func _ready():
 	play_button.pressed.connect(_on_play_pressed)
@@ -65,6 +66,8 @@ func _start_game():
 
 func _on_settings_pressed():
 	print("Settings button pressed")
+	var popup = settings_popup_scene.instantiate()
+	add_child(popup)
 
 func _on_leaderboard_pressed():
 	print("Leaderboard button pressed")
