@@ -15,6 +15,14 @@ var check_timer: float = 0.0
 var difficulty_timer: float = 0.0
 var difficulty_increase_interval: float = 30.0  # Zvýší obtížnost každých 30 sekund
 
+var spawn_timer: float = 0.0
+var spawn_interval: float = 2.0  # Spawn každé 2 sekundy
+var spawn_distance: float = 600  # Jak daleko od hráče spawnovat
+
+# LIMITY MAPY PODLE TVÝCH SOUŘADNIC ← UPRAVENO!
+var map_min = Vector2(-2540, -3484)  # 100px offset od okraje
+var map_max = Vector2(2347, 172)     # 100px offset od okraje
+
 func _ready():
 	# PŘIDÁNO - zajisti aby spawner fungoval i při pauze
 	process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -66,6 +74,10 @@ func spawn_enemy():
 	# Náhodná pozice kolem hráče
 	var angle = randf() * TAU  # Náhodný úhel (0-360°)
 	var spawn_pos = player.global_position + Vector2(cos(angle), sin(angle)) * spawn_radius
+	
+	# OMEŹ NA MAPU!
+	spawn_pos.x = clamp(spawn_pos.x, map_min.x, map_max.x)
+	spawn_pos.y = clamp(spawn_pos.y, map_min.y, map_max.y)
 	
 	enemy.position = spawn_pos
 	enemy.increase_difficulty(difficulty_multiplier)

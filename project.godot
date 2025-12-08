@@ -13,8 +13,9 @@ config_version=5
 config/name="mage-game"
 config/description="A 2D side-view game where the player controls a Mage character with various abilities."
 config/version="0.1"
-run/main_scene="res://scenes/splash_screen.tscn"  # ← ZMĚŇ TUTO CESTU
+run/main_scene="res://scenes/splash_screen.tscn"
 config/features=PackedStringArray("4.5")
+"#âZMÄÅTUTOCESTUconfig/features"=PackedStringArray("4.5")
 config/author="Your Name"
 config/main_scene="res://scenes/main.tscn"
 
