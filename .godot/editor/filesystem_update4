@@ -1,3 +1,4 @@
 res://scripts/mage.gd
 res://scenes/mage.tscn
 res://scripts/camera_2d.gd
+res://scripts/enemy_spawner.gd
