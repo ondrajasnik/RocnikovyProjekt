@@ -1,138 +1,101 @@
-extends CharacterBody2D  # ZMĚNĚNO z RigidBody2D
-
-# --- Základní statistiky nepřítele ---
-var base_max_hp: int = 50
-var base_damage: int = 5
-var base_move_speed: float = 150.0
-var base_attack_speed: float = 1.0  # útoky za sekundu
-
-# --- Aktuální statistiky (upravitelné během hry) ---
-var max_hp: int = 50
-var current_hp: int = 50
-var damage: int = 5
-var move_speed: float = 150.0
-var attack_speed: float = 1.0
-
-# --- Ostatní nastavení ---
-var attack_range: float = 80.0
-var detection_range: float = 200.0
-var difficulty_multiplier: float = 1.0  # Zvyšuje se s časem/vlnami
-var min_distance_to_player: float = 20.0  # Minimální vzdálenost od hráče
-
-var player = null
-var attack_timer: float = 0.0
-var is_attacking: bool = false
-var is_dead: bool = false
-
-# NOVÉ - Pathfinding
-@onready var nav_agent = $NavigationAgent2D
-var nav_update_timer: float = 0.0
-var nav_update_interval: float = 0.3  # aktualizace cesty každých 0.3s
-
-# Načti scénu orbu
-var orb_scene = preload("res://scenes/orb.tscn")
+extends CharacterBody2D
 
 @onready var sprite = $Sprite2D
 @onready var health_bar = $HealthBar
-@onready var detection_area = $DetectionArea
-@onready var anim_player = $AnimationPlayer
+@onready var animation_player = $AnimationPlayer
+@onready var nav_agent = $NavigationAgent2D  # ← PŘIDEJ ZPĚT!
+
+# Stats
+var max_health: int = 50
+var current_health: int = 50
+var move_speed: float = 100.0
+var damage: int = 10
+var experience_drop: int = 10
+var gold_drop: int = 5
+
+# Combat
+var is_attacking: bool = false
+var attack_timer: float = 0.0
+var attack_speed: float = 1.0
+
+# State
+var is_dead: bool = false
+
+# References
+var player = null
+var knockback_force: float = 0.0
+var knockback_direction: Vector2 = Vector2.ZERO
+
+# Difficulty scaling
+var difficulty_multiplier: float = 1.0
+
+# Scenes
+var orb_scene = preload("res://scenes/orb.tscn")
 
 func _ready():
 	add_to_group("enemies")
-	detection_area.body_entered.connect(_on_detection_area_body_entered)
-	detection_area.body_exited.connect(_on_detection_area_body_exited)
 	_apply_difficulty()
 	_update_health_bar()
 	
-	# DŮLEŽITÉ - enemy kolidují se zdmi
-	collision_layer = 2  # enemy layer
-	collision_mask = 7   # ZMĚNĚNO - koliduje s layer 1 (player), 2 (enemy), 4 (walls)
+	collision_layer = 2
+	collision_mask = 7
 	
-	# NOVÉ - Nastavení NavigationAgent2D
+	# Nastav NavigationAgent2D ← PŘIDEJ!
 	if nav_agent:
 		nav_agent.path_desired_distance = 4.0
 		nav_agent.target_desired_distance = 4.0
-		nav_agent.avoidance_enabled = true
-		nav_agent.radius = 16.0
 		
-		# Počkej na první physics frame než nastavíš cíl
+		# Počkej na NavigationServer
 		call_deferred("_setup_navigation")
 
-func _setup_navigation():
+func _setup_navigation():  # ← NOVÁ FUNKCE!
 	await get_tree().physics_frame
-	if player and is_instance_valid(player):
+	if player:
 		nav_agent.target_position = player.global_position
 
 func _apply_difficulty():
-	max_hp = int(base_max_hp * difficulty_multiplier)
-	current_hp = max_hp
-	damage = int(base_damage * difficulty_multiplier)
-	move_speed = base_move_speed * difficulty_multiplier
-	attack_speed = base_attack_speed * difficulty_multiplier
+	max_health = int(50 * difficulty_multiplier)
+	current_health = max_health
+	damage = int(10 * difficulty_multiplier)
+	move_speed = 100.0 * difficulty_multiplier
+	experience_drop = int(10 * difficulty_multiplier)
+	gold_drop = int(5 * difficulty_multiplier)
 
 func _physics_process(delta):
-	if is_dead:
-		return
-	
-	if Engine.time_scale == 0.0:
-		return
-	
 	if not player:
 		player = get_tree().root.find_child("PlayerMage", true, false)
 	
 	if player and is_instance_valid(player):
-		_follow_player_with_navigation(delta)
+		_follow_player(delta)
 		_update_attack(delta)
 	else:
 		velocity = Vector2.ZERO
 	
 	move_and_slide()
 
-func _follow_player_with_navigation(delta):
-	if not nav_agent:
-		# Fallback na přímý pohyb pokud není NavigationAgent2D
-		_follow_player_direct(delta)
-		return
-	
-	# Pravidelně aktualizuj cíl (pohybující se hráč)
-	nav_update_timer += delta
-	if nav_update_timer >= nav_update_interval:
-		nav_update_timer = 0.0
+func _follow_player(delta):
+	# Update navigation target ← PŘIDEJ!
+	if nav_agent and player:
 		nav_agent.target_position = player.global_position
 	
+	var direction = Vector2.ZERO
+	
+	# Použij NavigationAgent pokud existuje ← ZMĚNĚNO!
+	if nav_agent and not nav_agent.is_navigation_finished():
+		direction = (nav_agent.get_next_path_position() - global_position).normalized()
+	elif player:
+		# Fallback - přímá cesta k hráči
+		direction = (player.global_position - global_position).normalized()
+	
 	var distance = global_position.distance_to(player.global_position)
 	
-	# Pokud je cesta dokončena
-	if nav_agent.is_navigation_finished():
-		if distance > min_distance_to_player:
-			var direction = (player.global_position - global_position).normalized()
-			velocity = direction * move_speed
-		else:
-			var direction = (player.global_position - global_position).normalized()
-			velocity = direction * move_speed * 0.3
-		is_attacking = distance <= attack_range
-	else:
-		# Následuj cestu
-		var next_position = nav_agent.get_next_path_position()
-		var direction = (next_position - global_position).normalized()
-		velocity = direction * move_speed
-		
-		is_attacking = distance <= attack_range
-	
-	_play_walk_animation(velocity.normalized() if velocity.length() > 0 else Vector2.ZERO)
-
-func _follow_player_direct(delta):
-	# Původní přímočará logika (bez pathfindingu)
-	var direction = (player.global_position - global_position).normalized()
-	var distance = global_position.distance_to(player.global_position)
-	
-	if distance > min_distance_to_player:
+	if distance > 20.0:
 		velocity = direction * move_speed
 		_play_walk_animation(direction)
 	else:
 		velocity = direction * move_speed * 0.3
 	
-	is_attacking = distance <= attack_range
+	is_attacking = distance <= 80.0
 
 func _update_attack(delta):
 	if not is_attacking:
@@ -147,19 +110,19 @@ func _update_attack(delta):
 		attack_timer = 0.0
 
 func _play_walk_animation(direction: Vector2):
-	if not anim_player:
+	if not animation_player:
 		return
 	
 	if abs(direction.x) > abs(direction.y):
 		if direction.x > 0:
-			anim_player.play("walk_right")
+			animation_player.play("walk_right")
 		else:
-			anim_player.play("walk_left")
+			animation_player.play("walk_left")
 	else:
 		if direction.y > 0:
-			anim_player.play("walk_down")
+			animation_player.play("walk_down")
 		else:
-			anim_player.play("walk_up")
+			animation_player.play("walk_up")
 
 func _attack_player():
 	if not player or not is_instance_valid(player):
@@ -167,36 +130,64 @@ func _attack_player():
 	
 	var distance = global_position.distance_to(player.global_position)
 	
-	if distance <= attack_range:
+	if distance <= 80.0:
 		if player.has_method("take_damage"):
 			player.take_damage(damage)
 
-func _on_detection_area_body_entered(body):
-	if body.name == "PlayerMage":
-		player = body
-
-func _on_detection_area_body_exited(body):
-	if body == player:
-		player = null
-		is_attacking = false
-
-func take_damage(amount):
-	if is_dead:
-		return
+func take_damage(amount: int, is_critical: bool = false):
+	current_health -= amount
 	
-	current_hp -= amount
+	_spawn_damage_number(amount, is_critical)
 	_update_health_bar()
 	
-	sprite.modulate = Color.WHITE
-	await get_tree().create_timer(0.1).timeout
-	sprite.modulate = Color(1, 1, 1, 1)
+	print("Enemy took ", amount, " damage! HP: ", current_health, "/", max_health)
 	
-	if current_hp <= 0:
+	if sprite:
+		sprite.modulate = Color(1, 0.5, 0.5)
+		await get_tree().create_timer(0.1).timeout
+		sprite.modulate = Color(1, 1, 1)
+	
+	if current_health <= 0:
 		die()
 
+func _spawn_damage_number(damage: int, is_critical: bool):
+	var label = Label.new()
+	label.text = str(damage)
+	label.z_index = 100
+	
+	if is_critical:
+		label.add_theme_color_override("font_color", Color(1.0, 0.8, 0.0))
+		label.add_theme_font_size_override("font_size", 28)
+		label.add_theme_constant_override("outline_size", 4)
+		label.add_theme_color_override("font_outline_color", Color(0.8, 0.2, 0.0))
+	else:
+		label.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0))
+		label.add_theme_font_size_override("font_size", 20)
+		label.add_theme_constant_override("outline_size", 2)
+		label.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0))
+	
+	var spawn_pos = global_position + Vector2(-15, -40)
+	get_tree().current_scene.add_child(label)
+	label.global_position = spawn_pos
+	
+	get_tree().create_timer(0.8).timeout.connect(func():
+		if is_instance_valid(label):
+			label.queue_free()
+	)
+	
+	var tween = get_tree().create_tween()
+	tween.set_parallel(true)
+	
+	var fly_distance = 80 if is_critical else 60
+	var target_y = spawn_pos.y - fly_distance
+	var random_x = spawn_pos.x + randf_range(-20, 20)
+	
+	tween.tween_property(label, "global_position", Vector2(random_x, target_y), 0.7)
+	tween.tween_property(label, "modulate:a", 0.0, 0.7)
+
 func _update_health_bar():
-	health_bar.max_value = max_hp
-	health_bar.value = current_hp
+	health_bar.max_value = max_health
+	health_bar.value = current_health
 
 func increase_difficulty(multiplier: float):
 	difficulty_multiplier = multiplier

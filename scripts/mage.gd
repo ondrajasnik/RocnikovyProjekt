@@ -2,16 +2,20 @@ extends RigidBody2D
 
 # --- Statistiky ---
 var max_hp: int = 100
-var current_hp: int = 100  # ZMĚNĚNO zpátky na int
+var current_hp: int = 100
 var hp_regen: float = 2.0
 var damage: int = 10
 var projectile_count: int = 1
 var projectile_size: float = 1.0
-var attack_speed: float = 1.0 # útoky za sekundu
+var attack_speed: float = 1.0
 var move_speed: float = 250.0
-var defense: float = 0.2 # 20% snížení damage
-var lifesteal: float = 0.1 # 10% poškození vráceno jako HP
-var attack_range: float = 300.0  # Dosah útoku
+var defense: float = 0.2
+var lifesteal: float = 0.1
+var attack_range: float = 300.0
+
+# Critical hit system
+var critical_chance: float = 0.15
+var critical_multiplier: float = 2.0
 
 # --- Level systém ---
 var level: int = 1
@@ -24,34 +28,33 @@ var gold: int = 0
 var kills: int = 0
 
 # --- Luck systém ---
-var luck: float = 1.0  # 1.0 = normální, 2.0 = 2x lepší šance na rare
+var luck: float = 1.0
 
-var attack_timer := 0.0
+# --- Combat ---
+var attack_timer: float = 0.0
 
-# Přidej načtení scény projektilu na začátek
+# --- State ---
+var is_dead: bool = false
+var survival_time: float = 0.0
+var regen_timer: float = 0.0
+
+# --- Scenes ---
 var projectile_scene = preload("res://scenes/projectile.tscn")
 var level_up_menu_scene = preload("res://scenes/level_up_menu.tscn")
+
+# --- References ---
 var joystick: Node = null
 var level_up_menu = null
+var game_over_menu = null
 
+# --- Nodes ---
 @onready var sprite = $Sprite2D
 @onready var anim_player = $AnimationPlayer
 
+# --- Debug ---
 var debug_counter = 0
 
-# Přidej proměnnou na začátek souboru (kolem řádku 25)
-var is_dead: bool = false
-var survival_time: float = 0.0
-var game_over_menu = null
-var regen_timer: float = 0.0  # NOVÉ - časovač pro regeneraci
-
-# --- Nové proměnné pro pohyb a zdraví ---
-@export var speed: float = 200.0
-@export var max_health: int = 100
-
-var current_health: int
-
-# Footstep audio
+# --- Footstep audio ---
 var footstep_sounds = [
 	preload("res://audio/walk/step_cloth1.ogg"),
 	preload("res://audio/walk/step_cloth2.ogg"),
@@ -63,12 +66,12 @@ var footstep_timer: float = 0.0
 var footstep_interval: float = 0.25
 
 func _ready():
-	# Najdi virtuální joystick ve scéně
+	# Najdi virtuální joystick
 	joystick = get_node_or_null("/root/main/UILayer/VirtualJoystick")
 	if not joystick:
 		joystick = get_tree().root.find_child("VirtualJoystick", true, false)
 	
-	# Najdi level up menu (musí být přidané v main.tscn)
+	# Najdi level up menu
 	level_up_menu = get_tree().root.find_child("LevelUpMenu", true, false)
 	
 	if level_up_menu:
@@ -76,57 +79,53 @@ func _ready():
 	else:
 		print("ERROR: Level up menu not found!")
 	
-	# Najdi Game Over menu - OPRAVENO
-	await get_tree().process_frame  # Počkej až se všechno načte
+	# Najdi Game Over menu
+	await get_tree().process_frame
 	game_over_menu = get_parent().get_node_or_null("GameOverMenu")
 	if not game_over_menu:
 		print("WARNING: GameOverMenu not found in scene tree!")
 
-	# Zajisti, že tělo není zmrazené a rotace je zamčená
+	# Physics setup
 	lock_rotation = true
 	freeze = false
 	linear_damp = 5.0
 
-	# Ensure collision uses a RectangleShape2D (adjust extents to fit sprite)
+	# Collision shape setup
 	var cs = get_node_or_null("CollisionShape2D")
 	if cs and cs is CollisionShape2D:
 		cs.shape = RectangleShape2D.new()
-		# Slightly taller and offset downward so legs extend below sprite center
-		cs.shape.extents = Vector2(12, 20)  # width, half-height — uprav podle potřeby
-		cs.position = Vector2(0, 8)        # posun dolů, aby nohy "přesahovaly"
+		cs.shape.extents = Vector2(12, 20)
+		cs.position = Vector2(0, 8)
 	
-	current_health = max_health
-	
-	# Vytvoř footstep audio player
+	# Footstep audio setup
 	footstep_player = AudioStreamPlayer2D.new()
 	footstep_player.name = "FootstepPlayer"
 	footstep_player.bus = "SFX"
 	footstep_player.volume_db = 2
-	footstep_player.max_polyphony = 4  # ← NOVÉ: Povolit až 4 zvuky současně
+	footstep_player.max_polyphony = 4
 	add_child(footstep_player)
 
 func _physics_process(delta):
 	if is_dead:
 		return
 	
-	_handle_movement(delta)  # ← ZMĚNA: přidej delta!
+	_handle_movement(delta)
 	_handle_attack(delta)
 	_regenerate_hp(delta)
 	
-	# Počítej čas přežití
 	if not is_dead:
 		survival_time += delta
 	
-	# Debug output každých 60 framů
+	# Debug output
 	debug_counter += 1
 	if debug_counter % 60 == 0:
 		print("Level: ", level, " | EXP: ", current_exp, "/", exp_to_next_level, " | Gold: ", gold, " | Kills: ", kills)
-		print("HP_REGEN: ", hp_regen, " | Current HP: ", current_hp, "/", max_hp)  # PŘIDÁNO
+		print("HP_REGEN: ", hp_regen, " | Current HP: ", current_hp, "/", max_hp)
 
-func _handle_movement(delta):  # ← ZMĚNA: přidej delta parametr!
+func _handle_movement(delta):
 	var input_vector = Vector2.ZERO
 	
-	# Pohyb pomocí šipek
+	# Keyboard input
 	var keyboard_input = Vector2.ZERO
 	keyboard_input.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	keyboard_input.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
@@ -134,22 +133,20 @@ func _handle_movement(delta):  # ← ZMĚNA: přidej delta parametr!
 	if keyboard_input.length() > 0:
 		input_vector = keyboard_input
 	
-	# Pohyb pomocí joysticku (pokud existuje)
+	# Joystick input
 	if joystick and "output" in joystick:
 		var joystick_output = joystick.output
-		if joystick_output.length() > 0.1:  # Dead zone
+		if joystick_output.length() > 0.1:
 			input_vector = joystick_output
 	
 	if input_vector.length() > 0:
 		input_vector = input_vector.normalized()
 		linear_velocity = input_vector * move_speed
 		
-		# VOLEJ footsteps! ← PŘIDEJ TENHLE ŘÁDEK!
 		_handle_footsteps(delta)
 		
-		# Určení směru a přehrání správné animace
+		# Animation
 		if abs(input_vector.x) > abs(input_vector.y):
-			# Pohyb vlevo/vpravo
 			if input_vector.x > 0:
 				if anim_player and anim_player.has_animation("walk_right"):
 					anim_player.play("walk_right")
@@ -157,7 +154,6 @@ func _handle_movement(delta):  # ← ZMĚNA: přidej delta parametr!
 				if anim_player and anim_player.has_animation("walk_left"):
 					anim_player.play("walk_left")
 		else:
-			# Pohyb nahoru/dolů
 			if input_vector.y > 0:
 				if anim_player and anim_player.has_animation("walk_down"):
 					anim_player.play("walk_down")
@@ -166,9 +162,8 @@ func _handle_movement(delta):  # ← ZMĚNA: přidej delta parametr!
 					anim_player.play("walk_up")
 	else:
 		linear_velocity = Vector2.ZERO
-		footstep_timer = 0.0  # ← PŘIDEJ RESET!
+		footstep_timer = 0.0
 		
-		# Přehrávání animace idle
 		if anim_player and anim_player.has_animation("idle"):
 			if anim_player.current_animation != "idle":
 				anim_player.play("idle")
@@ -180,24 +175,31 @@ func _handle_attack(delta):
 		_shoot_projectiles()
 
 func _shoot_projectiles():
-	# Najdi nejbližší nepřátele (tolik kolik máme projektilů)
 	var nearest_enemies = _find_nearest_enemies(projectile_count)
 	
 	if nearest_enemies.size() == 0:
-		return  # Žádný nepřítel v dosahu
+		return
 	
-	# Vystřel projektil na každého nepřítele
 	for i in range(projectile_count):
+		# Critical hit calculation
+		var is_crit = randf() < critical_chance
+		var final_damage = damage
+		
+		if is_crit:
+			final_damage = int(damage * critical_multiplier)
+			print("CRITICAL HIT! ", final_damage, " damage!")
+		
+		# Create projectile
 		var projectile = projectile_scene.instantiate()
 		projectile.position = global_position
 		
-		# Pokud máme dost nepřátel, každý projektil jde na jiného
 		var target_enemy = nearest_enemies[i % nearest_enemies.size()]
 		var direction_to_enemy = (target_enemy.global_position - global_position).normalized()
 		
 		projectile.direction = direction_to_enemy
-		projectile.target_enemy = target_enemy  # NOVÉ - přiřaď cíl
-		projectile.damage = damage
+		projectile.target_enemy = target_enemy
+		projectile.damage = final_damage
+		projectile.is_critical = is_crit
 		projectile.lifesteal_percent = lifesteal
 		projectile.owner_mage = self
 		projectile.scale = Vector2(projectile_size, projectile_size)
@@ -207,7 +209,6 @@ func _find_nearest_enemies(count: int) -> Array:
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	var valid_enemies = []
 	
-	# Filtruj platné nepřátele v dosahu
 	for enemy in enemies:
 		if not is_instance_valid(enemy):
 			continue
@@ -219,26 +220,18 @@ func _find_nearest_enemies(count: int) -> Array:
 				"distance": distance
 			})
 	
-	# Seřaď podle vzdálenosti (nejbližší první)
 	valid_enemies.sort_custom(func(a, b): return a.distance < b.distance)
 	
-	# Vrať jen enemy objekty (max 'count' nepřátel)
 	var result = []
 	for i in range(min(count, valid_enemies.size())):
 		result.append(valid_enemies[i].enemy)
 	
 	return result
 
-func _find_nearest_enemy():
-	var enemies = _find_nearest_enemies(1)
-	if enemies.size() > 0:
-		return enemies[0]
-	return null
-
 func _regenerate_hp(delta):
 	if current_hp < max_hp:
 		regen_timer += delta
-		if regen_timer >= 1.0:  # Každou sekundu
+		if regen_timer >= 1.0:
 			current_hp = min(current_hp + int(hp_regen), max_hp)
 			print("Regenerated +", int(hp_regen), " HP | Current: ", current_hp, "/", max_hp)
 			regen_timer = 0.0
@@ -247,7 +240,6 @@ func add_exp(amount: int):
 	current_exp += amount
 	print("Gained ", amount, " EXP! Total: ", current_exp, "/", exp_to_next_level)
 	
-	# Zkontroluj level up
 	if current_exp >= exp_to_next_level:
 		level_up()
 
@@ -258,7 +250,6 @@ func level_up():
 	
 	print("LEVEL UP! Level ", level)
 	
-	# Zobraz level up menu
 	if level_up_menu:
 		level_up_menu.show_level_up(self, luck)
 
@@ -271,7 +262,7 @@ func add_kill():
 	print("Kill! Total kills: ", kills)
 
 func take_damage(amount: int):
-	if is_dead:  # PŘIDÁNO - ignoruj damage pokud už je mrtvý
+	if is_dead:
 		return
 	
 	var reduced = amount * (1.0 - defense)
@@ -291,20 +282,16 @@ func die():
 	current_hp = 0
 	print("Player died!")
 	
-	# ULOŽ DO SUPABASE! ← PŘIDEJ JEN TOTO!
 	var player_name = PlayerProfile.get_player_name()
 	var score = kills * 100 + level * 50 + gold
 	SupabaseManager.submit_score(player_name, score, kills, survival_time)
 	
-	# Počkej jeden frame aby UI stihlo aktualizovat
 	await get_tree().process_frame
 	
-	# Zobraz Game Over menu
 	if game_over_menu and is_instance_valid(game_over_menu):
 		game_over_menu.show_game_over(self, survival_time)
 	else:
 		print("ERROR: Game Over menu not found!")
-		# Fallback - zastav hru
 		get_tree().paused = true
 
 func _handle_footsteps(delta):
@@ -315,7 +302,6 @@ func _handle_footsteps(delta):
 		_play_random_footstep()
 
 func _play_random_footstep():
-	# ← ODSTRAŇ podmínku "if not footstep_player.playing"
 	var random_sound = footstep_sounds[randi() % footstep_sounds.size()]
 	footstep_player.stream = random_sound
 	footstep_player.play()
