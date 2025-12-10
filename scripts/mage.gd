@@ -1,27 +1,41 @@
 extends RigidBody2D
 
-# --- Statistiky ---
+# --- Základní statistiky (BASE VALUES) ---
+var base_max_hp: int = 100
+var base_hp_regen: float = 1.0
+var base_damage: int = 10
+var base_attack_speed: float = 1.0
+var base_move_speed: float = 250.0
+
+# --- Aktuální statistiky (se multiplikátory) ---
 var max_hp: int = 100
 var current_hp: int = 100
-var hp_regen: float = 2.0
+var hp_regen: float = 1.0
 var damage: int = 10
 var projectile_count: int = 1
 var projectile_size: float = 1.0
 var attack_speed: float = 1.0
 var move_speed: float = 250.0
-var defense: float = 0.2
-var lifesteal: float = 0.1
+var defense: float = 0.0
+var lifesteal: float = 0.0
 var attack_range: float = 300.0
 
+# --- Multiplikátory (x násobky) ---
+var hp_multiplier: float = 1.0
+var damage_multiplier: float = 1.0
+var regen_multiplier: float = 1.0
+var speed_multiplier: float = 1.0
+var attack_speed_multiplier: float = 1.0
+
 # Critical hit system
-var critical_chance: float = 0.15
+var critical_chance: float = 0.10  # Změněno z 15% na 10%
 var critical_multiplier: float = 2.0
 
-# --- Level systém ---
+# --- Level systém (rychlejší!) ---
 var level: int = 1
-var current_exp: int = 95
-var exp_to_next_level: int = 100
-var exp_multiplier: float = 1.5
+var current_exp: int = 0
+var exp_to_next_level: int = 50  # Změněno z 100 na 50!
+var exp_multiplier: float = 1.3  # Změněno z 1.5 na 1.3 (pomalejší růst)
 
 # --- Gold a Kills systém ---
 var gold: int = 0
@@ -104,6 +118,9 @@ func _ready():
 	footstep_player.volume_db = 2
 	footstep_player.max_polyphony = 4
 	add_child(footstep_player)
+	
+	# Aplikuj multiplikátory
+	_update_stats()
 
 func _physics_process(delta):
 	if is_dead:
@@ -121,6 +138,7 @@ func _physics_process(delta):
 	if debug_counter % 60 == 0:
 		print("Level: ", level, " | EXP: ", current_exp, "/", exp_to_next_level, " | Gold: ", gold, " | Kills: ", kills)
 		print("HP_REGEN: ", hp_regen, " | Current HP: ", current_hp, "/", max_hp)
+		print("Damage: ", damage, " | Crit Chance: ", critical_chance * 100, "%")
 
 func _handle_movement(delta):
 	var input_vector = Vector2.ZERO
@@ -233,8 +251,20 @@ func _regenerate_hp(delta):
 		regen_timer += delta
 		if regen_timer >= 1.0:
 			current_hp = min(current_hp + int(hp_regen), max_hp)
-			print("Regenerated +", int(hp_regen), " HP | Current: ", current_hp, "/", max_hp)
 			regen_timer = 0.0
+
+# Aktualizuj všechny statistiky podle multiplikátorů ← NOVÉ!
+func _update_stats():
+	max_hp = int(base_max_hp * hp_multiplier)
+	damage = int(base_damage * damage_multiplier)
+	hp_regen = base_hp_regen * regen_multiplier
+	move_speed = base_move_speed * speed_multiplier
+	attack_speed = base_attack_speed * attack_speed_multiplier
+	
+	# Heal při level up (aby HP nenarostlo jen max)
+	current_hp = min(current_hp, max_hp)
+	
+	print("Stats updated! HP:", max_hp, " DMG:", damage, " Regen:", hp_regen, " Speed:", move_speed)
 
 func add_exp(amount: int):
 	current_exp += amount
@@ -248,18 +278,19 @@ func level_up():
 	current_exp -= exp_to_next_level
 	exp_to_next_level = int(exp_to_next_level * exp_multiplier)
 	
-	print("LEVEL UP! Level ", level)
+	# Heal při level up
+	current_hp = max_hp
+	
+	print("🎉 LEVEL UP! Level ", level)
 	
 	if level_up_menu:
 		level_up_menu.show_level_up(self, luck)
 
 func add_gold(amount: int):
 	gold += amount
-	print("Gained ", amount, " gold! Total: ", gold)
 
 func add_kill():
 	kills += 1
-	print("Kill! Total kills: ", kills)
 
 func take_damage(amount: int):
 	if is_dead:

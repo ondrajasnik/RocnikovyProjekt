@@ -4,3 +4,4 @@ res://scripts/camera_2d.gd
 res://scripts/enemy_spawner.gd
 res://scripts/enemy.gd
 res://scripts/projectile.gd
+res://scripts/level_up_menu.gd

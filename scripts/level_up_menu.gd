@@ -4,7 +4,19 @@ var upgrades_container = null
 var player = null
 var upgrade_options = []
 
-enum UpgradeType { DAMAGE, PROJECTILE_COUNT, MAX_HP, HP_REGEN, ATTACK_SPEED, MOVE_SPEED, LIFESTEAL, DEFENSE }
+enum UpgradeType { 
+	DAMAGE, 
+	PROJECTILE_COUNT, 
+	MAX_HP, 
+	HP_REGEN, 
+	ATTACK_SPEED, 
+	MOVE_SPEED, 
+	LIFESTEAL, 
+	DEFENSE,
+	CRITICAL_CHANCE,  # ← NOVÉ!
+	CRITICAL_DAMAGE   # ← NOVÉ!
+}
+
 enum UpgradeRarity { COMMON, RARE, EPIC, LEGENDARY }
 
 var base_rarity_chances = {
@@ -21,15 +33,68 @@ var rarity_colors = {
 	UpgradeRarity.LEGENDARY: Color(1.0, 0.84, 0.0)
 }
 
+# ZMĚNĚNO - multiplikátory místo přímých hodnot!
 var upgrade_values = {
-	UpgradeType.DAMAGE: { UpgradeRarity.COMMON: 2, UpgradeRarity.RARE: 5, UpgradeRarity.EPIC: 10, UpgradeRarity.LEGENDARY: 20 },
-	UpgradeType.PROJECTILE_COUNT: { UpgradeRarity.COMMON: 1, UpgradeRarity.RARE: 1, UpgradeRarity.EPIC: 2, UpgradeRarity.LEGENDARY: 3 },
-	UpgradeType.MAX_HP: { UpgradeRarity.COMMON: 10, UpgradeRarity.RARE: 25, UpgradeRarity.EPIC: 50, UpgradeRarity.LEGENDARY: 100 },
-	UpgradeType.HP_REGEN: { UpgradeRarity.COMMON: 2.0, UpgradeRarity.RARE: 5.0, UpgradeRarity.EPIC: 10.0, UpgradeRarity.LEGENDARY: 20.0 },
-	UpgradeType.ATTACK_SPEED: { UpgradeRarity.COMMON: 0.1, UpgradeRarity.RARE: 0.25, UpgradeRarity.EPIC: 0.5, UpgradeRarity.LEGENDARY: 1.0 },
-	UpgradeType.MOVE_SPEED: { UpgradeRarity.COMMON: 10, UpgradeRarity.RARE: 25, UpgradeRarity.EPIC: 50, UpgradeRarity.LEGENDARY: 100 },
-	UpgradeType.LIFESTEAL: { UpgradeRarity.COMMON: 0.05, UpgradeRarity.RARE: 0.1, UpgradeRarity.EPIC: 0.2, UpgradeRarity.LEGENDARY: 0.4 },
-	UpgradeType.DEFENSE: { UpgradeRarity.COMMON: 0.05, UpgradeRarity.RARE: 0.1, UpgradeRarity.EPIC: 0.15, UpgradeRarity.LEGENDARY: 0.3 }
+	UpgradeType.DAMAGE: { 
+		UpgradeRarity.COMMON: 1.15,      # +15% damage
+		UpgradeRarity.RARE: 1.30,        # +30% damage
+		UpgradeRarity.EPIC: 1.50,        # +50% damage
+		UpgradeRarity.LEGENDARY: 2.0     # 2x damage
+	},
+	UpgradeType.PROJECTILE_COUNT: { 
+		UpgradeRarity.COMMON: 1, 
+		UpgradeRarity.RARE: 1, 
+		UpgradeRarity.EPIC: 2, 
+		UpgradeRarity.LEGENDARY: 3 
+	},
+	UpgradeType.MAX_HP: { 
+		UpgradeRarity.COMMON: 1.15,      # +15% HP
+		UpgradeRarity.RARE: 1.30,        # +30% HP
+		UpgradeRarity.EPIC: 1.50,        # +50% HP
+		UpgradeRarity.LEGENDARY: 2.0     # 2x HP
+	},
+	UpgradeType.HP_REGEN: { 
+		UpgradeRarity.COMMON: 1.20,      # +20% regen
+		UpgradeRarity.RARE: 1.50,        # +50% regen
+		UpgradeRarity.EPIC: 2.0,         # 2x regen
+		UpgradeRarity.LEGENDARY: 3.0     # 3x regen
+	},
+	UpgradeType.ATTACK_SPEED: { 
+		UpgradeRarity.COMMON: 1.15,      # +15% attack speed
+		UpgradeRarity.RARE: 1.30,        # +30% attack speed
+		UpgradeRarity.EPIC: 1.50,        # +50% attack speed
+		UpgradeRarity.LEGENDARY: 2.0     # 2x attack speed
+	},
+	UpgradeType.MOVE_SPEED: { 
+		UpgradeRarity.COMMON: 1.10,      # +10% speed
+		UpgradeRarity.RARE: 1.20,        # +20% speed
+		UpgradeRarity.EPIC: 1.35,        # +35% speed
+		UpgradeRarity.LEGENDARY: 1.50    # +50% speed
+	},
+	UpgradeType.LIFESTEAL: { 
+		UpgradeRarity.COMMON: 0.05,      # +5% (zůstává přičítání)
+		UpgradeRarity.RARE: 0.10,        # +10%
+		UpgradeRarity.EPIC: 0.20,        # +20%
+		UpgradeRarity.LEGENDARY: 0.40    # +40%
+	},
+	UpgradeType.DEFENSE: { 
+		UpgradeRarity.COMMON: 0.05,      # +5% (zůstává přičítání)
+		UpgradeRarity.RARE: 0.10,        # +10%
+		UpgradeRarity.EPIC: 0.15,        # +15%
+		UpgradeRarity.LEGENDARY: 0.30    # +30%
+	},
+	UpgradeType.CRITICAL_CHANCE: {       # ← NOVÉ!
+		UpgradeRarity.COMMON: 0.05,      # +5%
+		UpgradeRarity.RARE: 0.10,        # +10%
+		UpgradeRarity.EPIC: 0.15,        # +15%
+		UpgradeRarity.LEGENDARY: 0.25    # +25%
+	},
+	UpgradeType.CRITICAL_DAMAGE: {       # ← NOVÉ!
+		UpgradeRarity.COMMON: 1.25,      # +25% crit damage (z 2x na 2.5x)
+		UpgradeRarity.RARE: 1.50,        # +50%
+		UpgradeRarity.EPIC: 2.0,         # 2x crit damage
+		UpgradeRarity.LEGENDARY: 3.0     # 3x crit damage
+	}
 }
 
 var upgrade_names = {
@@ -40,7 +105,9 @@ var upgrade_names = {
 	UpgradeType.ATTACK_SPEED: "Attack Speed",
 	UpgradeType.MOVE_SPEED: "Move Speed",
 	UpgradeType.LIFESTEAL: "Lifesteal",
-	UpgradeType.DEFENSE: "Defense"
+	UpgradeType.DEFENSE: "Defense",
+	UpgradeType.CRITICAL_CHANCE: "Critical Chance",   # ← NOVÉ!
+	UpgradeType.CRITICAL_DAMAGE: "Critical Damage"    # ← NOVÉ!
 }
 
 var upgrade_icons = {
@@ -51,13 +118,14 @@ var upgrade_icons = {
 	UpgradeType.ATTACK_SPEED: "res://assets/upgrades/attack_speed_book.png",
 	UpgradeType.MOVE_SPEED: "res://assets/upgrades/movement_speed.png",
 	UpgradeType.LIFESTEAL: "res://assets/upgrades/lifesteal.png",
-	UpgradeType.DEFENSE: "res://assets/upgrades/defence.png"
+	UpgradeType.DEFENSE: "res://assets/upgrades/defence.png",
+	UpgradeType.CRITICAL_CHANCE: "res://assets/upgrades/damage_book.png",      # ← POUŽIJ STEJNÝ JAKO DAMAGE (nebo vytvoř nový!)
+	UpgradeType.CRITICAL_DAMAGE: "res://assets/upgrades/attack_speed_book.png" # ← POUŽIJ STEJNÝ JAKO ATTACK SPEED
 }
 
 func _ready():
 	visible = false
-	process_mode = Node.PROCESS_MODE_ALWAYS  # ← Důležité pro pausu!
-	
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 100
 	
 	upgrades_container = get_node_or_null("CenterContainer/PanelContainer/VBoxContainer/MarginContainer/Content/UpgradesContainer")
@@ -78,7 +146,6 @@ func show_level_up(player_ref, luck: float = 1.0):
 			return
 	
 	player = player_ref
-	
 	upgrade_options = generate_upgrade_options(3, luck)
 	print("Generated ", upgrade_options.size(), " upgrades")
 	
@@ -90,7 +157,6 @@ func show_level_up(player_ref, luck: float = 1.0):
 		var option = upgrade_options[i]
 		create_upgrade_button(option, i)
 	
-	# ZMĚNA: Použij get_tree().paused místo Engine.time_scale
 	visible = true
 	get_tree().paused = true
 	print("Menu shown, game PAUSED")
@@ -106,14 +172,29 @@ func generate_upgrade_options(count: int, luck: float = 1.0) -> Array:
 		
 		var desc = ""
 		match type:
-			UpgradeType.DAMAGE: desc = "+%d Damage" % value
-			UpgradeType.PROJECTILE_COUNT: desc = "+%d Projectiles" % value
-			UpgradeType.MAX_HP: desc = "+%d Max HP" % value
-			UpgradeType.HP_REGEN: desc = "+%.1f HP/s" % value
-			UpgradeType.ATTACK_SPEED: desc = "+%.1f Attacks/s" % value
-			UpgradeType.MOVE_SPEED: desc = "+%d Speed" % value
-			UpgradeType.LIFESTEAL: desc = "+%.0f%% Lifesteal" % (value * 100)
-			UpgradeType.DEFENSE: desc = "+%.0f%% Defense" % (value * 100)
+			# Multiplikátory - zobraz jako "x násobek"
+			UpgradeType.DAMAGE: 
+				desc = "x%.2f Damage" % value
+			UpgradeType.MAX_HP: 
+				desc = "x%.2f Max HP" % value
+			UpgradeType.HP_REGEN: 
+				desc = "x%.2f HP Regen" % value
+			UpgradeType.ATTACK_SPEED: 
+				desc = "x%.2f Attack Speed" % value
+			UpgradeType.MOVE_SPEED: 
+				desc = "x%.2f Move Speed" % value
+			UpgradeType.CRITICAL_DAMAGE:
+				desc = "x%.2f Crit Damage" % value
+			
+			# Přičítání - u těchto má smysl zobrazovat procenta
+			UpgradeType.PROJECTILE_COUNT: 
+				desc = "+%d Projectiles" % value
+			UpgradeType.LIFESTEAL: 
+				desc = "+%.0f%% Lifesteal" % (value * 100)
+			UpgradeType.DEFENSE: 
+				desc = "+%.0f%% Defense" % (value * 100)
+			UpgradeType.CRITICAL_CHANCE:
+				desc = "+%.0f%% Crit Chance" % (value * 100)
 		
 		options.append({
 			"type": type,
@@ -250,43 +331,66 @@ func _on_upgrade_selected(index: int):
 	
 	if index >= upgrade_options.size() or not player or not is_instance_valid(player):
 		print("ERROR: Invalid selection")
-		# ZMĚNA: Použij get_tree().paused
 		get_tree().paused = false
 		visible = false
 		return
 	
 	var option = upgrade_options[index]
 	
+	# ZMĚNĚNO - používej multiplikátory!
 	match option.type:
 		UpgradeType.DAMAGE: 
-			player.damage += option.value
-			print("Damage: ", player.damage)
+			player.damage_multiplier *= option.value
+			player._update_stats()
+			print("Damage multiplier: ", player.damage_multiplier, " → ", player.damage)
+		
 		UpgradeType.PROJECTILE_COUNT: 
 			player.projectile_count += option.value
 			print("Projectile count: ", player.projectile_count)
+		
 		UpgradeType.MAX_HP: 
-			player.max_hp += option.value
-			player.current_hp += option.value
-			print("Max HP: ", player.max_hp)
+			player.hp_multiplier *= option.value
+			player._update_stats()
+			# Heal proporcionálně
+			var heal_amount = int((option.value - 1.0) * player.max_hp)
+			player.current_hp += heal_amount
+			print("HP multiplier: ", player.hp_multiplier, " → ", player.max_hp)
+		
 		UpgradeType.HP_REGEN: 
-			player.hp_regen += option.value
-			print("HP REGEN: ", player.hp_regen, " HP/s")
+			player.regen_multiplier *= option.value
+			player._update_stats()
+			print("Regen multiplier: ", player.regen_multiplier, " → ", player.hp_regen)
+		
 		UpgradeType.ATTACK_SPEED: 
-			player.attack_speed += option.value
-			print("Attack speed: ", player.attack_speed)
+			player.attack_speed_multiplier *= option.value
+			player._update_stats()
+			print("Attack speed multiplier: ", player.attack_speed_multiplier, " → ", player.attack_speed)
+		
 		UpgradeType.MOVE_SPEED: 
-			player.move_speed += option.value
-			print("Move speed: ", player.move_speed)
+			player.speed_multiplier *= option.value
+			player._update_stats()
+			print("Speed multiplier: ", player.speed_multiplier, " → ", player.move_speed)
+		
 		UpgradeType.LIFESTEAL: 
 			player.lifesteal += option.value
 			print("Lifesteal: ", player.lifesteal)
+		
 		UpgradeType.DEFENSE: 
 			player.defense += option.value
+			player.defense = min(player.defense, 0.75)  # Cap na 75%
 			print("Defense: ", player.defense)
+		
+		UpgradeType.CRITICAL_CHANCE:
+			player.critical_chance += option.value
+			player.critical_chance = min(player.critical_chance, 1.0)  # Cap na 100%
+			print("Critical chance: ", player.critical_chance * 100, "%")
+		
+		UpgradeType.CRITICAL_DAMAGE:
+			player.critical_multiplier *= option.value
+			print("Critical multiplier: ", player.critical_multiplier, "x")
 	
-	print("Applied: ", option.name, " +", option.value)
+	print("Applied: ", option.name, " → ", option.value)
 	
-	# ZMĚNA: Použij get_tree().paused a NEJDŘÍV odpausni!
 	get_tree().paused = false
 	print("Game UNPAUSED")
 	visible = false
