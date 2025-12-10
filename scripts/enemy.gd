@@ -3,7 +3,7 @@ extends CharacterBody2D
 @onready var sprite = $Sprite2D
 @onready var health_bar = $HealthBar
 @onready var animation_player = $AnimationPlayer
-@onready var nav_agent = $NavigationAgent2D  # ← PŘIDEJ ZPĚT!
+@onready var nav_agent = $NavigationAgent2D
 
 # Stats
 var max_health: int = 50
@@ -31,6 +31,8 @@ var difficulty_multiplier: float = 1.0
 
 # Scenes
 var orb_scene = preload("res://scenes/orb.tscn")
+var chest_scene = preload("res://scenes/chest.tscn")
+var chest_drop_chance: float = 1.0  # 100% for testing
 
 func _ready():
 	add_to_group("enemies")
@@ -40,15 +42,12 @@ func _ready():
 	collision_layer = 2
 	collision_mask = 7
 	
-	# Nastav NavigationAgent2D ← PŘIDEJ!
 	if nav_agent:
 		nav_agent.path_desired_distance = 4.0
 		nav_agent.target_desired_distance = 4.0
-		
-		# Počkej na NavigationServer
 		call_deferred("_setup_navigation")
 
-func _setup_navigation():  # ← NOVÁ FUNKCE!
+func _setup_navigation():
 	await get_tree().physics_frame
 	if player:
 		nav_agent.target_position = player.global_position
@@ -74,17 +73,14 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _follow_player(delta):
-	# Update navigation target ← PŘIDEJ!
 	if nav_agent and player:
 		nav_agent.target_position = player.global_position
 	
 	var direction = Vector2.ZERO
 	
-	# Použij NavigationAgent pokud existuje ← ZMĚNĚNO!
 	if nav_agent and not nav_agent.is_navigation_finished():
 		direction = (nav_agent.get_next_path_position() - global_position).normalized()
 	elif player:
-		# Fallback - přímá cesta k hráči
 		direction = (player.global_position - global_position).normalized()
 	
 	var distance = global_position.distance_to(player.global_position)
@@ -205,15 +201,43 @@ func die():
 		player.add_kill()
 	
 	_drop_orbs()
+	_try_drop_chest()
+	
 	queue_free()
 
 func _drop_orbs():
+	# Drop EXP orb
 	var exp_orb = orb_scene.instantiate()
 	exp_orb.position = global_position
-	exp_orb.set_orb_type(exp_orb.OrbType.EXP, int(10 * difficulty_multiplier))
+	exp_orb.set_orb_type(exp_orb.OrbType.EXP, experience_drop)
 	get_parent().call_deferred("add_child", exp_orb)
 	
+	# Drop GOLD orb
 	var gold_orb = orb_scene.instantiate()
 	gold_orb.position = global_position + Vector2(randf_range(-20, 20), randf_range(-20, 20))
-	gold_orb.set_orb_type(gold_orb.OrbType.GOLD, int(5 * difficulty_multiplier))
+	gold_orb.set_orb_type(gold_orb.OrbType.GOLD, gold_drop)
 	get_parent().call_deferred("add_child", gold_orb)
+
+func _try_drop_chest():
+	print("=== TRY DROP CHEST ===")
+	print("Chest drop chance: ", chest_drop_chance)
+	var roll = randf()
+	print("Rolled: ", roll)
+	
+	if roll < chest_drop_chance:
+		print("💎 Spawning chest!")
+		
+		if not chest_scene:
+			print("ERROR: chest_scene is null!")
+			return
+		
+		var chest = chest_scene.instantiate()
+		chest.position = global_position
+		
+		print("Chest position: ", chest.position)
+		print("Chest parent: ", get_parent())
+		
+		get_parent().call_deferred("add_child", chest)
+		print("✅ Chest added to scene!")
+	else:
+		print("❌ No chest (rolled ", roll, " vs ", chest_drop_chance, ")")

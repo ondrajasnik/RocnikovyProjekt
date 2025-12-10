@@ -22,20 +22,40 @@ test.tscn::PackedScene::3566301953465693758::1764160132::0::1::::<><><>0<>0<><>:
 joystick_base_outline.png::CompressedTexture2D::3288008411285325467::1764160132::1764160321::1::::<><><>0<>0<>eb5e11150b7a4a5b03a5cbb685339ebd<>res://.godot/imported/joystick_base_outline.png-1529fbc0a23b5af9e961e1a3d047aa0b.ctex::
 joystick_tip.png::CompressedTexture2D::3132432681801126628::1764160132::1764160321::1::::<><><>0<>0<>c4d4c15e5c86a3a010dd4b49675d454b<>res://.godot/imported/joystick_tip.png-95989d4495f4fb8387b93ac5f53ed669.ctex::
 joystick_tip_arrows.png::CompressedTexture2D::8548255698028078709::1764160132::1764160322::1::::<><><>0<>0<>9ee2cf5e411d09fc41cb0803aa25ff4c<>res://.godot/imported/joystick_tip_arrows.png-cd5fb367005f4e3e79a192d69a489560.ctex::
-::res://assets/::1764674275
-::res://assets/buttons/::1764673808
+::res://assets/::1765370224
+::res://assets/buttons/::1765395841
 bar.png::CompressedTexture2D::4830862231090067499::1764160132::1764160321::1::::<><><>0<>0<>101726b5faaac71d33bfa514eeb17e8c<>res://.godot/imported/bar.png-a3b0fdc6f6c3cf03a2b8914a303959d8.ctex::
 books.png::CompressedTexture2D::2049815823636811421::1764160132::1764160322::1::::<><><>0<>0<>ae50b0b1738416585db6750e8f25be74<>res://.godot/imported/books.png-3c648de20f2f55d1ad741fd2c17f2d01.ctex::
 booksBetter.png::CompressedTexture2D::4208231937933614209::1764160132::1764160323::1::::<><><>0<>0<>597a47ebaa6cebcc89614f416aac788e<>res://.godot/imported/booksBetter.png-ab4fb0f8579451f7d286b233c8d6bf3a.ctex::
+frost_ring.png::CompressedTexture2D::5978343244176719207::1765392445::1765395841::1::::<><><>0<>0<>560752be8bde6995a4985ab2b5d8e0b1<>res://.godot/imported/frost_ring.png-add5531369dc4ca7d5408b0752cd2ab7.ctex::
 health.png::CompressedTexture2D::222885379174203056::1764160132::1764160322::1::::<><><>0<>0<>2570a465221557b994c1f6ed80786c27<>res://.godot/imported/health.png-f920044cdcdd953eb5b0d3947dc62c50.ctex::
+lighting_aura.png::CompressedTexture2D::5026525590988149659::1765392333::1765395841::1::::<><><>0<>0<>0d395812acd34801368f6912c03d219d<>res://.godot/imported/lighting_aura.png-731c74f715e48fb990b2ba370c229186.ctex::
 loading_screen.jpg::CompressedTexture2D::1573336264682265053::1764671870::1764673808::1::::<><><>0<>0<>9ce712b1399bc6ce8eabc5486f55ab06<>res://.godot/imported/loading_screen.jpg-31c890577cbc6f119fad72c210b66282.ctex::
+lucky_dice.png::CompressedTexture2D::1582795701085066394::1765392231::1765395841::1::::<><><>0<>0<>4474bb333fab7eaf4862d83bf8e2d812<>res://.godot/imported/lucky_dice.png-f6e0b03023acb55394caf02186918ca3.ctex::
 nwm.png::CompressedTexture2D::4466781961114491350::1764160132::1764160322::1::::<><><>0<>0<>e580ef0b9e99d6da7f06f24f65d746be<>res://.godot/imported/nwm.png-2db160119bb02dc3c8f7d9bf98b39176.ctex::
+shadow_cloak.png::CompressedTexture2D::7273892289956936002::1765392285::1765395841::1::::<><><>0<>0<>16ecd0f827a60b2afac11c48c1ca5d77<>res://.godot/imported/shadow_cloak.png-097823eea52c5516148437f35fd36666.ctex::
 UIbuttons.png::CompressedTexture2D::821650352663832645::1764160132::1764160322::1::::<><><>0<>0<>92641b9fade0a5a1f0d81c3263592574<>res://.godot/imported/UIbuttons.png-5e7e1258ade5a3b21ae5905fea87a3a1.ctex::
 ui_table_Level.png::CompressedTexture2D::8442958215725442381::1764160132::1764160322::1::::<><><>0<>0<>16e9f4bc08e95a151a9d65e05aedf446<>res://.godot/imported/ui_table_Level.png-7110e787d555c27dcb6552035cca5b4b.ctex::
 ::res://assets/enemy/::1764161897
 skeleton_sprites.png::CompressedTexture2D::1371838877928246882::1764160132::1764160322::1::::<><><>0<>0<>5b5090082d75016f868477def976fce3<>res://.godot/imported/skeleton_sprites.png-aa546b71fa93302a7a2a121b3141ab81.ctex::
 ::res://assets/fonts/::1764674498
 MedievalSharp-Regular.ttf::FontFile::9018418459570618139::1764674082::1764674498::1::::<><><>0<>0<>d37d46e0559bdeea750d2deedf7c39a4<>res://.godot/imported/MedievalSharp-Regular.ttf-e22c9abdabfcb4fa340d0849f73aa98d.fontdata::
+::res://assets/items/::1765396383
+blue_potion.png::CompressedTexture2D::6961891778437322450::1765395948::1765396386::1::::<><><>0<>0<>dbd287a19029e3c88a8822c0bd0d1048<>res://.godot/imported/blue_potion.png-29dbff2f47c9455e5b926728c600ae74.ctex::
+boots.png::CompressedTexture2D::5065231484544064797::1765395819::1765396386::1::::<><><>0<>0<>44ce7f6c361bf4341b5a405686196f6e<>res://.godot/imported/boots.png-9d2719697bf4cc81970933cca3bab496.ctex::
+chest.png::CompressedTexture2D::261234629805614644::1765387146::1765387148::1::::<><><>0<>0<>41205356f8037766fb498712e916bd71<>res://.godot/imported/chest.png-f90f7d2c3fd503848afaa1a787775ee9.ctex::
+fireboots.png::CompressedTexture2D::8476648324769033969::1765395819::1765396386::1::::<><><>0<>0<>d6e0655f2c5d52802a4bb4fd73f64cbe<>res://.godot/imported/fireboots.png-61e3a1bf29132f7974b5b97d8cdb7f68.ctex::
+frost_ring.png::CompressedTexture2D::7033964199162668730::1765395819::1765396386::1::::<><><>0<>0<>bd3b801ffaabeacbf62f85745009c284<>res://.godot/imported/frost_ring.png-4929ce45cb3bd0029d3d4a028e818eb5.ctex::
+iron_shield.png::CompressedTexture2D::6440288496018110743::1765395819::1765396386::1::::<><><>0<>0<>99a542ff097bb4ea819969ceeff732d2<>res://.godot/imported/iron_shield.png-00388eb50d76cf4619c62a670d353d70.ctex::
+itemsbg.png::CompressedTexture2D::737596792815022621::1765392016::1765396387::1::::<><><>0<>0<>bc8b2af9a9ca867c3bbc30af8fd2b16c<>res://.godot/imported/itemsbg.png-a9f99d15d8f77303228169699c566e5e.ctex::
+lightning_aura.png::CompressedTexture2D::2846487577666541224::1765396320::1765396386::1::::<><><>0<>0<>397464bd53824d8b787bd28ba0c2c029<>res://.godot/imported/lightning_aura.png-d48624b7d1e7dbaa45ef4b555391db44.ctex::
+lightning_bolt.png::CompressedTexture2D::934222153202853341::1765395819::1765396387::1::::<><><>0<>0<>08b22f3234c11012de40b60dab596174<>res://.godot/imported/lightning_bolt.png-30e5e37bab68767c7ce1aa82300f914f.ctex::
+lucky_dice.png::CompressedTexture2D::7371776680750845827::1765395891::1765396387::1::::<><><>0<>0<>3fdd2d5fcda6432ecf2553c7f7e9af09<>res://.godot/imported/lucky_dice.png-01d4c904d2e1a8c1e9a8aa1f96dbe50e.ctex::
+red_apple.png::CompressedTexture2D::6259818277942502882::1765395819::1765396387::1::::<><><>0<>0<>db84405e594ef39c6c37c4326002a99f<>res://.godot/imported/red_apple.png-79888cc2f6c33bdfe5734c10f37f2c2f.ctex::
+ruby.png::CompressedTexture2D::9074390050090894711::1765396322::1765396387::1::::<><><>0<>0<>f6136d9ae728aa12946b533d77b8dcec<>res://.godot/imported/ruby.png-aab8c1aaf4e27fcc70f85c3f0c4e4223.ctex::
+shadow_cloak.png::CompressedTexture2D::7818919020620002184::1765395819::1765396387::1::::<><><>0<>0<>a571ae3fcd7cd1218755cd71c370ed0b<>res://.godot/imported/shadow_cloak.png-e7e539aaa7edaedf4ce8a719b2ef732f.ctex::
+sharp_dagger.png::CompressedTexture2D::6143289779288344379::1765395819::1765396387::1::::<><><>0<>0<>b9a630fb703ced53b855cd1379ae06de<>res://.godot/imported/sharp_dagger.png-65e572eda5676c9abc41260a7951cfb9.ctex::
+star_crown.png::CompressedTexture2D::8316443832395325640::1765395819::1765396387::1::::<><><>0<>0<>5e1d2f7e55de5bcc25b95b1192c8ad2b<>res://.godot/imported/star_crown.png-8a3d4013a1a80a773d11cd70ee3fd5ff.ctex::
 ::res://assets/map/::1764186343
 TX Plant.png::CompressedTexture2D::4441992369082252927::1764160132::1764160323::1::::<><><>0<>0<>2d8a04986592b0ca6ed672de30fb8064<>res://.godot/imported/TX Plant.png-54cbd5078a897c9f6997a6a86f2225b9.ctex::
 TX Player.png::CompressedTexture2D::5486152748433307326::1764160132::1764160322::1::::<><><>0<>0<>2c8f55f029a70ebf106e9a6da728f196<>res://.godot/imported/TX Player.png-91c069ac2d5351f82b617a547e50033a.ctex::
@@ -50,12 +70,12 @@ TX Tileset Wall.png::CompressedTexture2D::7518480457202098255::1764160132::17641
 ::res://assets/map/Extra/::1764161897
 TX Plant with Shadow.png::CompressedTexture2D::9148579105913905027::1764160132::1764160322::1::::<><><>0<>0<>9895633993830cb717b0beddcecb044e<>res://.godot/imported/TX Plant with Shadow.png-ec8d6dfdc7fb8e679e588990bb67e0d4.ctex::
 TX Props with Shadow.png::CompressedTexture2D::3630928238516062042::1764160132::1764160322::1::::<><><>0<>0<>4f317f2bbdc1ee0f7129790905b0df50<>res://.godot/imported/TX Props with Shadow.png-29b4d7b8262710dd38ec5e2a3c9ad77b.ctex::
-::res://assets/PlayerMageTexture/::1765194908
+::res://assets/PlayerMageTexture/::1765194912
 fireball.png::CompressedTexture2D::2329693839832038095::1764160132::1764160319::1::::<><><>0<>0<>c1e9e2ca42669584819a212c01e7de76<>res://.godot/imported/fireball.png-58c59d2fbd6affc271b5da33890fa3fe.ctex::
 orb_exp.png::CompressedTexture2D::1995313358360063554::1764160132::1764160319::1::::<><><>0<>0<>7a517bc987946d27aa10e0d7b04680dc<>res://.godot/imported/orb_exp.png-6ef026880901543498c7bb3d87b4f1f4.ctex::
 orb_gold.png::CompressedTexture2D::4980690153592189581::1764160132::1764160320::1::::<><><>0<>0<>1d4754a60c17c46cb5383ff193bb5bb2<>res://.godot/imported/orb_gold.png-1aa9a43035e329a76ebfcf7800c94946.ctex::
 PlayerMageIdle.png::CompressedTexture2D::2298710943509560698::1765194908::1765194912::1::::<><><>0<>0<>3390227ce6862e83b57369374e142d2f<>res://.godot/imported/PlayerMageIdle.png-5fa49a8d53598cfd5e56465920802e13.ctex::
-::res://assets/upgrades/::1764673532
+::res://assets/upgrades/::1765370311
 2_book.png::CompressedTexture2D::4057573338765718382::1764160132::1764160320::1::::<><><>0<>0<>df2660c1b387398336cdd9a67407d79d<>res://.godot/imported/2_book.png-560f99ddbdca68ca76d3e14be03886b8.ctex::
 3_book.png::CompressedTexture2D::1356921297086088999::1764160132::1764160320::1::::<><><>0<>0<>37fd87282fe9c0040cef6a002a9332c7<>res://.godot/imported/3_book.png-5d6e9c9b4295f38f7999394ea0ce4e3d.ctex::
 4_book.png::CompressedTexture2D::6940941997056405797::1764160132::1764160320::1::::<><><>0<>0<>f9368e8237ca577c82fbf9f36e03347c<>res://.godot/imported/4_book.png-db8e5549ebc6917341d03964daa7162a.ctex::
@@ -68,7 +88,6 @@ exp_book.png::CompressedTexture2D::3236934864794641630::1764160132::1764160320::
 health.png::CompressedTexture2D::9190175497218207471::1764160132::1764160320::1::::<><><>0<>0<>9b7010ce64913737c4a9981360264564<>res://.godot/imported/health.png-300a781b262f9935c48c7d1bb82fa848.ctex::
 health_regen.png::CompressedTexture2D::4833585409982619926::1764160132::1764160321::1::::<><><>0<>0<>59d4373bf451383f68a562b9d6555791<>res://.godot/imported/health_regen.png-ecad8d22d81c4ec5eb588da30510f469.ctex::
 lifesteal.png::CompressedTexture2D::6522608751385984864::1764160132::1764160321::1::::<><><>0<>0<>4c6860fc036ee16ee70f4525888f5a44<>res://.godot/imported/lifesteal.png-5d6a9caa4503e0f3cfafa16738274d74.ctex::
-luck.png::CompressedTexture2D::769945161043506228::1764160132::1764160321::1::::<><><>0<>0<>f40b8244e6a651ce6d163a46647ceac0<>res://.godot/imported/luck.png-c601a9e7895d50056fcdf30b35f3677d.ctex::
 menu.jpg::CompressedTexture2D::166782020746517683::1764671907::1764673532::1::::<><><>0<>0<>11742f4242e5b09d53c8e0224c9dd762<>res://.godot/imported/menu.jpg-24117b8808439d93b99596d7a85fd7cb.ctex::
 movement_speed.png::CompressedTexture2D::5226812710509649700::1764160132::1764160321::1::::<><><>0<>0<>27c1bc84ed11cca8ce43c893a53c188a<>res://.godot/imported/movement_speed.png-6509534ce648ce04a74282022f90b2ce.ctex::
 projectile_multiplayer_book.png::CompressedTexture2D::486988539837030825::1764160132::1764160321::1::::<><><>0<>0<>553eba4cbfe6d6d81042da991fb9de36<>res://.godot/imported/projectile_multiplayer_book.png-4272b6256077e535e354eba5086d4eb3.ctex::
@@ -80,12 +99,15 @@ step_cloth1.ogg::AudioStreamOggVorbis::632458457279323827::1764590570::176461324
 step_cloth2.ogg::AudioStreamOggVorbis::4908386211913426660::1764590570::1764613244::1::::<><><>0<>0<>796d985f843b2d38d7a5032cac43708e<>res://.godot/imported/step_cloth2.ogg-52e897a1ec27aa2e3cffdb6053ad7945.oggvorbisstr::
 step_cloth3.ogg::AudioStreamOggVorbis::931273822788299316::1764590570::1764613244::1::::<><><>0<>0<>67852d8d25d18117762e6d7c2e5a6b32<>res://.godot/imported/step_cloth3.ogg-118bfa7f0c94de72c5b5f465a859364c.oggvorbisstr::
 step_cloth4.ogg::AudioStreamOggVorbis::5322940339677009593::1764590570::1764613244::1::::<><><>0<>0<>4a2d62f56e7ee44438a0a01af1c319d4<>res://.godot/imported/step_cloth4.ogg-8808176874afb708bc443e33926d43dd.oggvorbisstr::
-::res://scenes/::1765194623
+::res://scenes/::1765391616
+chest.tscn::PackedScene::-1::1765385643::0::1::::<><><>0<>0<><>::res://scripts/chest.gd<>res://assets/items/chest.png
+chest_ui.tscn::PackedScene::-1::1765391011::0::1::::<><><>0<>0<><>::
+dropped_item.tscn::PackedScene::-1::1765391624::0::1::::<><><>0<>0<><>::
 enemy.tscn::PackedScene::8781385243563323585::1764670626::0::1::::<><><>0<>0<><>::uid://cces30u64hoev::::res://scripts/enemy.gd<>uid://tsr8rxqbxcvi::::res://assets/enemy/skeleton_sprites.png
 game_over_menu.tscn::PackedScene::-1::1764160132::0::1::::<><><>0<>0<><>::res://scripts/game_over_menu.gd
 leaderboard_popup.tscn::PackedScene::-1::1764193690::0::1::::<><><>0<>0<><>::
 level_up_menu.tscn::PackedScene::-1::1764160132::0::1::::<><><>0<>0<><>::res://scripts/level_up_menu.gd<>res://assets/buttons/ui_table_Level.png
-mage.tscn::PackedScene::9216169099242727744::1765194623::0::1::::<><><>0<>0<><>::uid://70ro0adv50ss::::res://assets/PlayerMageTexture/PlayerMageIdle.png<>uid://bxvbo78jrarna::::res://scripts/mage.gd
+mage.tscn::PackedScene::9216169099242727744::1765195009::0::1::::<><><>0<>0<><>::uid://70ro0adv50ss::::res://assets/PlayerMageTexture/PlayerMageIdle.png<>uid://bxvbo78jrarna::::res://scripts/mage.gd
 main.tscn::PackedScene::8407348121278138674::1764837073::0::1::::<><><>0<>0<><>::uid://d4km7udpob73a::::res://scenes/mage.tscn<>uid://dmr0fcamx7t56::::res://addons/virtual_joystick/virtual_joystick_scene.tscn<>uid://c026wyovm1gdj::::res://assets/map/TX Struct.png<>uid://c65tg7whw1770::::res://scenes/ui.tscn<>uid://dfeajlrqtjk04::::res://assets/map/TX Tileset Wall.png<>uid://b6evw76bhlbbf::::res://scripts/enemy_spawner.gd<>uid://cnlmsr5sh5vh3::::res://assets/map/TX Tileset Stone Ground.png<>res://scenes/level_up_menu.tscn<>uid://bapgfkywbeqet::::res://assets/map/TX Props.png<>uid://b4jy726sxjem6::::res://assets/map/TX Plant.png<>res://scenes/game_over_menu.tscn<>uid://ibx7o2qtqkuj::::res://assets/map/TX Shadow Plant.png<>uid://dpausmenu123::::res://scenes/pause_menu.tscn<>uid://bcl0pwvk6twgu::::res://assets/map/TX Shadow.png<>uid://5qw1i5dg6lcp::::res://assets/map/TX Tileset Grass.png
 main_menu.tscn::PackedScene::-1::1764192079::0::1::::<><><>0<>0<><>::res://scripts/main_menu.gd
 name_input_popup.tscn::PackedScene::-1::1764191561::0::1::::<><><>0<>0<><>::
@@ -96,15 +118,18 @@ projectile.tscn::PackedScene::-1::1764160132::0::1::::<><><>0<>0<><>::res://scri
 settings_popup.tscn::PackedScene::-1::1764581992::0::1::::<><><>0<>0<><>::
 splash_screen.tscn::PackedScene::32949157749042::1764700053::0::1::::<><><>0<>0<><>::res://scripts/splash_screen.gd<>res://assets/buttons/loading_screen.jpg<>res://assets/fonts/MedievalSharp-Regular.ttf
 ui.tscn::PackedScene::7011792905494400617::1764160132::0::1::::<><><>0<>0<><>::uid://df75iob8nvrc::::res://assets/buttons/health.png<>uid://ca3duh8ybajup::::res://assets/buttons/bar.png<>uid://bii23haldsxeq::::res://scripts/ui.gd<>uid://cc7xiephxwxhd::::res://assets/PlayerMageTexture/orb_gold.png
-::res://scripts/::1765194479
+::res://scripts/::1765391750
 abilities.gd::GDScript::1165147521935858436::1764160132::0::1::::<>Node<><>0<>0<><>::
-enemy.gd::GDScript::4922620819205024701::1764186030::0::1::::<>CharacterBody2D<><>0<>0<><>::
-enemy_spawner.gd::GDScript::4571848420493712339::1764837061::0::1::::<>Node2D<><>0<>0<><>::
+chest.gd::GDScript::2543731420038394350::1765390900::0::1::::<>Area2D<><>0<>0<><>::
+chest_ui.gd::GDScript::9214361864923210539::1765391652::0::1::::<>CanvasLayer<><>0<>0<><>::
+dropped_item.gd::GDScript::5220018615257587325::1765391636::0::1::::<>Area2D<><>0<>0<><>::
+enemy.gd::GDScript::4922620819205024701::1765373357::0::1::::<>CharacterBody2D<><>0<>0<><>::
+enemy_spawner.gd::GDScript::4571848420493712339::1765211116::0::1::::<>Node2D<><>0<>0<><>::
 game_over_menu.gd::GDScript::5476290578732328118::1764160132::0::1::::<>CanvasLayer<><>0<>0<><>::
 game_settings.gd::GDScript::1065411943003789679::1764582758::0::1::::<>Node<><>0<>0<><>::
 leaderboard_popup.gd::GDScript::4800969983308539788::1764193904::0::1::::<>CanvasLayer<><>0<>0<><>::
-level_up_menu.gd::GDScript::206695653397001603::1764621711::0::1::::<>CanvasLayer<><>0<>0<><>::
-mage.gd::GDScript::4044203470467943150::1765194761::0::1::::<>RigidBody2D<><>0<>0<><>::
+level_up_menu.gd::GDScript::206695653397001603::1765369272::0::1::::<>CanvasLayer<><>0<>0<><>::
+mage.gd::GDScript::4044203470467943150::1765372451::0::1::::<>RigidBody2D<><>0<>0<><>::
 main.gd::GDScript::3323181231106959447::1764160132::0::1::::<>Node<><>0<>0<><>::
 main_menu.gd::GDScript::775574083778907175::1764587166::0::1::::<>Control<><>0<>0<><>::
 name_input_popup.gd::GDScript::4205620714776972174::1764191590::0::1::::<>CanvasLayer<><>0<>0<><>::
@@ -112,7 +137,7 @@ orb.gd::GDScript::8583150485404213439::1764160132::0::1::::<>Area2D<><>0<>0<><>:
 pause_menu.gd::GDScript::411441733677249972::1764160132::0::1::::<>CanvasLayer<><>0<>0<><>::
 player_profile.gd::GDScript::2745591749304237302::1764192007::0::1::::<>Node<><>0<>0<><>::
 privacy_popup.gd::GDScript::8120695088002764822::1764583278::0::1::::<>CanvasLayer<><>0<>0<><>::
-projectile.gd::GDScript::7453971653735293043::1764160132::0::1::::<>Area2D<><>0<>0<><>::
+projectile.gd::GDScript::7453971653735293043::1765269048::0::1::::<>Area2D<><>0<>0<><>::
 settings_popup.gd::GDScript::6047962835499076246::1764582007::0::1::::<>CanvasLayer<><>0<>0<><>::
 splash_screen.gd::GDScript::1692235801731204569::1764700206::0::1::::<>CanvasLayer<><>0<>0<><>::
 supabase_manager.gd::GDScript::5855560811897507262::1764189440::0::1::::<>Node<><>0<>0<><>::

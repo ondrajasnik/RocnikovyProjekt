@@ -28,17 +28,30 @@ var speed_multiplier: float = 1.0
 var attack_speed_multiplier: float = 1.0
 
 # Critical hit system
-var critical_chance: float = 0.10  # Změněno z 15% na 10%
+var critical_chance: float = 0.10
 var critical_multiplier: float = 2.0
+
+# --- LEGENDARY ITEMS ---
+var has_fireboots: bool = false
+var has_lightning_aura: bool = false
+var has_frost_ring: bool = false
+var has_shadow_cloak: bool = false
+var has_star_crown: bool = false
+var dodge_chance: float = 0.0
+
+# Legendary item timers
+var lightning_aura_timer: float = 0.0
+var star_crown_timer: float = 0.0
+var fire_trail_timer: float = 0.0
 
 # --- Level systém (rychlejší!) ---
 var level: int = 1
 var current_exp: int = 0
-var exp_to_next_level: int = 50  # Změněno z 100 na 50!
-var exp_multiplier: float = 1.3  # Změněno z 1.5 na 1.3 (pomalejší růst)
+var exp_to_next_level: int = 50
+var exp_multiplier: float = 1.3
 
 # --- Gold a Kills systém ---
-var gold: int = 0
+var gold: int = 500
 var kills: int = 0
 
 # --- Luck systém ---
@@ -129,6 +142,7 @@ func _physics_process(delta):
 	_handle_movement(delta)
 	_handle_attack(delta)
 	_regenerate_hp(delta)
+	_update_legendary_items(delta)  # ← NOVÉ!
 	
 	if not is_dead:
 		survival_time += delta
@@ -162,6 +176,7 @@ func _handle_movement(delta):
 		linear_velocity = input_vector * move_speed
 		
 		_handle_footsteps(delta)
+		_handle_fire_trail(delta)  # ← NOVÉ!
 		
 		# Animation
 		if abs(input_vector.x) > abs(input_vector.y):
@@ -253,7 +268,142 @@ func _regenerate_hp(delta):
 			current_hp = min(current_hp + int(hp_regen), max_hp)
 			regen_timer = 0.0
 
-# Aktualizuj všechny statistiky podle multiplikátorů ← NOVÉ!
+# === LEGENDARY ITEMS LOGIC === ← NOVÉ!
+
+func _update_legendary_items(delta):
+	# ⚡ Lightning Aura - zap každé 3s
+	if has_lightning_aura:
+		lightning_aura_timer += delta
+		if lightning_aura_timer >= 3.0:
+			lightning_aura_timer = 0.0
+			_trigger_lightning_aura()
+	
+	# 🌟 Star Crown - auto shoot každé 0.5s
+	if has_star_crown:
+		star_crown_timer += delta
+		if star_crown_timer >= 0.5:
+			star_crown_timer = 0.0
+			_trigger_star_crown()
+	
+	# ❄️ Frost Ring - slow enemies nearby (processed každý frame)
+	if has_frost_ring:
+		_apply_frost_ring()
+
+func _handle_fire_trail(delta):
+	# 🔥 Fireboots - spawn fire trail každých 0.1s
+	if not has_fireboots:
+		return
+	
+	fire_trail_timer += delta
+	if fire_trail_timer >= 0.1:
+		fire_trail_timer = 0.0
+		_spawn_fire_trail()
+
+func _spawn_fire_trail():
+	# Vytvoř fire trail node
+	var fire = Area2D.new()
+	fire.name = "FireTrail"
+	fire.position = global_position
+	fire.collision_layer = 0
+	fire.collision_mask = 2  # Detect enemies
+	
+	# Sprite
+	var sprite = Sprite2D.new()
+	sprite.modulate = Color(1.0, 0.5, 0.0, 0.8)
+	sprite.scale = Vector2(0.5, 0.5)
+	fire.add_child(sprite)
+	
+	# Collision
+	var collision = CollisionShape2D.new()
+	var shape = CircleShape2D.new()
+	shape.radius = 15
+	collision.shape = shape
+	fire.add_child(collision)
+	
+	get_parent().add_child(fire)
+	
+	# Damage enemies that touch
+	var timer_node = Timer.new()
+	timer_node.wait_time = 0.5
+	timer_node.one_shot = false
+	fire.add_child(timer_node)
+	
+	timer_node.timeout.connect(func():
+		for body in fire.get_overlapping_bodies():
+			if body.is_in_group("enemies") and body.has_method("take_damage"):
+				body.take_damage(5, false)
+	)
+	timer_node.start()
+	
+	# Fade out and delete after 1.5s
+	var tween = create_tween()
+	tween.tween_property(sprite, "modulate:a", 0.0, 1.5)
+	tween.finished.connect(func(): fire.queue_free())
+
+func _trigger_lightning_aura():
+	print("⚡ Lightning Aura triggered!")
+	
+	var nearest = _find_nearest_enemies(1)
+	if nearest.size() == 0:
+		return
+	
+	var enemy = nearest[0]
+	if enemy and is_instance_valid(enemy) and enemy.has_method("take_damage"):
+		enemy.take_damage(50, false)
+		
+		# Visual effect - lightning bolt
+		var line = Line2D.new()
+		line.add_point(global_position)
+		line.add_point(enemy.global_position)
+		line.width = 3
+		line.default_color = Color(0.8, 0.8, 1.0, 1.0)
+		get_parent().add_child(line)
+		
+		await get_tree().create_timer(0.1).timeout
+		line.queue_free()
+
+func _trigger_star_crown():
+	var nearest = _find_nearest_enemies(1)
+	if nearest.size() == 0:
+		return
+	
+	var enemy = nearest[0]
+	
+	# Shoot extra projectile
+	var projectile = projectile_scene.instantiate()
+	projectile.position = global_position + Vector2(0, -20)  # Spawn above head
+	projectile.direction = (enemy.global_position - global_position).normalized()
+	projectile.target_enemy = enemy
+	projectile.damage = damage
+	projectile.is_critical = false
+	projectile.lifesteal_percent = lifesteal
+	projectile.owner_mage = self
+	projectile.modulate = Color(1.0, 1.0, 0.5)  # Golden tint
+	get_parent().add_child(projectile)
+
+func _apply_frost_ring():
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	
+	for enemy in enemies:
+		if not is_instance_valid(enemy):
+			continue
+		
+		var distance = global_position.distance_to(enemy.global_position)
+		
+		# Slow enemies within 100px
+		if distance <= 100:
+			if "move_speed" in enemy:
+				# Temporarily reduce speed (will be reset next frame by enemy)
+				var original_speed = enemy.move_speed
+				enemy.move_speed = original_speed * 0.5
+				
+				# Visual effect - blue tint
+				if enemy.has_node("Sprite2D"):
+					var enemy_sprite = enemy.get_node("Sprite2D")
+					enemy_sprite.modulate = Color(0.7, 0.7, 1.0)
+
+# === END LEGENDARY ITEMS ===
+
 func _update_stats():
 	max_hp = int(base_max_hp * hp_multiplier)
 	damage = int(base_damage * damage_multiplier)
@@ -261,7 +411,6 @@ func _update_stats():
 	move_speed = base_move_speed * speed_multiplier
 	attack_speed = base_attack_speed * attack_speed_multiplier
 	
-	# Heal při level up (aby HP nenarostlo jen max)
 	current_hp = min(current_hp, max_hp)
 	
 	print("Stats updated! HP:", max_hp, " DMG:", damage, " Regen:", hp_regen, " Speed:", move_speed)
@@ -278,7 +427,6 @@ func level_up():
 	current_exp -= exp_to_next_level
 	exp_to_next_level = int(exp_to_next_level * exp_multiplier)
 	
-	# Heal při level up
 	current_hp = max_hp
 	
 	print("🎉 LEVEL UP! Level ", level)
@@ -294,6 +442,19 @@ func add_kill():
 
 func take_damage(amount: int):
 	if is_dead:
+		return
+	
+	# 💀 Shadow Cloak - dodge chance
+	if has_shadow_cloak and randf() < dodge_chance:
+		print("💀 DODGED! No damage taken!")
+		
+		# Visual effect - fade
+		if sprite:
+			var original_alpha = sprite.modulate.a
+			sprite.modulate.a = 0.3
+			await get_tree().create_timer(0.1).timeout
+			sprite.modulate.a = original_alpha
+		
 		return
 	
 	var reduced = amount * (1.0 - defense)

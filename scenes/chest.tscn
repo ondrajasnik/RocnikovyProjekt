@@ -1,0 +1,130 @@
+[gd_scene load_steps=9 format=3 uid="uid://chest_scene_001"]
+
+[ext_resource type="Script" path="res://scripts/chest.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/items/chest.png" id="2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idle"]
+atlas = ExtResource("2")
+region = Rect2(0, 0, 127, 133)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_empty"]
+atlas = ExtResource("2")
+region = Rect2(127, 0, 128, 133)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_open"]
+atlas = ExtResource("2")
+region = Rect2(255, 0, 127, 133)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(60, 60)
+
+[sub_resource type="Animation" id="Animation_idle"]
+resource_name = "idle"
+length = 1.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -5), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_idle")]
+}
+
+[sub_resource type="Animation" id="Animation_open"]
+resource_name = "open"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [SubResource("AtlasTexture_idle"), SubResource("AtlasTexture_open")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.5, 0.5), Vector2(0.6, 0.6), Vector2(0.5, 0.5)]
+}
+
+[sub_resource type="Animation" id="Animation_empty"]
+resource_name = "empty"
+length = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_empty")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1"]
+_data = {
+"empty": SubResource("Animation_empty"),
+"idle": SubResource("Animation_idle"),
+"open": SubResource("Animation_open")
+}
+
+[node name="Chest" type="Area2D"]
+z_index = 1000
+collision_layer = 8
+collision_mask = 1
+script = ExtResource("1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_idle")
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_1")
+}
+autoplay = "idle"
