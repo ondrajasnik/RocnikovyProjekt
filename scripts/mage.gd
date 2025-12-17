@@ -32,7 +32,7 @@ var critical_chance: float = 0.10
 var critical_multiplier: float = 2.0
 
 # --- LEGENDARY ITEMS ---
-var has_fireboots: bool = false
+var has_fireboots: bool = true
 var has_lightning_aura: bool = false
 var has_frost_ring: bool = false
 var has_shadow_cloak: bool = false
@@ -72,6 +72,14 @@ var regen_timer: float = 0.0
 var projectile_scene = preload("res://scenes/projectile.tscn")
 var level_up_menu_scene = preload("res://scenes/level_up_menu.tscn")
 
+# Fire walk frames
+var fire_frames = [
+	preload("res://assets/fire_walk/fire_0.png"),
+	preload("res://assets/fire_walk/fire_1.png"),
+	preload("res://assets/fire_walk/fire_2.png"),
+	preload("res://assets/fire_walk/fire_3.png")
+]
+
 # --- References ---
 var joystick: Node = null
 var level_up_menu = null
@@ -103,7 +111,10 @@ func _ready():
 	
 	# === PŘIDEJ PLAYER GROUP ===
 	add_to_group("player")
-	name = "PlayerMage"  # ← Ujisti se že má správné jméno!
+	name = "PlayerMage"
+	
+	# === NASTAV Z-INDEX ===
+	z_index = 10  # ← Hráč bude NAD particles!
 	
 	# Najdi level up menu
 	level_up_menu = get_tree().root.find_child("LevelUpMenu", true, false)
@@ -418,55 +429,114 @@ func _handle_fire_trail(delta):
 		last_fire_position = global_position
 
 func _spawn_fire_trail():
-	var fire = Node2D.new()
-	fire.name = "FireTrail"
-	fire.position = global_position
-	fire.z_index = 5
+	# Spawn 5-8 fire sprites náhodně kolem pozice
+	var fire_count = randi_range(5, 8)
 	
-	# Sprite
-	var rect = ColorRect.new()
-	rect.color = Color(1.0, 0.4, 0.0, 0.8)
-	rect.size = Vector2(30, 30)
-	rect.position = Vector2(-15, -15)
-	fire.add_child(rect)
+	for i in range(fire_count):
+		var fire = AnimatedSprite2D.new()
+		fire.name = "FireWalk_" + str(i)
+		
+		# Vytvoř SpriteFrames
+		fire.sprite_frames = SpriteFrames.new()
+		fire.sprite_frames.add_animation("burn")
+		
+		# Přidej všechny 4 framy
+		for frame_texture in fire_frames:
+			fire.sprite_frames.add_frame("burn", frame_texture)
+		
+		# Nastav FPS (rychlost animace)
+		fire.sprite_frames.set_animation_speed("burn", 12.0)
+		fire.sprite_frames.set_animation_loop("burn", true)
+		
+		# Spusť animaci
+		fire.play("burn")
+		
+		# Náhodná pozice kolem hráče
+		var offset = Vector2(
+			randf_range(-15, 15),
+			randf_range(-15, 15)
+		)
+		fire.position = global_position + offset
+		fire.z_index = 9  # ← POD hráčem (10), ale NAD mapou!
+		
+		# Náhodná velikost (tvoje upravená)
+		var scale_factor = randf_range(0.06, 0.09)
+		fire.scale = Vector2(scale_factor, scale_factor)
+		
+		# Náhodná rotace
+		fire.rotation = randf_range(0, TAU)
+		
+		# Náhodný flip
+		fire.flip_h = randf() > 0.5
+		fire.flip_v = randf() > 0.7
+		
+		# Náhodná průhlednost
+		fire.modulate.a = randf_range(0.7, 1.0)
+		
+		get_parent().add_child(fire)
+		
+		# === PARTICLE RISE ANIMATION ===
+		var tween = create_tween()
+		tween.set_parallel(true)
+		
+		# Letí nahoru
+		var fly_height = randf_range(50, 90)
+		tween.tween_property(fire, "position:y", fire.position.y - fly_height, randf_range(0.7, 1.3))
+		
+		# Drift do stran
+		var drift = randf_range(-25, 25)
+		tween.tween_property(fire, "position:x", fire.position.x + drift, randf_range(0.7, 1.3))
+		
+		# Fade out
+		tween.tween_property(fire, "modulate:a", 0.0, randf_range(0.7, 1.3))
+		
+		# Zmenšení
+		tween.tween_property(fire, "scale", Vector2(scale_factor * 0.2, scale_factor * 0.2), randf_range(0.7, 1.3))
+		
+		# Rotace při letu
+		tween.tween_property(fire, "rotation", fire.rotation + randf_range(-PI, PI), randf_range(0.7, 1.3))
+		
+		# Cleanup
+		tween.finished.connect(func():
+			if is_instance_valid(fire):
+				fire.queue_free()
+		)
 	
-	# Damage area
+	# === DAMAGE AREA ===
 	var area = Area2D.new()
+	area.position = global_position
 	area.collision_layer = 0
 	area.collision_mask = 2
+	area.z_index = 9  # ← Také 9
 	
 	var collision = CollisionShape2D.new()
 	var shape = CircleShape2D.new()
-	shape.radius = 20
+	shape.radius = 30
 	collision.shape = shape
 	area.add_child(collision)
-	fire.add_child(area)
 	
-	get_parent().add_child(fire)
+	get_parent().add_child(area)
 	
 	# Damage timer
 	var timer = Timer.new()
-	timer.wait_time = 0.2
+	timer.wait_time = 0.3
 	timer.one_shot = false
-	fire.add_child(timer)
+	area.add_child(timer)
 	
 	timer.timeout.connect(func():
 		for body in area.get_overlapping_bodies():
 			if body.is_in_group("enemies") and body.has_method("take_damage"):
-				body.take_damage(8, false)
+				body.take_damage(10, false)
 	)
 	timer.start()
 	
-	# Fade out
-	await get_tree().create_timer(1.0).timeout
+	# Cleanup po 1.5s
+	await get_tree().create_timer(1.5).timeout
+	
 	timer.stop()
 	
-	var tween = create_tween()
-	tween.tween_property(rect, "modulate:a", 0.0, 0.3)
-	await tween.finished
-	
-	if is_instance_valid(fire):
-		fire.queue_free()
+	if is_instance_valid(area):
+		area.queue_free()
 
 func take_damage(amount: int):
 	if is_dead:

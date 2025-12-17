@@ -22,7 +22,7 @@ test.tscn::PackedScene::3566301953465693758::1764160132::0::1::::<><><>0<>0<><>:
 joystick_base_outline.png::CompressedTexture2D::3288008411285325467::1764160132::1764160321::1::::<><><>0<>0<>eb5e11150b7a4a5b03a5cbb685339ebd<>res://.godot/imported/joystick_base_outline.png-1529fbc0a23b5af9e961e1a3d047aa0b.ctex::
 joystick_tip.png::CompressedTexture2D::3132432681801126628::1764160132::1764160321::1::::<><><>0<>0<>c4d4c15e5c86a3a010dd4b49675d454b<>res://.godot/imported/joystick_tip.png-95989d4495f4fb8387b93ac5f53ed669.ctex::
 joystick_tip_arrows.png::CompressedTexture2D::8548255698028078709::1764160132::1764160322::1::::<><><>0<>0<>9ee2cf5e411d09fc41cb0803aa25ff4c<>res://.godot/imported/joystick_tip_arrows.png-cd5fb367005f4e3e79a192d69a489560.ctex::
-::res://assets/::1765370224
+::res://assets/::1765975196
 ::res://assets/buttons/::1765395841
 bar.png::CompressedTexture2D::4830862231090067499::1764160132::1764160321::1::::<><><>0<>0<>101726b5faaac71d33bfa514eeb17e8c<>res://.godot/imported/bar.png-a3b0fdc6f6c3cf03a2b8914a303959d8.ctex::
 books.png::CompressedTexture2D::2049815823636811421::1764160132::1764160322::1::::<><><>0<>0<>ae50b0b1738416585db6750e8f25be74<>res://.godot/imported/books.png-3c648de20f2f55d1ad741fd2c17f2d01.ctex::
@@ -38,9 +38,14 @@ UIbuttons.png::CompressedTexture2D::821650352663832645::1764160132::1764160322::
 ui_table_Level.png::CompressedTexture2D::8442958215725442381::1764160132::1764160322::1::::<><><>0<>0<>16e9f4bc08e95a151a9d65e05aedf446<>res://.godot/imported/ui_table_Level.png-7110e787d555c27dcb6552035cca5b4b.ctex::
 ::res://assets/enemy/::1764161897
 skeleton_sprites.png::CompressedTexture2D::1371838877928246882::1764160132::1764160322::1::::<><><>0<>0<>5b5090082d75016f868477def976fce3<>res://.godot/imported/skeleton_sprites.png-aa546b71fa93302a7a2a121b3141ab81.ctex::
+::res://assets/fire_walk/::1765975503
+fire_0.png::CompressedTexture2D::2472487831001322661::1765975377::1765975513::1::::<><><>0<>0<>ea49116d4b8cade1df28c008a04f8d2f<>res://.godot/imported/fire_0.png-087320bd13d75548727099ef7a1e22fd.ctex::
+fire_1.png::CompressedTexture2D::6211429131589267759::1765975381::1765975513::1::::<><><>0<>0<>0f9fbb8c7d5e57745d8a52172d3da4a1<>res://.godot/imported/fire_1.png-8319def8a112e2812933c103c70555e3.ctex::
+fire_2.png::CompressedTexture2D::6380325467558119752::1765975385::1765975513::1::::<><><>0<>0<>73d7822245f7b15bbd01ea542c9b64c4<>res://.godot/imported/fire_2.png-fc473791dda2016fd469f9331091414d.ctex::
+fire_3.png::CompressedTexture2D::1350590680397605116::1765975399::1765975513::1::::<><><>0<>0<>285642e3e14c6615267c81d9b5f4b282<>res://.godot/imported/fire_3.png-c984f75f651e5328fba41e6c536ffa32.ctex::
 ::res://assets/fonts/::1764674498
 MedievalSharp-Regular.ttf::FontFile::9018418459570618139::1764674082::1764674498::1::::<><><>0<>0<>d37d46e0559bdeea750d2deedf7c39a4<>res://.godot/imported/MedievalSharp-Regular.ttf-e22c9abdabfcb4fa340d0849f73aa98d.fontdata::
-::res://assets/items/::1765396387
+::res://assets/items/::1765974481
 blue_potion.png::CompressedTexture2D::6961891778437322450::1765395948::1765396386::1::::<><><>0<>0<>dbd287a19029e3c88a8822c0bd0d1048<>res://.godot/imported/blue_potion.png-29dbff2f47c9455e5b926728c600ae74.ctex::
 boots.png::CompressedTexture2D::5065231484544064797::1765395819::1765396386::1::::<><><>0<>0<>44ce7f6c361bf4341b5a405686196f6e<>res://.godot/imported/boots.png-9d2719697bf4cc81970933cca3bab496.ctex::
 chest.png::CompressedTexture2D::261234629805614644::1765387146::1765387148::1::::<><><>0<>0<>41205356f8037766fb498712e916bd71<>res://.godot/imported/chest.png-f90f7d2c3fd503848afaa1a787775ee9.ctex::
@@ -70,7 +75,7 @@ TX Tileset Wall.png::CompressedTexture2D::7518480457202098255::1764160132::17641
 ::res://assets/map/Extra/::1764161897
 TX Plant with Shadow.png::CompressedTexture2D::9148579105913905027::1764160132::1764160322::1::::<><><>0<>0<>9895633993830cb717b0beddcecb044e<>res://.godot/imported/TX Plant with Shadow.png-ec8d6dfdc7fb8e679e588990bb67e0d4.ctex::
 TX Props with Shadow.png::CompressedTexture2D::3630928238516062042::1764160132::1764160322::1::::<><><>0<>0<>4f317f2bbdc1ee0f7129790905b0df50<>res://.godot/imported/TX Props with Shadow.png-29b4d7b8262710dd38ec5e2a3c9ad77b.ctex::
-::res://assets/PlayerMageTexture/::1765194912
+::res://assets/PlayerMageTexture/::1765974524
 fireball.png::CompressedTexture2D::2329693839832038095::1764160132::1764160319::1::::<><><>0<>0<>c1e9e2ca42669584819a212c01e7de76<>res://.godot/imported/fireball.png-58c59d2fbd6affc271b5da33890fa3fe.ctex::
 orb_exp.png::CompressedTexture2D::1995313358360063554::1764160132::1764160319::1::::<><><>0<>0<>7a517bc987946d27aa10e0d7b04680dc<>res://.godot/imported/orb_exp.png-6ef026880901543498c7bb3d87b4f1f4.ctex::
 orb_gold.png::CompressedTexture2D::4980690153592189581::1764160132::1764160320::1::::<><><>0<>0<>1d4754a60c17c46cb5383ff193bb5bb2<>res://.godot/imported/orb_gold.png-1aa9a43035e329a76ebfcf7800c94946.ctex::
@@ -118,7 +123,7 @@ projectile.tscn::PackedScene::-1::1764160132::0::1::::<><><>0<>0<><>::res://scri
 settings_popup.tscn::PackedScene::-1::1764581992::0::1::::<><><>0<>0<><>::
 splash_screen.tscn::PackedScene::32949157749042::1764700053::0::1::::<><><>0<>0<><>::res://scripts/splash_screen.gd<>res://assets/buttons/loading_screen.jpg<>res://assets/fonts/MedievalSharp-Regular.ttf
 ui.tscn::PackedScene::7011792905494400617::1764160132::0::1::::<><><>0<>0<><>::uid://df75iob8nvrc::::res://assets/buttons/health.png<>uid://ca3duh8ybajup::::res://assets/buttons/bar.png<>uid://bii23haldsxeq::::res://scripts/ui.gd<>uid://cc7xiephxwxhd::::res://assets/PlayerMageTexture/orb_gold.png
-::res://scripts/::1765906446
+::res://scripts/::1765974845
 abilities.gd::GDScript::1165147521935858436::1764160132::0::1::::<>Node<><>0<>0<><>::
 chest.gd::GDScript::2543731420038394350::1765877586::0::1::::<>Area2D<><>0<>0<><>::
 chest_ui.gd::GDScript::9214361864923210539::1765872513::0::1::::<>CanvasLayer<><>0<>0<><>::
@@ -129,7 +134,7 @@ game_over_menu.gd::GDScript::5476290578732328118::1764160132::0::1::::<>CanvasLa
 game_settings.gd::GDScript::1065411943003789679::1764582758::0::1::::<>Node<><>0<>0<><>::
 leaderboard_popup.gd::GDScript::4800969983308539788::1764193904::0::1::::<>CanvasLayer<><>0<>0<><>::
 level_up_menu.gd::GDScript::206695653397001603::1765369272::0::1::::<>CanvasLayer<><>0<>0<><>::
-mage.gd::GDScript::4044203470467943150::1765906446::0::1::::<>RigidBody2D<><>0<>0<><>::
+mage.gd::GDScript::4044203470467943150::1765974971::0::1::::<>RigidBody2D<><>0<>0<><>::
 main.gd::GDScript::3323181231106959447::1765877123::0::1::::<>Node<><>0<>0<><>::
 main_menu.gd::GDScript::775574083778907175::1765877575::0::1::::<>Control<><>0<>0<><>::
 name_input_popup.gd::GDScript::4205620714776972174::1764191590::0::1::::<>CanvasLayer<><>0<>0<><>::
