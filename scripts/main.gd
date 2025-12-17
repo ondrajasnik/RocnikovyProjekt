@@ -3,8 +3,13 @@ extends Node
 # Main game controller script
 var mage_scene = preload("res://scenes/mage.tscn")
 var ui_scene = preload("res://scenes/ui.tscn")
+const ChestScript = preload("res://scripts/chest.gd")
 
 func _ready():
+    # Reset chest counter při startu nové hry
+    ChestScript.global_chest_counter = 0
+    print("🎮 New game started - chest counter reset")
+    
     # Initialize the game by loading the main scenes
     load_main_scene()
 

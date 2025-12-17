@@ -5,7 +5,7 @@ extends Area2D
 
 var is_opened = false
 var player = null
-var chest_cost: int = 50  # První truhla stojí 50 gold
+var chest_cost: int = 50
 
 # Global counter pro zvyšování ceny
 static var chests_opened: int = 0
@@ -18,7 +18,7 @@ func _ready():
 	add_to_group("chests")
 	
 	# Calculate cost based on how many chests were opened
-	chest_cost = base_chest_cost + (chests_opened * 25)  # +25 gold za každou otevřenou
+	chest_cost = base_chest_cost + (chests_opened * 25)
 	print("Chest spawned! Cost: ", chest_cost, " gold (", chests_opened, " chests opened)")
 	
 	collision_layer = 8
@@ -92,3 +92,8 @@ func open_chest():
 	
 	# Remove chest
 	queue_free()
+
+# ❌ SMAŽ TUTO FUNKCI - nefunguje se static vars!
+# static func reset_counter():
+#     Chest.global_chest_counter = 0
+#     print("🔄 Chest counter reset to 0")

@@ -29,6 +29,10 @@ var knockback_direction: Vector2 = Vector2.ZERO
 # Difficulty scaling
 var difficulty_multiplier: float = 1.0
 
+# === PŘIDEJ FROST RESISTANCE ===
+var is_frozen: bool = false
+var frozen_slow_multiplier: float = 1.0
+
 # Scenes
 var orb_scene = preload("res://scenes/orb.tscn")
 var chest_scene = preload("res://scenes/chest.tscn")
@@ -85,15 +89,23 @@ func _follow_player(delta):
 	
 	var distance = global_position.distance_to(player.global_position)
 	
+	var current_speed = move_speed * frozen_slow_multiplier
+	
 	if distance > 20.0:
-		velocity = direction * move_speed
+		velocity = direction * current_speed
 		_play_walk_animation(direction)
 	else:
-		velocity = direction * move_speed * 0.3
-	
-	is_attacking = distance <= 80.0
+		velocity = direction * current_speed * 0.3
 
 func _update_attack(delta):
+	if not player or not is_instance_valid(player):
+		return
+	
+	var distance = global_position.distance_to(player.global_position)
+	
+	# ← NASTAV is_attacking TADY místo v _follow_player!
+	is_attacking = distance <= 80.0
+	
 	if not is_attacking:
 		attack_timer = 0.0
 		return
@@ -104,6 +116,7 @@ func _update_attack(delta):
 	if attack_timer >= attack_interval:
 		_attack_player()
 		attack_timer = 0.0
+		print("✅ ATTACK FIRED! Timer reset.")
 
 func _play_walk_animation(direction: Vector2):
 	if not animation_player:
@@ -122,13 +135,20 @@ func _play_walk_animation(direction: Vector2):
 
 func _attack_player():
 	if not player or not is_instance_valid(player):
+		print("❌ Player not found or invalid!")
 		return
 	
 	var distance = global_position.distance_to(player.global_position)
+	print("🎯 Attack check! Distance: ", distance)
 	
 	if distance <= 80.0:
 		if player.has_method("take_damage"):
+			print("👊 Enemy attacking player! Damage: ", damage)
 			player.take_damage(damage)
+		else:
+			print("❌ Player doesn't have take_damage method!")
+	else:
+		print("⚠️ Too far to attack! Distance: ", distance)
 
 func take_damage(amount: int, is_critical: bool = false):
 	current_health -= amount

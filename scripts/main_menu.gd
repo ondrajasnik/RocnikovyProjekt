@@ -1,5 +1,7 @@
 extends Control
 
+const ChestScript = preload("res://scripts/chest.gd")
+
 @onready var play_button = $CenterContainer/VBoxContainer/PlayButton
 @onready var settings_button = $CenterContainer/VBoxContainer/SettingsButton
 @onready var leaderboard_button = $CenterContainer/VBoxContainer/LeaderboardButton
@@ -14,6 +16,10 @@ var settings_popup_scene = preload("res://scenes/settings_popup.tscn")
 var background_music: AudioStreamPlayer
 
 func _ready():
+	# Reset chest counter při návratu
+	if has_node("/root/Chest"):  # Pokud existuje Chest autoload
+		get_node("/root/Chest").reset_global_counter()
+	
 	play_button.pressed.connect(_on_play_pressed)
 	settings_button.pressed.connect(_on_settings_pressed)
 	leaderboard_button.pressed.connect(_on_leaderboard_pressed)
@@ -51,10 +57,11 @@ func _update_profile_display():
 		log_off_button.visible = false
 
 func _on_play_pressed():
-	if PlayerProfile.is_player_registered():
-		_start_game()
-	else:
-		_show_name_input_popup()
+	# Reset chest pricing - SPRÁVNĚ!
+	ChestScript.chests_opened = 0  # ← Přímo nastav static var!
+	
+	print("🔄 New game - chest counter reset to 0")
+	get_tree().change_scene_to_file("res://scenes/main.tscn")
 
 func _show_name_input_popup():
 	var popup = name_popup_scene.instantiate()
