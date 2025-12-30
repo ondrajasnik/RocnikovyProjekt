@@ -1,9 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://c65tg7whw1770"]
+[gd_scene load_steps=8 format=3 uid="uid://c65tg7whw1770"]
 
 [ext_resource type="Texture2D" uid="uid://df75iob8nvrc" path="res://assets/buttons/health.png" id="1"]
 [ext_resource type="Texture2D" uid="uid://ca3duh8ybajup" path="res://assets/buttons/bar.png" id="2"]
 [ext_resource type="Script" uid="uid://bii23haldsxeq" path="res://scripts/ui.gd" id="3"]
 [ext_resource type="Texture2D" uid="uid://cc7xiephxwxhd" path="res://assets/PlayerMageTexture/orb_gold.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://d4hln14geipo6" path="res://assets/buttons/pause.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://dwj4j7bd7ac2y" path="res://assets/buttons/pause_pressed.png" id="6_8dubc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_normal"]
+atlas = ExtResource("5")
+region = Rect2(0, 0, 16, 16)
 
 [node name="UI" type="CanvasLayer"]
 script = ExtResource("3")
@@ -134,11 +140,13 @@ theme_override_font_sizes/font_size = 20
 text = "TIME: 00:00"
 vertical_alignment = 1
 
-[node name="PauseButton" type="Button" parent="."]
-offset_left = 1090.0
-offset_top = 15.0
-offset_right = 1140.0
-offset_bottom = 68.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 32
-text = "||"
+[node name="PauseButton" type="TextureButton" parent="."]
+texture_filter = 1
+offset_left = 1093.0
+offset_top = 7.0
+offset_right = 1143.0
+offset_bottom = 53.0
+texture_normal = SubResource("AtlasTexture_normal")
+texture_pressed = ExtResource("6_8dubc")
+ignore_texture_size = true
+stretch_mode = 0
