@@ -291,17 +291,14 @@ func _show_notification(text: String, color: Color):
 func _get_random_item() -> ItemType:
 	var roll = randf() * 100.0
 	
-	# PŮVODNÍ (5% legendary):
-	# if roll < 5.0:
-	
-	# TESTOVACÍ - 50% legendary, 30% rare, 20% common:
-	if roll < 50.0:  # ← ZMĚNĚNO! 50% šance!
+	# 5% legendary, 25% rare, 70% common
+	if roll < 5.0:
 		var legendaries = [ItemType.FIREBOOTS, ItemType.LIGHTNING_AURA, ItemType.FROST_RING, ItemType.SHADOW_CLOAK, ItemType.STAR_CROWN]
 		return legendaries[randi() % legendaries.size()]
-	elif roll < 80.0:  # ← 50-80 = 30% rare
+	elif roll < 30.0:
 		var rares = [ItemType.BLUE_POTION, ItemType.LIGHTNING_BOLT, ItemType.RUBY, ItemType.SHARP_DAGGER]
 		return rares[randi() % rares.size()]
-	else:  # ← 80-100 = 20% common
+	else:
 		var commons = [ItemType.LUCKY_DICE, ItemType.RED_APPLE, ItemType.IRON_SHIELD, ItemType.BOOTS]
 		return commons[randi() % commons.size()]
 

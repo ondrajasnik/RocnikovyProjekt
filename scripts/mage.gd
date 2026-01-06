@@ -32,7 +32,7 @@ var critical_chance: float = 0.10
 var critical_multiplier: float = 2.0
 
 # --- LEGENDARY ITEMS ---
-var has_fireboots: bool = true
+var has_fireboots: bool = false
 var has_lightning_aura: bool = false
 var has_frost_ring: bool = false
 var has_shadow_cloak: bool = false
@@ -54,7 +54,7 @@ var exp_to_next_level: int = 50
 var exp_multiplier: float = 1.3
 
 # --- Gold a K
-var gold: int = 500
+var gold: int = 0
 var kills: int = 0
 
 # --- Luck systém ---
