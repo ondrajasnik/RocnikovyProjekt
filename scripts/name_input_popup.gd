@@ -2,6 +2,7 @@ extends CanvasLayer
 
 @onready var name_input = $CenterContainer/Panel/VBoxContainer/NameInput
 @onready var confirm_button = $CenterContainer/Panel/VBoxContainer/ConfirmButton
+@onready var guest_button = $CenterContainer/Panel/VBoxContainer/GuestButton
 @onready var error_label = $CenterContainer/Panel/VBoxContainer/ErrorLabel
 
 var is_checking = false
@@ -10,6 +11,7 @@ signal name_confirmed(player_name: String)
 
 func _ready():
     confirm_button.pressed.connect(_on_confirm_pressed)
+    guest_button.pressed.connect(_on_guest_pressed)
     name_input.text_changed.connect(_on_name_changed)
     name_input.text_submitted.connect(_on_name_submitted)
     error_label.text = ""
@@ -84,3 +86,9 @@ func _on_name_check_completed(result, response_code, body, player_name: String):
 
 func _show_error(message: String):
     error_label.text = message
+
+func _on_guest_pressed():
+    # Nastav "Guest" jako jméno a zavři popup
+    PlayerProfile.set_player_name("Guest")
+    emit_signal("name_confirmed", "Guest")
+    queue_free()

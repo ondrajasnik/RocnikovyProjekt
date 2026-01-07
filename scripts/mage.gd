@@ -574,7 +574,12 @@ func die():
 	
 	var player_name = PlayerProfile.get_player_name()
 	var score = kills * 100 + level * 50 + gold
-	SupabaseManager.submit_score(player_name, score, kills, survival_time)
+	
+	# Posli score jen pokud není Guest
+	if player_name != "Guest":
+		SupabaseManager.submit_score(player_name, score, kills, survival_time)
+	else:
+		print("Guest mode - skóre se neukládá")
 	
 	await get_tree().process_frame
 	

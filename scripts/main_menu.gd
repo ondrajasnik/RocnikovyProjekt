@@ -28,6 +28,10 @@ func _ready():
 	
 	_update_profile_display()
 	_setup_background_music()
+	
+	# Pokud není registrovaný, automaticky zobraz popup
+	if not PlayerProfile.is_player_registered():
+		call_deferred("_show_name_input_popup")
 
 func _setup_background_music():
 	background_music = AudioStreamPlayer.new()
@@ -51,7 +55,8 @@ func _setup_background_music():
 func _update_profile_display():
 	if PlayerProfile.is_player_registered():
 		player_name_label.text = PlayerProfile.get_player_name()
-		log_off_button.visible = true
+		# Ukaž log off button jen pokud to NENÍ Guest
+		log_off_button.visible = PlayerProfile.get_player_name() != "Guest"
 	else:
 		player_name_label.text = "Guest"
 		log_off_button.visible = false
@@ -71,8 +76,7 @@ func _show_name_input_popup():
 func _on_name_confirmed(player_name: String):
 	print("Name confirmed: ", player_name)
 	_update_profile_display()
-	await get_tree().create_timer(0.5).timeout
-	_start_game()
+	# Jen aktualizuj profil, nezačínej hru automaticky
 
 func _on_log_off_pressed():
 	var confirm_dialog = ConfirmationDialog.new()

@@ -1,1 +1,6 @@
+res://scenes/name_input_popup.tscn
+res://scripts/main_menu.gd
+res://scripts/name_input_popup.gd
 res://scripts/mage.gd
+res://scripts/supabase_manager.gd
+res://scripts/enemy.gd

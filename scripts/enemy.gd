@@ -36,7 +36,7 @@ var frozen_slow_multiplier: float = 1.0
 # Scenes
 var orb_scene = preload("res://scenes/orb.tscn")
 var chest_scene = preload("res://scenes/chest.tscn")
-var chest_drop_chance: float = 1.0  # 100% for testing
+var chest_drop_chance: float = 0.05  # 100% for testing
 
 func _ready():
 	add_to_group("enemies")
