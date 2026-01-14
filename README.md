@@ -1,6 +1,7 @@
 # 🧙‍♂️ Mage Survivor Game
 
 **Survivor-like hra** vytvořená v **Godot 4** s top-down pohledem, kde hráč ovládá mága bojujícího proti vlnám nepřátel.
+
 Odkaz na video prezentaci: https://youtu.be/5y-lvo89puM
 
 ## 🎮 Gameplay
